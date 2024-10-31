@@ -6,6 +6,7 @@ import Footer from "./components/layout/Footer";
 import Error from "./pages/Error";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
+import Dashboard from "./pages/client/Dashboard";
 const App = () => {
 
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/login" element={<LoginPage />} />
+            <Route exact path="/dashboard" element={<Dashboard />} />
             <Route path="*" element={<Error />} />
 
           </Routes>

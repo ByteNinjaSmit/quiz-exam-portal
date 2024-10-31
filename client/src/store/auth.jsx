@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 // Create context
 export const AuthContext = createContext();
 
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
     const authorizationToken = `Bearer ${token}`;
-
+    // const navigate = useNavigate();
 
     // Function to store token in cookies
     const storeTokenInCookies = (serverToken) => {
@@ -39,6 +39,8 @@ export const AuthProvider = ({ children }) => {
         setIsAdmin(false);
         // Remove token from cookies
         document.cookie = "authToken=; path=/; max-age=0";
+        // Navigate to /
+        window.location.href = '/'; 
     };
 
     // JWT Authentication - fetch current logged-in user data
@@ -74,6 +76,7 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(false);
         }
     }, [token]);
+    console.log(user);
     
     return (
         <AuthContext.Provider
