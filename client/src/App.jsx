@@ -9,6 +9,8 @@ import LoginPage from "./pages/Login";
 import Dashboard from "./pages/client/Dashboard";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ExamDashboard from "./pages/admin/Exam-Overview";
+import CreateExam from "./pages/admin/Create-Exam,";
+import ExamInterface from "./pages/client/Question-Paper";
 const App = () => {
 
   return (
@@ -23,8 +25,10 @@ const App = () => {
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/login" element={<LoginPage />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/paper" element={<ExamInterface />} />
             <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
             <Route exact path="/admin/dashboard/exam" element={<ExamDashboard />} />
+            <Route exact path="/admin/create-exam" element={<CreateExam />} />
             <Route path="*" element={<Error />} />
 
           </Routes>
