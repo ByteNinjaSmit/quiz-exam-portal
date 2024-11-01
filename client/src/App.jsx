@@ -7,6 +7,8 @@ import Error from "./pages/Error";
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/Login";
 import Dashboard from "./pages/client/Dashboard";
+import AdminDashboard from "./pages/admin/Dashboard";
+import ExamDashboard from "./pages/admin/Exam-Overview";
 const App = () => {
 
   return (
@@ -21,6 +23,8 @@ const App = () => {
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/login" element={<LoginPage />} />
             <Route exact path="/dashboard" element={<Dashboard />} />
+            <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route exact path="/admin/dashboard/exam" element={<ExamDashboard />} />
             <Route path="*" element={<Error />} />
 
           </Routes>
