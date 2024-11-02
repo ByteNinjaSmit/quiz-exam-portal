@@ -32,7 +32,7 @@ const App = () => {
             <Route exact path="/user" element={<UserLayout />} >
 
               <Route exact path="dashboard" element={<Dashboard />} />
-              <Route exact path="paper" element={<ExamInterface />} />
+              <Route exact path="paper/:title/:paperkey/:id" element={<ExamInterface />} />
             </Route>
             {/* Admin Routes */}
             <Route exact path="/admin" element={<AdminLayout />}>

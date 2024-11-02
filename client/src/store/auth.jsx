@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 // Create context
 export const AuthContext = createContext();
 
@@ -16,6 +18,9 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState("");
     const [isLoading, setIsLoading] = useState(true);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isTeacher, setIsTeacher] = useState(false);
+    const [isHod, setIsHod] = useState(false);
+    const [isTnp, setIsTnp] = useState(false);
     const authorizationToken = `Bearer ${token}`;
     // const navigate = useNavigate();
 
@@ -39,8 +44,13 @@ export const AuthProvider = ({ children }) => {
         setIsAdmin(false);
         // Remove token from cookies
         document.cookie = "authToken=; path=/; max-age=0";
-        // Navigate to /
-        window.location.href = '/';
+        toast.success(`Logout Successfully`);
+
+        // Navigate to the home page after a short delay
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 500); // Delay navigation for 2 seconds (2000 ms)
+
     };
 
     // JWT Authentication - fetch current logged-in user data
@@ -78,10 +88,24 @@ export const AuthProvider = ({ children }) => {
     }, [token]);
 
     useEffect(() => {
-        setIsAdmin(user?.isTeacher || user?.isHod || user?.isTnp);
+        // Reset all role flags first
+        setIsAdmin(false);
+        setIsTeacher(false);
+        setIsHod(false);
+        setIsTnp(false);
+
+        // Check and set roles based on the user object
+        if (user) {
+            const { isTeacher, isHod, isTnp } = user;
+
+            setIsAdmin(isTeacher || isHod || isTnp); // Admin if any of the roles is true
+            setIsTeacher(isTeacher || false);
+            setIsHod(isHod || false);
+            setIsTnp(isTnp || false);
+        }
     }, [user]);
-    console.log(user);
-    
+
+
 
 
     return (
@@ -94,6 +118,9 @@ export const AuthProvider = ({ children }) => {
                 authorizationToken,
                 isLoading,
                 isAdmin,
+                isTeacher,
+                isHod,
+                isTnp,
                 API,
             }}
         >

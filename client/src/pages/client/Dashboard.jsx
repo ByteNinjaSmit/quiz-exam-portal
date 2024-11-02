@@ -1,18 +1,51 @@
-import React, { useState,useEffect } from "react";
-import { FaUserEdit, FaGraduationCap, FaTrophy, FaFileAlt, FaBriefcase, FaChartBar, FaBell, FaCode, FaCalendarAlt } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { FaUserEdit, FaGraduationCap, FaRegUserCircle, FaTrophy, FaFileAlt, FaBriefcase, FaChartBar, FaBell, FaCode, FaCalendarAlt } from "react-icons/fa";
 import { IoMdTimer } from "react-icons/io";
 import { useAuth } from "../../store/auth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 const Dashboard = () => {
   const [showNotifications, setShowNotifications] = useState(false);
-  const { user,isLoggedIn } = useAuth(); // Custom hook from AuthContext3
+  const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
   const navigate = useNavigate();
+  const [exams, setExams] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isLoggedIn) {
-        return navigate('/')
+      return navigate('/')
     }
-},[])
+  }, [])
+
+  useEffect(() => {
+    const fetchExams = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API}/api/exam/all/exams`, {
+          method: "GET",
+          headers: {
+            Authorization: authorizationToken,
+          },
+        });
+        if (!response.ok) {
+          toast.error(`Error Fetching Exams: ${response.status}`);
+        }
+        const data = await response.json();
+        setExams(data);
+      } catch (error) {
+        console.error(error);
+        toast.error(error.messsage);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchExams();
+  }, [])
+
+  console.log(exams);
+
+
   const dummyData = {
     profile: {
       name: "John Doe",
@@ -46,7 +79,19 @@ const Dashboard = () => {
     ]
   };
 
-  
+  // Function to format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
+
+  // Function to format the time
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+    return date.toLocaleTimeString('en-US', options);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 p-4">
@@ -68,11 +113,13 @@ const Dashboard = () => {
               <FaUserEdit className="text-purple-600 cursor-pointer hover:text-indigo-600 transition-colors duration-300" />
             </div>
             <div className="flex items-center mb-4">
-              <img
+              {/* Replaced Image with icons */}
+              <FaRegUserCircle className="w-20 h-20 rounded-full object-cover ring-4 ring-purple-200" alt="Profile" />
+              {/* <img
                 src={`https://${dummyData.profile.image}`}
                 alt="Profile"
                 className="w-20 h-20 rounded-full object-cover ring-4 ring-purple-200"
-              />
+              /> */}
               <div className="ml-4">
                 <h3 className="text-lg font-semibold text-gray-800">{user?.name}</h3>
                 <p className="text-indigo-600">{user?.username}</p>
@@ -98,13 +145,24 @@ const Dashboard = () => {
               <h2 className="text-xl font-semibold text-indigo-800">Upcoming Exams</h2>
               <IoMdTimer className="text-purple-600" />
             </div>
-            {dummyData.exams.map((exam) => (
-              <div key={exam.id} className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
-                <h3 className="font-semibold text-indigo-700">{exam.subject}</h3>
-                <p className="text-purple-600">{exam.date} at {exam.time}</p>
-                <button className="mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">Take Exam</button>
-              </div>
-            ))}
+            {exams?.slice(0, 2).map((exam, index) => {
+              const currentTime = new Date();
+              const examStartTime = new Date(exam.startTime);
+              const examEndTime = new Date(exam.endTime);
+              const isExamOngoing = currentTime >= examStartTime && currentTime <= examEndTime;
+              return (
+                <div key={index} className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+                  <h3 className="font-semibold text-indigo-700">{exam?.title}</h3>
+                  <p className="text-purple-600">{exam?.startTime && formatDate(exam.startTime)} at {exam?.startTime && formatTime(exam.startTime)} to {exam?.endTime && formatTime(exam.endTime)}</p>
+                  <Link to={`/user/paper/${exam?.title}/${exam?.paperkey}/${exam?._id}`}>
+                    <button
+                      className={`mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 ${isExamOngoing ? '' : 'opacity-50 cursor-not-allowed'}`}
+                      disabled={!isExamOngoing}
+                    >Take Exam</button>
+                  </Link>
+                </div>
+              )
+            })}
             <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">View All Exams</button>
           </div>
 

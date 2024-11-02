@@ -10,12 +10,17 @@ const cookieParser = require("cookie-parser");
 
 // Importing Router
 const authRoute = require("./router/auth-router");
-
-
+const questionRoute = require('./router/question-router');
+const examRoute = require('./router/exam-router');
 // Importing Middlewares
 const errorMiddleware = require("./middlewares/error-middleware");
 
-
+// Importing Controller To Broadcasr
+const {
+    loadQuestionPaper,
+    checkAndStartExam,
+    handleSocketConnection
+} = require('./controllers/exam-controller');
 
 
 // Server
@@ -40,7 +45,15 @@ app.use(errorMiddleware);
 app.get('/', (req, res) => {
     res.send('Welcome to the API');
 });
+
 app.use("/api/auth", authRoute);
+app.use("/api/question",questionRoute(io));
+app.use("/api/exam",examRoute);
+
+
+// Broadcasting Question Paper
+// Pass the io instance and controller functions to handleSocketConnection
+handleSocketConnection(io, loadQuestionPaper, checkAndStartExam);
 
 
 

@@ -23,8 +23,8 @@ const questionSchema = new mongoose.Schema({
     type: Number, // Time for each question in seconds or minutes
     required: true,
   },
-  image:{
-    type:String,
+  image: {
+    type: String,
   },
 });
 
@@ -34,9 +34,9 @@ const questionPaperSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  classyear:{
-    type:String,
-    required:true,
+  classyear: {
+    type: String,
+    required: true,
   },
   questions: [questionSchema], // Array of questions
   startTime: {
@@ -52,7 +52,8 @@ const questionPaperSchema = new mongoose.Schema({
     required: true, // Make the paperKey mandatory
   },
   currentQuestionIndex: { type: Number, default: 0 },
-});
+}, { timestamps: true }
+);
 
 // Create models
 const QuestionPaper = mongoose.model('QuestionPaper', questionPaperSchema);
