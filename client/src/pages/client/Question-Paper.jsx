@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import { FaExpandAlt, FaCompress } from "react-icons/fa";
 import { IoWarningOutline } from "react-icons/io5";
 import { BiTimer } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
+import { useParams } from 'react-router-dom';
+import { useAuth } from "../../store/auth";
+import io from 'socket.io-client';
 
 const ExamInterface = () => {
-    const [currentQuestion, setCurrentQuestion] = useState(0);
     const [selectedOption, setSelectedOption] = useState(null);
     const [isOptionLocked, setIsOptionLocked] = useState(false);
     const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
@@ -14,32 +16,95 @@ const ExamInterface = () => {
     const [isTabActive, setIsTabActive] = useState(true);
     const [timer, setTimer] = useState(30);
     const [isLocked, setIsLocked] = useState(false);
-    const [isAnswerCorrect, setIsAnswerCorrect] = useState(null);
 
-    // Dummy exam data
-    const examQuestions = [
-        {
-            id: 1,
-            question: "What is the capital of France?",
-            options: ["London", "Berlin", "Paris", "Madrid"],
-            image: "images.unsplash.com/photo-1502602898657-3e91760cbb34",
-            correctAnswer: 2
-        },
-        {
-            id: 2,
-            question: "Which planet is known as the Red Planet?",
-            options: ["Venus", "Mars", "Jupiter", "Saturn"],
-            image: "images.unsplash.com/photo-1614728263952-84ea256f9679",
-            correctAnswer: 1
-        },
-        {
-            id: 3,
-            question: "What is the largest mammal on Earth?",
-            options: ["African Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
-            image: "images.unsplash.com/photo-1568430328012-21ed450453ea",
-            correctAnswer: 1
-        }
-    ];
+    // Socket Io states
+    const [isAnswerCorrect, setIsAnswerCorrect] = useState(null); // null = no answer yet
+    const [remainingTime, setRemainingTime] = useState(0);
+    const [questionIndex, setQuestionIndex] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [isExamEnded, setIsExamEnded] = useState(false); // Track if the exam has ended
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Getting Global state
+    const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
+
+    // Create a ref to hold the socket connection
+    const socketRef = useRef();
+
+    // Getting Parameter 
+    const { id, title, paperKey } = useParams();
+
+    // Creating Post Function To hit server for start exam
+    useEffect(() => {
+        const makePostFunction = async () => {
+            setIsLoading(true);
+            setError(null); // Reset error state before making request
+            try {
+                const response = await fetch(`${API}/api/question/start-exam`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: authorizationToken,
+                    },
+                    body: JSON.stringify({
+                        title,
+                        paperKey,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const text = await response.text(); // Get the raw response text
+                console.log('Raw response:', text); //
+                // Handle success response here (e.g., updating state)
+            } catch (error) {
+                console.error('Error occurred while making POST request:', error);
+                setError(error.message); // Set error message to state
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        makePostFunction();
+    }, [title, paperKey]); // Include title in dependency array
+
+    // Socket Connection
+    useEffect(() => {
+        socketRef.current = io(API);
+        socketRef.current.emit("loadExam", { title, paperKey });// Join the socket room based on paper key
+
+        socketRef.current.on('question', (data) => {
+            if (!isExamEnded) { // Prevent updating question data if exam has ended
+                setCurrentQuestion(data.question);
+                setQuestionIndex(data.questionIndex);
+                setRemainingTime(data.remainingTime);
+                setIsAnswerCorrect(null); // Reset answer state on new question
+
+                // Reset the option selection state for the new question
+                setIsOptionLocked(false); // Unlock options for the new question
+                setSelectedOption(null); // Reset the selected option
+            }
+        });
+
+        socketRef.current.on('examEnd', () => {
+            setIsExamEnded(true); // Set exam end state
+            setCurrentQuestion(null);
+            setQuestionIndex(null);
+            setRemainingTime(null); // Clear the current question
+        });
+
+        return () => {
+            socketRef.current.off('question');
+            socketRef.current.off('examEnd');
+            // socketRef.current.disconnect();
+        };
+    }, [isExamEnded, title, paperKey]);
+
+
+
 
     // Handle tab visibility change
     useEffect(() => {
@@ -55,17 +120,6 @@ const ExamInterface = () => {
         };
     }, []);
 
-    // Timer countdown for question
-    useEffect(() => {
-        if (timer === 0) {
-            handleNextQuestion();
-        } else {
-            const interval = setInterval(() => {
-                setTimer((prev) => prev - 1);
-            }, 1000);
-            return () => clearInterval(interval);
-        }
-    }, [timer]);
 
     // Main exam countdown timer
     useEffect(() => {
@@ -82,15 +136,6 @@ const ExamInterface = () => {
         return () => clearInterval(interval);
     }, []);
 
-    // Format time for display
-    const formatTime = (seconds) => {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const remainingSeconds = seconds % 60;
-        return `${hours.toString().padStart(2, "0")}:${minutes
-            .toString()
-            .padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-    };
 
     // Handle full screen toggle
     const toggleFullScreen = () => {
@@ -104,28 +149,56 @@ const ExamInterface = () => {
     };
 
     // Handle option selection and display feedback color based on answer correctness
-    const handleOptionSelect = (optionIndex) => {
-        if (!isOptionLocked) {
-            const isCorrect = optionIndex === examQuestions[currentQuestion].correctAnswer;
+    const handleOptionSelect = (answer) => {
+        if (!isOptionLocked && currentQuestion) {
+            const isCorrect = currentQuestion.options.some(option => option.optionText === answer && option.isCorrect);
+            // const isCorrect = optionIndex === examQuestions[currentQuestion].correctAnswer;
             setIsAnswerCorrect(isCorrect);
-            setSelectedOption(optionIndex);
-            
+            setSelectedOption(answer);
+
             // Lock options until timer reaches 0
             setIsOptionLocked(true);
         }
     };
-    
-    const handleNextQuestion = () => {
-        setIsOptionLocked(false); // Unlock options for the new question
-        setIsAnswerCorrect(null);
-        setSelectedOption(null);
-    
-        if (currentQuestion < examQuestions.length - 1) {
-            setCurrentQuestion((prev) => prev + 1);
-            setTimer(30);
+
+    // When new Question come 
+    //     setIsOptionLocked(false); // Unlock options for the new question
+    //     setIsAnswerCorrect(null);
+    //     setSelectedOption(null);
+    // const handleNextQuestion = () => {
+    //     setIsOptionLocked(false); // Unlock options for the new question
+    //     setIsAnswerCorrect(null);
+    //     setSelectedOption(null);
+
+    // };
+
+
+    useEffect(() => {
+        if (!isExamEnded && remainingTime > 0) {
+            const countdown = setInterval(() => {
+                setRemainingTime((prevTime) => {
+                    if (prevTime <= 1) {
+                        clearInterval(countdown); // Stop countdown when time is up
+                        // Handle time-out actions here if needed
+                        return 0;
+                    }
+                    return prevTime - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(countdown); // Clean up interval on unmount or if exam ends
         }
+    }, [isExamEnded, remainingTime]);
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = (seconds % 60).toFixed(0);
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
-    
+
+    if (isExamEnded) {
+        return <p>Exam ended</p>;
+    }
 
     return (
         <div className="min-h-screen bg-gray-100 p-4">
@@ -174,16 +247,19 @@ const ExamInterface = () => {
                     <div className="mb-6">
                         <div className="flex items-center justify-end space-x-2 text-indigo-600">
                             <BiTimer className="text-2xl" />
-                            <span className="text-xl font-semibold">{timer}s</span>
+                            <span className="text-xl font-semibold">{formatTime(remainingTime)}s</span>
                         </div>
                         <h2 className="text-xl font-semibold mb-4">
-                            Question {currentQuestion + 1} of {examQuestions.length}
+                            {/* Question {currentQuestion + 1} of {examQuestions.length} */}
                         </h2>
 
                         <p className="text-gray-700 text-lg mb-4">
-                            {examQuestions[currentQuestion].question}
+                            {currentQuestion?.questionText}
                         </p>
-                        {examQuestions[currentQuestion].image && (
+
+                        {/* For Showing Image */}
+
+                        {/* {examQuestions[currentQuestion]?.image && (
                             <img
                                 src={`https://${examQuestions[currentQuestion].image}`}
                                 alt="Question illustration"
@@ -192,25 +268,24 @@ const ExamInterface = () => {
                                     e.target.src = "https://images.unsplash.com/photo-1516979187457-637abb4f9353";
                                 }}
                             />
-                        )}
+                        )} */}
                     </div>
 
                     {/* Options */}
                     <div className="space-y-4">
-                        {examQuestions[currentQuestion].options.map((option, index) => (
+                        {currentQuestion?.options?.map((option, index) => (
                             <button
                                 key={index}
-                                onClick={() => handleOptionSelect(index)}
+                                onClick={() => handleOptionSelect(option.optionText)}
                                 disabled={isOptionLocked}
-                                className={`w-full p-4 text-left rounded-lg transition-colors ${
-                                    selectedOption === index
-                                        ? isAnswerCorrect
-                                            ? "bg-green-500 text-white"
-                                            : "bg-red-500 text-white"
-                                        : "bg-gray-100 hover:bg-gray-200"
-                                } ${isOptionLocked && "cursor-not-allowed opacity-75"}`}
+                                className={`w-full p-4 text-left rounded-lg transition-colors ${selectedOption === option.optionText
+                                    ? isAnswerCorrect
+                                        ? "bg-green-500 text-white"
+                                        : "bg-red-500 text-white"
+                                    : "bg-gray-100 hover:bg-gray-200"
+                                    } ${isOptionLocked && "cursor-not-allowed opacity-75"}`}
                             >
-                                {option}
+                                {option.optionText}
                             </button>
                         ))}
                     </div>
@@ -220,19 +295,19 @@ const ExamInterface = () => {
                     <div className="mt-1 h-2 bg-gray-200 rounded-full overflow-hidden">
                         <div
                             className="h-full bg-red-500 transition-all duration-1000"
-                            style={{ width: `${(timer / 30) * 100}%` }}
+                            style={{ width: `${(remainingTime / currentQuestion.timeLimit) * 100}%` }}
                         ></div>
                     </div>
                     {/* Progress Bar */}
                     <p className="mt-5 text-xs">Exam Progress:</p>
-                    <div className="mt-2 bg-gray-200 rounded-full h-2.5">
+                    {/* <div className="mt-2 bg-gray-200 rounded-full h-2.5">
                         <div
                             className="bg-blue-500 h-2.5 rounded-full transition-all duration-500"
                             style={{
                                 width: `${((currentQuestion + 1) / examQuestions.length) * 100}%`,
                             }}
                         ></div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

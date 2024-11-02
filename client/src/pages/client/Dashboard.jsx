@@ -43,7 +43,6 @@ const Dashboard = () => {
     fetchExams();
   }, [])
 
-  console.log(exams);
 
 
   const dummyData = {
@@ -56,10 +55,6 @@ const Dashboard = () => {
       attendance: "92%",
       image: "images.unsplash.com/photo-1633332755192-727a05c4013d"
     },
-    exams: [
-      { id: 1, subject: "Advanced Algorithms", date: "2024-02-20", time: "10:00 AM" },
-      { id: 2, subject: "Database Systems", date: "2024-02-25", time: "2:00 PM" }
-    ],
     leaderboard: [
       { rank: 1, name: "Alice Smith", score: 98 },
       { rank: 2, name: "Bob Johnson", score: 95 },
@@ -154,7 +149,7 @@ const Dashboard = () => {
                 <div key={index} className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
                   <h3 className="font-semibold text-indigo-700">{exam?.title}</h3>
                   <p className="text-purple-600">{exam?.startTime && formatDate(exam.startTime)} at {exam?.startTime && formatTime(exam.startTime)} to {exam?.endTime && formatTime(exam.endTime)}</p>
-                  <Link to={`/user/paper/${exam?.title}/${exam?.paperkey}/${exam?._id}`}>
+                  <Link to={`/user/paper/${exam?.title}/${exam?.paperKey}/${exam?._id}`}>
                     <button
                       className={`mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 ${isExamOngoing ? '' : 'opacity-50 cursor-not-allowed'}`}
                       disabled={!isExamOngoing}

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiPlus, FiSearch, FiCalendar, FiEdit2, FiTrash2, FiEye, FiBell } from "react-icons/fi";
 import AdminSidebar from "../../components/sidebar";
+import { useAuth } from "../../store/auth";
 
 const ExamDashboard = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -11,6 +12,37 @@ const ExamDashboard = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+    const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
+    const [exams, setExams] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    // Getting All Exams 
+    useEffect(() => {
+        const fetchExams = async () => {
+            setIsLoading(true);
+            try {
+                const response = await fetch(`${API}/api/exam/all/exams`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: authorizationToken,
+                    },
+                });
+                if (!response.ok) {
+                    toast.error(`Error Fetching Exams: ${response.status}`);
+                }
+                const data = await response.json();
+                setExams(data);
+            } catch (error) {
+                console.error(error);
+                toast.error(error.messsage);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchExams();
+    }, [])
+
+
 
     const dummyExams = [
         {
@@ -56,6 +88,34 @@ const ExamDashboard = () => {
                 return "bg-gray-100 text-gray-800";
         }
     };
+
+    // Function to format the date
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    };
+
+    // Function to format the time
+    const formatTime = (dateString) => {
+        const date = new Date(dateString);
+        const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+        return date.toLocaleTimeString('en-US', options);
+    };
+
+    // To Define Status base on time
+    const getExamStatus = (startTime, endTime) => {
+        const now = new Date();
+        
+        if (now < new Date(startTime)) {
+            return 'Scheduled'; // Exam is scheduled for the future
+        } else if (now >= new Date(startTime) && now <= new Date(endTime)) {
+            return 'Ongoing'; // Exam is currently ongoing
+        } else {
+            return 'Completed'; // Exam has already ended
+        }
+    };
+    
 
     return (
         <div className="flex min-h-screen bg-gray-100">
@@ -147,23 +207,23 @@ const ExamDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {dummyExams.map((exam) => (
-                                    <tr key={exam.id} className="hover:bg-gray-50">
+                                {exams.map((exam, index) => (
+                                    <tr key={index} className="hover:bg-gray-50">
                                         <td className="px-4 py-4">
-                                            <div className="text-sm font-medium text-gray-900">{exam.name}</div>
+                                            <div className="text-sm font-medium text-gray-900">{exam?.title}</div>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <div className="text-sm text-gray-500">{exam.department}</div>
+                                            <div className="text-sm text-gray-500">{exam?.classyear}</div>
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="text-sm text-gray-500 flex items-center">
                                                 <FiCalendar className="mr-2" />
-                                                {new Date(exam.date).toLocaleString()}
+                                                {exam?.startTime && formatDate(exam.startTime)} at {exam?.startTime && formatTime(exam.startTime)} to {exam?.endTime && formatTime(exam.endTime)}
                                             </div>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(exam.status)}`}>
-                                                {exam.status}
+                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(getExamStatus(exam?.startTime, exam?.endTime))}`}>
+                                            {getExamStatus(exam?.startTime, exam?.endTime)}
                                             </span>
                                         </td>
                                         <td className="px-4 py-4">
@@ -171,7 +231,7 @@ const ExamDashboard = () => {
                                                 <button className="text-blue-600 hover:text-blue-800">
                                                     <FiEdit2 />
                                                 </button>
-                                                <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam.id)}>
+                                                <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam?._id)}>
                                                     <FiTrash2 />
                                                 </button>
                                                 <button className="text-gray-600 hover:text-gray-800">
