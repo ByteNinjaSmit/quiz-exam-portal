@@ -11,6 +11,9 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import ExamDashboard from "./pages/admin/Exam-Overview";
 import CreateExam from "./pages/admin/Create-Exam,";
 import ExamInterface from "./pages/client/Question-Paper";
+import { AdminLayout } from "./components/layout/Admin-Layout";
+import { UserLayout } from "./components/layout/User-Layout";
+
 const App = () => {
 
   return (
@@ -24,17 +27,26 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/login" element={<LoginPage />} />
-            <Route exact path="/dashboard" element={<Dashboard />} />
-            <Route exact path="/paper" element={<ExamInterface />} />
-            <Route exact path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route exact path="/admin/dashboard/exam" element={<ExamDashboard />} />
-            <Route exact path="/admin/create-exam" element={<CreateExam />} />
+
+            {/* User Routes */}
+            <Route exact path="/user" element={<UserLayout />} >
+
+              <Route exact path="dashboard" element={<Dashboard />} />
+              <Route exact path="paper" element={<ExamInterface />} />
+            </Route>
+            {/* Admin Routes */}
+            <Route exact path="/admin" element={<AdminLayout />}>
+              <Route exact path="dashboard" element={<AdminDashboard />} />
+              <Route exact path="dashboard/exam" element={<ExamDashboard />} />
+              <Route exact path="create-exam" element={<CreateExam />} />
+            </Route>
+
             <Route path="*" element={<Error />} />
 
           </Routes>
 
           {/* Footer */}
-          <Footer/>
+          <Footer />
         </div>
       </BrowserRouter>
     </>

@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
         // Remove token from cookies
         document.cookie = "authToken=; path=/; max-age=0";
         // Navigate to /
-        window.location.href = '/'; 
+        window.location.href = '/';
     };
 
     // JWT Authentication - fetch current logged-in user data
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(true);
             const response = await fetch(`${API}/api/auth/current/user`, {
                 method: "GET",
-                credentials:"include",
+                credentials: "include",
                 headers: {
                     Authorization: authorizationToken,
                 },
@@ -76,8 +76,14 @@ export const AuthProvider = ({ children }) => {
             setIsLoading(false);
         }
     }, [token]);
+
+    useEffect(() => {
+        setIsAdmin(user?.isTeacher || user?.isHod || user?.isTnp);
+    }, [user]);
     console.log(user);
     
+
+
     return (
         <AuthContext.Provider
             value={{

@@ -16,14 +16,19 @@ import { useAuth } from "../../store/auth.jsx";
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { isLoggedIn, LogoutUser } = useAuth(); // Custom hook from AuthContext
+  const { isLoggedIn, LogoutUser,isAdmin } = useAuth(); // Custom hook from AuthContext
 
   const menuItems = [
     { name: "Home", to: "/" },
     ...(isLoggedIn
       ? [
-          { name: "Dashboard", to: `/dashboard` },
-
+          // { name: "Profile", to: `/edit-profile` },
+          ...(!isAdmin
+            ? [{ name: "Dashboard", to: `/user/dashboard` }]
+            : []),
+          ...(isAdmin
+            ? [{ name: "Dashboard", to: `/admin/dashboard` }]
+            : []),
           { name: "Help & Feedback", to: "/contact" },
           { name: "FAQ", to: "/faq" },
           { name: "Log Out", onClick: LogoutUser },
