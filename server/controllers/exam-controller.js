@@ -1,6 +1,7 @@
 // controllers/exam-controller.js
 const QuestionPaper = require('../database/models/question-paper-model');
-
+const Result = require('../database/models/result-model');
+const Cheat = require('../database/models/cheat-model');
 
 // Variables For Question Paper Broadcasting Logic
 
@@ -164,8 +165,9 @@ const startExamQue = async (req, res, io) => {
             return res.status(404).send(`Question paper "${title}" not found.`);
         }
 
+        const data = await QuestionPaper.findOne({ title, paperKey }).select("-questions");
         checkAndStartExam(io, paperKey);
-        res.send(`Exam with title "${title}" scheduled.`);
+        res.status(200).json(data);
     } catch (error) {
         console.error("Error starting exam:", error);
         res.status(500).send("An error occurred while starting the exam.");
@@ -186,9 +188,124 @@ const getExams = async (req, res, next) => {
     } catch (error) {
         // Handle any errors
         console.error(error);
+        next(error);
         res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+// ----------------
+// POST USER RESULT OF EACH QUESTION
+// -------------------
+
+const storeResult = async (req, res, next) => {
+    const { question, user, paperKey, points } = req.body;
+
+    try {
+        // Check if all required data (question, user, paperKey) is provided
+        if (!question || !user || !paperKey) {
+            return res.status(400).json({ message: 'Missing required data.' });
+        }
+
+        // Check if the result for this question, user, and paperKey already exists
+        const existingResult = await Result.findOne({ question, user, paperKey });
+
+        if (existingResult) {
+            // If a result already exists, respond with an appropriate message
+            return res.status(409).json({ message: 'You have already submitted this result.' });
+        }
+
+        // If no existing result is found, create a new result entry
+        const newResult = new Result({
+            question,
+            user,
+            paperKey,
+            points
+        });
+
+        await newResult.save();
+
+        // Respond with a success message
+        res.status(201).json({ message: 'Result submitted successfully.' });
+
+    } catch (error) {
+        // Catch and handle any errors
+        res.status(500).json({ message: 'Server error. Please try again later.', error });
+    }
+};
+
+
+// ----------------
+// POST TO STUDENT IS CHEATED
+// -------------------
+
+const postCheat = async (req, res, next) => {
+    const { user, paperKey } = req.body;
+
+    try {
+        // Validate required fields
+        if (!user || !paperKey) {
+            return res.status(400).json({ message: 'Missing required data.' });
+        }
+
+        // Check if a record for this user and paperKey already exists
+        let cheatRecord = await Cheat.findOne({ user, paperKey });
+
+        if (cheatRecord) {
+            // If a record exists, update `isCheat` to true
+            cheatRecord.isCheat = true;
+            await cheatRecord.save();
+            return res.status(200).json({ message: 'Cheat status updated successfully.' });
+        } else {
+            // If no record exists, create a new cheat record
+            const newCheatRecord = new Cheat({
+                user,
+                paperKey,
+                isCheat: true  // Setting isCheat to true directly on creation
+            });
+
+            await newCheatRecord.save();
+            return res.status(201).json({ message: 'Cheat status recorded successfully.' });
+        }
+    } catch (error) {
+        next(error);
+        // Error handling
+        res.status(500).json({ message: 'Server error. Please try again later.', error });
+    }
+};
+// ----------------
+// GET CHEAT STATUS BY USER AND PAPERKEY
+// -------------------
+
+const getCheatStatus = async (req, res, next) => {
+    const { user, paperKey } = req.params;
+
+    try {
+        // Validate required parameters
+        if (!user || !paperKey) {
+            return res.status(400).json({ message: 'Missing required parameters.' });
+        }
+
+        // Find the cheat record by user and paperKey
+        const cheatRecord = await Cheat.findOne({ user, paperKey });
+
+        if (cheatRecord) {
+            // Return the cheat status if the record exists
+            return res.status(200).json({
+                message: 'Cheat status found.',
+                isCheat: cheatRecord.isCheat
+            });
+        } else {
+            // If no record is found, indicate that no cheating is recorded
+            return res.status(404).json({ message: 'No cheat record found for this user and paper.' });
+        }
+    } catch (error) {
+        next(error);
+        // Error handling
+        res.status(500).json({ message: 'Server error. Please try again later.', error });
+    }
+};
+
+
 
 
 module.exports = {
@@ -197,4 +314,7 @@ module.exports = {
     handleSocketConnection,
     startExamQue,
     getExams,
+    storeResult,
+    postCheat,
+    getCheatStatus,
 };

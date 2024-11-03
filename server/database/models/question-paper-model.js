@@ -26,6 +26,10 @@ const questionSchema = new mongoose.Schema({
   image: {
     type: String,
   },
+  maxPoint: {
+    type: Number,
+    required: true
+  },
 });
 
 // Define the schema for the question paper

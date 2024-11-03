@@ -1,9 +1,9 @@
-import React, { useState, useEffect,useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaExpandAlt, FaCompress } from "react-icons/fa";
 import { IoWarningOutline } from "react-icons/io5";
 import { BiTimer } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import { useAuth } from "../../store/auth";
 import io from 'socket.io-client';
 
@@ -21,11 +21,14 @@ const ExamInterface = () => {
     const [isAnswerCorrect, setIsAnswerCorrect] = useState(null); // null = no answer yet
     const [remainingTime, setRemainingTime] = useState(0);
     const [questionIndex, setQuestionIndex] = useState(0);
-    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [currentQuestion, setCurrentQuestion] = useState(null);
     const [isExamEnded, setIsExamEnded] = useState(false); // Track if the exam has ended
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Question Paper Data Store
+    const [examData, setExamData] = useState(null);
+    const [isStarting, setIsStarting] = useState(true);
     // Getting Global state
     const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
 
@@ -34,6 +37,15 @@ const ExamInterface = () => {
 
     // Getting Parameter 
     const { id, title, paperKey } = useParams();
+
+    // if Paramter null or any value navigate to home
+    if (!id || !title || !paperKey) {
+        return <Navigate to="/" />
+    } else if (id === "undefined" || title === "undefined" || paperKey === "undefined") {
+        return <Navigate to="/" />
+    }
+
+
 
     // Creating Post Function To hit server for start exam
     useEffect(() => {
@@ -57,8 +69,8 @@ const ExamInterface = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                const text = await response.text(); // Get the raw response text
-                console.log('Raw response:', text); //
+                const data = await response.json(); // Get the raw response text
+                setExamData(data);
                 // Handle success response here (e.g., updating state)
             } catch (error) {
                 console.error('Error occurred while making POST request:', error);
@@ -70,6 +82,20 @@ const ExamInterface = () => {
 
         makePostFunction();
     }, [title, paperKey]); // Include title in dependency array
+
+
+    useEffect(() => {
+        const now = new Date();
+        const examStartTime = new Date(examData?.startTime);
+
+        if (now >= examStartTime) {
+            setIsStarting(false); // Exam has started
+        } else {
+            setIsStarting(true); // Exam has not started yet
+        }
+    }, [examData?.startTime]);
+
+
 
     // Socket Connection
     useEffect(() => {
@@ -161,16 +187,7 @@ const ExamInterface = () => {
         }
     };
 
-    // When new Question come 
-    //     setIsOptionLocked(false); // Unlock options for the new question
-    //     setIsAnswerCorrect(null);
-    //     setSelectedOption(null);
-    // const handleNextQuestion = () => {
-    //     setIsOptionLocked(false); // Unlock options for the new question
-    //     setIsAnswerCorrect(null);
-    //     setSelectedOption(null);
 
-    // };
 
 
     useEffect(() => {
@@ -196,8 +213,35 @@ const ExamInterface = () => {
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
+      // Function to format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
+
+  // Function to format the time
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+    return date.toLocaleTimeString('en-US', options);
+  };
+
+
+    if (isLoading) {
+        return <p>Loading exam...</p>
+    }
+
+    if (isStarting) {
+        return <p>Exam is sheduled at {formatDate(examData?.startTime) && formatDateTime(examData?.startTime) }...</p>
+    }
+
     if (isExamEnded) {
         return <p>Exam ended</p>;
+    }
+
+    if (currentQuestion === null) {
+        return <p>exam sheduled</p>
     }
 
     return (
@@ -216,7 +260,11 @@ const ExamInterface = () => {
                             Please refrain from switching tabs during the exam. This incident has been recorded.
                         </p>
                         <button
-                            onClick={() => setShowWarning(false)}
+                            onClick={() => {
+                                setShowWarning(false);
+                                console.log("exam cheated");
+                            }}
+
                             className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
                         >
                             Acknowledge
