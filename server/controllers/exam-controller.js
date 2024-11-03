@@ -198,11 +198,11 @@ const getExams = async (req, res, next) => {
 // -------------------
 
 const storeResult = async (req, res, next) => {
-    const { question, user, paperKey, points } = req.body;
+    const { question, user, paperKey, points, answer } = req.body;
 
     try {
         // Check if all required data (question, user, paperKey) is provided
-        if (!question || !user || !paperKey) {
+        if (!question || !user || !paperKey || !answer) {
             return res.status(400).json({ message: 'Missing required data.' });
         }
 
@@ -219,7 +219,8 @@ const storeResult = async (req, res, next) => {
             question,
             user,
             paperKey,
-            points
+            points,
+            answer
         });
 
         await newResult.save();
@@ -229,6 +230,7 @@ const storeResult = async (req, res, next) => {
 
     } catch (error) {
         // Catch and handle any errors
+        next(error);
         res.status(500).json({ message: 'Server error. Please try again later.', error });
     }
 };

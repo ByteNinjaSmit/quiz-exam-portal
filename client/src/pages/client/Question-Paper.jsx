@@ -181,7 +181,34 @@ const ExamInterface = () => {
             // const isCorrect = optionIndex === examQuestions[currentQuestion].correctAnswer;
             setIsAnswerCorrect(isCorrect);
             setSelectedOption(answer);
+            // log points what he earned based on time and if wrong then set point to zero
+            let earnedPoints = 0;
+            if (isCorrect) {
+                // Total time limit of the question
+                const totalTimeLimit = currentQuestion.timeLimit; // e.g., 30 seconds
+                const defaultPoints = 800; // Default points if currentQuestion.points is undefined
+                const pointsForCorrectAnswer = currentQuestion.points || defaultPoints; // Points for the question
 
+                // Calculate the earned points based on remaining time
+                const timeSegments = 20; // Number of segments
+                const segmentDuration = totalTimeLimit / timeSegments; // Duration of each segment
+                const maxPointsPercent = 100; // Maximum percentage of points
+
+                // Calculate the segment index based on remaining time
+                const segmentIndex = Math.max(0, Math.floor(remainingTime / segmentDuration));
+
+                // Determine the percentage of points based on the segment index
+                const percentagePoints = Math.min(maxPointsPercent, 5 + (segmentIndex * 5)); // Starting at 5% and increasing by 5% per segment
+
+                // Calculate the earned points
+                earnedPoints = (percentagePoints * pointsForCorrectAnswer) / maxPointsPercent;
+
+                // Log or save the points earned
+                // console.log(`Points earned: ${earnedPoints}`);
+            }
+
+            // Log or save the points earned
+            console.log(`Points earned: ${earnedPoints}`);
             // Lock options until timer reaches 0
             setIsOptionLocked(true);
         }
@@ -213,19 +240,19 @@ const ExamInterface = () => {
         return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-      // Function to format the date
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
-  };
+    // Function to format the date
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    };
 
-  // Function to format the time
-  const formatDateTime = (dateString) => {
-    const date = new Date(dateString);
-    const options = { hour: '2-digit', minute: '2-digit', hour12: true };
-    return date.toLocaleTimeString('en-US', options);
-  };
+    // Function to format the time
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const options = { hour: '2-digit', minute: '2-digit', hour12: true };
+        return date.toLocaleTimeString('en-US', options);
+    };
 
 
     if (isLoading) {
@@ -233,7 +260,7 @@ const ExamInterface = () => {
     }
 
     if (isStarting) {
-        return <p>Exam is sheduled at {formatDate(examData?.startTime) && formatDateTime(examData?.startTime) }...</p>
+        return <p>Exam is sheduled at {formatDate(examData?.startTime) && formatDateTime(examData?.startTime)}...</p>
     }
 
     if (isExamEnded) {

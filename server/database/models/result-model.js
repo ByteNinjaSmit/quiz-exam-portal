@@ -13,7 +13,10 @@ const resultSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-
+    answer:{
+        type:String,
+        required:true,
+    },
     paperKey: {
         type: String,
         required: true, // Make the paperKey mandatory
