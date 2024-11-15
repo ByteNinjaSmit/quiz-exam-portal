@@ -12,6 +12,7 @@ const cookieParser = require("cookie-parser");
 const authRoute = require("./router/auth-router");
 const questionRoute = require('./router/question-router');
 const examRoute = require('./router/exam-router');
+const devloperRoute = require('./router/developer-router');
 // Importing Middlewares
 const errorMiddleware = require("./middlewares/error-middleware");
 
@@ -49,6 +50,7 @@ app.get('/', (req, res) => {
 app.use("/api/auth", authRoute);
 app.use("/api/question",questionRoute(io));
 app.use("/api/exam",examRoute);
+app.use("/api/dev",devloperRoute);
 
 
 // Broadcasting Question Paper

@@ -332,18 +332,12 @@ const ExamInterface = () => {
                             {currentQuestion?.questionText}
                         </p>
 
-                        {/* For Showing Image */}
-
-                        {/* {examQuestions[currentQuestion]?.image && (
                             <img
-                                src={`https://${examQuestions[currentQuestion].image}`}
+                                src={`https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg_cDqOj8XqLkp227I_XXsBVXIVnCcsoyH-6PrvnpGyU2bSmmMucLa40aVSkryr0jzMOYC4pcp70Bi6-PVfDIBNi_MR6zOTfNseUoRrAiL1p3sXkROlgE2JBr5y50dxMesIFHnigBv9UUnW/s1600/Untitled.jpg`}
                                 alt="Question illustration"
-                                className="w-full h-80 object-cover rounded-lg mb-6"
-                                onError={(e) => {
-                                    e.target.src = "https://images.unsplash.com/photo-1516979187457-637abb4f9353";
-                                }}
+                                className="w-full h-100 object-cover rounded-lg mb-6"
+
                             />
-                        )} */}
                     </div>
 
                     {/* Options */}

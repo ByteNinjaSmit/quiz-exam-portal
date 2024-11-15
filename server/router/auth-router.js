@@ -10,7 +10,7 @@ router.route("/").get(authControllers.home);
 
 // Register
 router.route("/register").post(validate(signupSchema),authControllers.userRegister);
-router.route("/register/faculty").post(validate(signupSchema),authControllers.facultyRegister);
+router.route("/register/faculty").post(authControllers.facultyRegister);
 // Login  Of Student
 router.route("/login").post(validate(logininSchema),authControllers.userLogin);
 router.route("/login/faculty").post(validate(logininSchema),authControllers.facultyLogin);
