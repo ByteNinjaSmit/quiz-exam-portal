@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import './App.css'
 import MainNavbar from "./components/layout/navbar";
 import Footer from "./components/layout/Footer";
@@ -14,19 +14,37 @@ import ExamInterface from "./pages/client/Question-Paper";
 import { AdminLayout } from "./components/layout/Admin-Layout";
 import { UserLayout } from "./components/layout/User-Layout";
 
-const App = () => {
+// Deveoper Pages
+import DeveloperDashboard from "./pages/dev/Dashboard";
+import SeeAllUsers from "./pages/dev/All-Users";
+import DeveloperLogin from "./pages/dev/Login-Dev";
+import { DeveloperLayout } from "./components/layout/Developer-Layout";
+import SeeAllAdmins from "./pages/dev/All-Admins";
 
+
+
+
+const App = () => {
+  const location = useLocation();
+  const isDeveloperRoute = location.pathname.startsWith("/developer");
   return (
     <>
-      <BrowserRouter>
         <div className="app">
           {/* Navbar */}
-          <MainNavbar />
+          {!isDeveloperRoute && <MainNavbar />}
 
           {/* Routes */}
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/login" element={<LoginPage />} />
+
+            {/* Developer Routes */}
+            <Route path="/developer/login" element={<DeveloperLogin />} />
+            <Route exact path="/developer/dev" element={<DeveloperLayout />}>
+              <Route exact path="dashboard" element={<DeveloperDashboard />} />
+              <Route exact path="see-all-users" element={<SeeAllUsers />} />
+              <Route exact path="see-all-admins" element={<SeeAllAdmins />} />
+            </Route>
 
             {/* User Routes */}
             <Route exact path="/user" element={<UserLayout />} >
@@ -34,6 +52,8 @@ const App = () => {
               <Route exact path="dashboard" element={<Dashboard />} />
               <Route exact path="paper/:title/:paperKey/:id" element={<ExamInterface />} />
             </Route>
+
+
             {/* Admin Routes */}
             <Route exact path="/admin" element={<AdminLayout />}>
               <Route exact path="dashboard" element={<AdminDashboard />} />
@@ -46,11 +66,18 @@ const App = () => {
           </Routes>
 
           {/* Footer */}
-          <Footer />
+          {!isDeveloperRoute && <Footer />}
         </div>
-      </BrowserRouter>
     </>
   )
 }
 
-export default App
+const AppWrapper = () => {
+  return (
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  );
+};
+
+export default AppWrapper;

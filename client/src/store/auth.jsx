@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
     const [isTeacher, setIsTeacher] = useState(false);
     const [isHod, setIsHod] = useState(false);
     const [isTnp, setIsTnp] = useState(false);
+    const [isDeveloper, setIsDeveloper] = useState(false);
     const authorizationToken = `Bearer ${token}`;
     // const navigate = useNavigate();
 
@@ -42,6 +43,7 @@ export const AuthProvider = ({ children }) => {
         setToken(null);
         setUser(null);
         setIsAdmin(false);
+        setIsDeveloper(false);
         // Remove token from cookies
         document.cookie = "authToken=; path=/; max-age=0";
         toast.success(`Logout Successfully`);
@@ -68,6 +70,8 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json();
                 setUser(data.userData);
+                console.log(data.userData);
+                
             } else {
                 console.error("Error fetching user data");
             }
@@ -93,15 +97,21 @@ export const AuthProvider = ({ children }) => {
         setIsTeacher(false);
         setIsHod(false);
         setIsTnp(false);
-
+        setIsDeveloper(false);
+        console.log(user);
+        
         // Check and set roles based on the user object
         if (user) {
-            const { isTeacher, isHod, isTnp } = user;
+            const { isTeacher, isHod, isTnp,isDeveloper  } = user;
 
             setIsAdmin(isTeacher || isHod || isTnp); // Admin if any of the roles is true
             setIsTeacher(isTeacher || false);
             setIsHod(isHod || false);
             setIsTnp(isTnp || false);
+            setIsDeveloper(isDeveloper || false);
+            if(isDeveloper){
+                console.log(`This is Developer`);
+            }
         }
     }, [user]);
 
@@ -121,6 +131,7 @@ export const AuthProvider = ({ children }) => {
                 isTeacher,
                 isHod,
                 isTnp,
+                isDeveloper,
                 API,
             }}
         >

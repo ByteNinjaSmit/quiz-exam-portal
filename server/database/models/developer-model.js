@@ -19,6 +19,10 @@ const developerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    isDeveloper:{
+        type:Boolean,
+        default:true,
+    },
 });
 
 

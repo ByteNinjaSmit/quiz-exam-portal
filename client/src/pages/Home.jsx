@@ -2,8 +2,24 @@ import React, { useState } from "react";
 import { FaArrowRight, FaUserFriends, FaClock, FaBrain, FaPlayCircle, FaTrophy, FaChartLine, FaUserGraduate, FaQuestionCircle } from "react-icons/fa";
 import { BsLightningCharge, BsBarChart } from "react-icons/bs";
 import { BsArrowRight } from "react-icons/bs";
+import { useAuth } from "../store/auth";
+import { Navigate, useLocation } from "react-router-dom";
+
 const HomePage = () => {
+    const { isLoading, isDeveloper } = useAuth();
+    const location = useLocation();
     const [currentTestimonial, setCurrentTestimonial] = useState(0);
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center min-h-screen">
+          <h1>Loading ...........</h1>
+        </div>
+      );
+    }
+    if (isDeveloper && location.pathname === "/") {
+      return <Navigate to="/developer/dev/dashboard" />;
+    }
+   
 
     const features = [
         {

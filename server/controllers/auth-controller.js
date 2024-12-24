@@ -1,5 +1,6 @@
 require("dotenv").config();
 const User = require("../database/models/user-model");
+const Developer = require("../database/models/developer-model");
 const Faculty = require("../database/models/faculty-model");
 const jwt = require("jsonwebtoken");
 
@@ -168,7 +169,7 @@ const userLogin = async (req, res, next) => {
 const getCurrentUser = async (req, res) => {
     try {
         const token = req.cookies.authToken; // Retrieve token from cookies
-        
+
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided" });
         }
@@ -177,7 +178,7 @@ const getCurrentUser = async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
         const { userID, role } = decoded;
 
-        if (!role || (role !== "faculty" && role !== "student")) {
+        if (!role || (role !== "faculty" && role !== "student" && role !== "developer")) {
             return res.status(400).json({ message: "Invalid role specified" });
         }
 
@@ -188,6 +189,8 @@ const getCurrentUser = async (req, res) => {
             model = User; // Use User model for regular users
         } else if (role === "faculty") {
             model = Faculty; // Use Faculty model for admins or high-authority users
+        } else if (role === "developer") {
+            model = Developer; // Use Faculty model for admins or high-authority users
         } else {
             return res.status(401).json({ error: "Authentication token not found" });
         }

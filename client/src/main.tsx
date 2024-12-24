@@ -6,13 +6,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 
 import './index.css'
-import App from './App.jsx'
+import AppWrapper from './App.jsx'
 
 createRoot(document.getElementById('root')!).render(
   <AuthProvider>
     <StrictMode>
       <NextUIProvider>
-        <App />
+        <AppWrapper />
         <ToastContainer
               position="top-right"
               autoClose={2000}

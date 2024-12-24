@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../database/models/user-model");
 const Faculty = require("../database/models/faculty-model"); // Assuming Faculty model exists
+const Developer = require("../database/models/developer-model");
 
 const authMiddleware = async (req, res, next) => {
   const token = req.header("Authorization");
@@ -12,16 +13,24 @@ const authMiddleware = async (req, res, next) => {
 
   try {
     const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY);
-    const { username, role } = isVerified; // Assuming `role` is part of token payload
+    const { userID, role } = isVerified; // Assuming `role` is part of token payload
 
-    let userData;
 
-    // Search based on role
-    if (role === "faculty") {
-      userData = await Faculty.findOne({ username }).select({ password: 0 });
+    // Find the user based on role
+    let model;
+
+    if (role === "student") {
+      model = User; // Use User model for regular users
+    } else if (role === "faculty") {
+      model = Faculty; // Use Faculty model for admins or high-authority users
+    } else if (role === "developer") {
+      model = Developer; // Use Faculty model for admins or high-authority users
     } else {
-      userData = await User.findOne({ username }).select({ password: 0 });
+      return res.status(401).json({ error: "Authentication token not found" });
     }
+    const userData = await model
+      .findById({ _id: userID })
+      .select("-password");
 
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
