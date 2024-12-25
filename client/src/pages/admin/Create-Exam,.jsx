@@ -28,10 +28,6 @@ import { useAuth } from "../../store/auth";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 
-// Image Related Packages
-import FileBase64 from "react-file-base64";
-import Resizer from "react-image-file-resizer";
-
 const CreateExam = () => {
   const { API, authorizationToken } = useAuth();
   const navigate = useNavigate();
@@ -73,45 +69,6 @@ const CreateExam = () => {
 
   // For Image Resizing States
 
-  const handleFileChange = (file) => {
-    // Resize the image using react-image-file-resizer
-    Resizer.imageFileResizer(
-      file,
-      800, // width
-      800, // height
-      "JPEG", // output type (e.g., 'JPEG', 'PNG', 'WEBP')
-      100, // quality (from 0 to 100)
-      0, // rotation (0 is no rotation)
-      (resizedBase64) => {
-        // Update the currentQuestion state with the resized image
-        setCurrentQuestion((prevQuestion) => ({
-          ...prevQuestion,
-          image: resizedBase64,
-        }));
-      },
-      "base64" // output format (base64 string)
-    );
-  };
-
-  const handleEditFileChange = (file) => {
-    // Resize the image using react-image-file-resizer
-    Resizer.imageFileResizer(
-      file,
-      800, // width
-      800, // height
-      "JPEG", // output type (e.g., 'JPEG', 'PNG', 'WEBP')
-      100, // quality (from 0 to 100)
-      0, // rotation (0 is no rotation)
-      (resizedBase64) => {
-        // Update the currentQuestion state with the resized image
-        setEditCurrentQuestion((prevQuestion) => ({
-          ...prevQuestion,
-          image: resizedBase64,
-        }));
-      },
-      "base64" // output format (base64 string)
-    );
-  };
 
   const handleAddQuestion = () => {
     setShowQuestionEditor(true);
