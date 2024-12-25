@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const data = await response.json();
                 setUser(data.userData);
-                console.log(data.userData);
+                // console.log(data.userData);
                 
             } else {
                 console.error("Error fetching user data");
@@ -98,7 +98,6 @@ export const AuthProvider = ({ children }) => {
         setIsHod(false);
         setIsTnp(false);
         setIsDeveloper(false);
-        console.log(user);
         
         // Check and set roles based on the user object
         if (user) {

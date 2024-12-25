@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FiPlus, FiSearch, FiCalendar, FiEdit2, FiTrash2, FiEye, FiBell } from "react-icons/fi";
 import AdminSidebar from "../../components/sidebar";
 import { useAuth } from "../../store/auth";
+import { Link } from "react-router-dom";
+
 
 const ExamDashboard = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -132,10 +134,12 @@ const ExamDashboard = () => {
                 </header>
                 <div className="flex justify-between items-center mb-1 p-6">
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Management</h1>
+                    <Link to={`/admin/create-exam`}>
                     <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">
                         <FiPlus className="mr-2" />
                         Add New Exam
                     </button>
+                    </Link>
                 </div>
 
                 {/* Search and Filters Section */}

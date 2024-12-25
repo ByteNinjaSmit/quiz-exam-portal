@@ -43,12 +43,24 @@ const questionPaperSchema = new mongoose.Schema({
     required: true,
   },
   questions: [questionSchema], // Array of questions
+  isQuiz:{
+    type:Boolean,
+    default:false,
+  },
+  isFastQuiz:{
+    type:Boolean,
+    default:false,
+  },
+  isPublished:{
+    type:Boolean,
+    default:false,
+  },
   startTime: {
-    type: Date,
+    type: String,
     required: true, // Ensure a start time is set
   },
   endTime: {
-    type: Date,
+    type: String,
     required: true, // Ensure an end time is set
   },
   paperKey: {

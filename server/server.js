@@ -7,6 +7,7 @@ const connectToDatabase = require('./database/db');
 const { Server } = require('socket.io');
 const http = require("http");
 const cookieParser = require("cookie-parser");
+const path = require('path');
 
 // Importing Router
 const authRoute = require("./router/auth-router");
@@ -46,6 +47,11 @@ app.use(errorMiddleware);
 app.get('/', (req, res) => {
     res.send('Welcome to the API');
 });
+
+// Make UploadFolder Static
+// Serve static files from the uploads folder
+app.use('/database/uploads', express.static(path.join(__dirname, '/database/uploads')));
+
 
 app.use("/api/auth", authRoute);
 app.use("/api/question",questionRoute(io));

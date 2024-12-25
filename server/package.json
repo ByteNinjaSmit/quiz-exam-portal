@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +23,7 @@
     "mongoose": "^8.7.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7",
     "sharp": "^0.33.5",
     "socket.io": "^4.8.1",
     "zod": "^3.23.8"

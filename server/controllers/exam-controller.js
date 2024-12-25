@@ -1,7 +1,7 @@
 // controllers/exam-controller.js
-const QuestionPaper = require('../database/models/question-paper-model');
-const Result = require('../database/models/result-model');
-const Cheat = require('../database/models/cheat-model');
+const QuestionPaper = require("../database/models/question-paper-model");
+const Result = require("../database/models/result-model");
+const Cheat = require("../database/models/cheat-model");
 
 // Variables For Question Paper Broadcasting Logic
 
@@ -9,7 +9,6 @@ let examStartTime;
 let examEndTime;
 let currentQuestionIndex = 0;
 let questionPaper = null;
-
 
 // Load the question paper from the database
 async function loadQuestionPaper(title, paperKey) {
@@ -62,10 +61,15 @@ async function broadcastCurrentQuestion(io, paperKey) {
     const cumulativeTime = questionPaper.questions
         .slice(0, currentQuestionIndex)
         .reduce((total, q) => total + q.timeLimit, 0);
-    const timeSpentOnCurrentQuestion = (currentTime - examStartTime) / 1000 - cumulativeTime;
-    const remainingTime = (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
+    const timeSpentOnCurrentQuestion =
+        (currentTime - examStartTime) / 1000 - cumulativeTime;
+    const remainingTime =
+        (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
 
-    console.log(`Broadcasting Question ${currentQuestionIndex + 1}:`, currentQuestion.questionText);
+    console.log(
+        `Broadcasting Question ${currentQuestionIndex + 1}:`,
+        currentQuestion.questionText
+    );
 
     io.to(paperKey).emit("question", {
         question: currentQuestion,
@@ -109,7 +113,9 @@ function handleSocketConnection(io, loadQuestionPaper, checkAndStartExam) {
 
         socket.on("loadExam", async ({ title, paperKey }) => {
             if (!title || !paperKey) {
-                socket.emit("error", { message: "Exam title and paperKey is required." });
+                socket.emit("error", {
+                    message: "Exam title and paperKey is required.",
+                });
                 return;
             }
 
@@ -138,8 +144,10 @@ function handleSocketConnection(io, loadQuestionPaper, checkAndStartExam) {
                 const cumulativeTime = questionPaper.questions
                     .slice(0, currentQuestionIndex)
                     .reduce((total, q) => total + q.timeLimit, 0);
-                const timeSpentOnCurrentQuestion = (currentTime - examStartTime) / 1000 - cumulativeTime;
-                const remainingTime = (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
+                const timeSpentOnCurrentQuestion =
+                    (currentTime - examStartTime) / 1000 - cumulativeTime;
+                const remainingTime =
+                    (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
 
                 io.to(paperKey).emit("question", {
                     question: currentQuestion,
@@ -165,7 +173,9 @@ const startExamQue = async (req, res, io) => {
             return res.status(404).send(`Question paper "${title}" not found.`);
         }
 
-        const data = await QuestionPaper.findOne({ title, paperKey }).select("-questions");
+        const data = await QuestionPaper.findOne({ title, paperKey }).select(
+            "-questions"
+        );
         checkAndStartExam(io, paperKey);
         res.status(200).json(data);
     } catch (error) {
@@ -174,14 +184,13 @@ const startExamQue = async (req, res, io) => {
     }
 };
 
-
 // To show Exam All
 const getExams = async (req, res, next) => {
     try {
         // Fetch exams without the questions
         const exams = await QuestionPaper.find()
-            .select('-questions') // Use -questions to exclude it from the result
-            .sort({ createdAt: -1 });  // Use -questions to exclude it from the result
+            .select("-questions") // Use -questions to exclude it from the result
+            .sort({ createdAt: -1 }); // Use -questions to exclude it from the result
 
         // Send the exams data back to the client
         res.status(200).json(exams);
@@ -189,7 +198,7 @@ const getExams = async (req, res, next) => {
         // Handle any errors
         console.error(error);
         next(error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 
@@ -203,7 +212,7 @@ const storeResult = async (req, res, next) => {
     try {
         // Check if all required data (question, user, paperKey) is provided
         if (!question || !user || !paperKey || !answer) {
-            return res.status(400).json({ message: 'Missing required data.' });
+            return res.status(400).json({ message: "Missing required data." });
         }
 
         // Check if the result for this question, user, and paperKey already exists
@@ -211,7 +220,9 @@ const storeResult = async (req, res, next) => {
 
         if (existingResult) {
             // If a result already exists, respond with an appropriate message
-            return res.status(409).json({ message: 'You have already submitted this result.' });
+            return res
+                .status(409)
+                .json({ message: "You have already submitted this result." });
         }
 
         // If no existing result is found, create a new result entry
@@ -220,21 +231,21 @@ const storeResult = async (req, res, next) => {
             user,
             paperKey,
             points,
-            answer
+            answer,
         });
 
         await newResult.save();
 
         // Respond with a success message
-        res.status(201).json({ message: 'Result submitted successfully.' });
-
+        res.status(201).json({ message: "Result submitted successfully." });
     } catch (error) {
         // Catch and handle any errors
         next(error);
-        res.status(500).json({ message: 'Server error. Please try again later.', error });
+        res
+            .status(500)
+            .json({ message: "Server error. Please try again later.", error });
     }
 };
-
 
 // ----------------
 // POST TO STUDENT IS CHEATED
@@ -246,7 +257,7 @@ const postCheat = async (req, res, next) => {
     try {
         // Validate required fields
         if (!user || !paperKey) {
-            return res.status(400).json({ message: 'Missing required data.' });
+            return res.status(400).json({ message: "Missing required data." });
         }
 
         // Check if a record for this user and paperKey already exists
@@ -256,22 +267,28 @@ const postCheat = async (req, res, next) => {
             // If a record exists, update `isCheat` to true
             cheatRecord.isCheat = true;
             await cheatRecord.save();
-            return res.status(200).json({ message: 'Cheat status updated successfully.' });
+            return res
+                .status(200)
+                .json({ message: "Cheat status updated successfully." });
         } else {
             // If no record exists, create a new cheat record
             const newCheatRecord = new Cheat({
                 user,
                 paperKey,
-                isCheat: true  // Setting isCheat to true directly on creation
+                isCheat: true, // Setting isCheat to true directly on creation
             });
 
             await newCheatRecord.save();
-            return res.status(201).json({ message: 'Cheat status recorded successfully.' });
+            return res
+                .status(201)
+                .json({ message: "Cheat status recorded successfully." });
         }
     } catch (error) {
         next(error);
         // Error handling
-        res.status(500).json({ message: 'Server error. Please try again later.', error });
+        res
+            .status(500)
+            .json({ message: "Server error. Please try again later.", error });
     }
 };
 // ----------------
@@ -284,7 +301,7 @@ const getCheatStatus = async (req, res, next) => {
     try {
         // Validate required parameters
         if (!user || !paperKey) {
-            return res.status(400).json({ message: 'Missing required parameters.' });
+            return res.status(400).json({ message: "Missing required parameters." });
         }
 
         // Find the cheat record by user and paperKey
@@ -293,20 +310,132 @@ const getCheatStatus = async (req, res, next) => {
         if (cheatRecord) {
             // Return the cheat status if the record exists
             return res.status(200).json({
-                message: 'Cheat status found.',
-                isCheat: cheatRecord.isCheat
+                message: "Cheat status found.",
+                isCheat: cheatRecord.isCheat,
             });
         } else {
             // If no record is found, indicate that no cheating is recorded
-            return res.status(404).json({ message: 'No cheat record found for this user and paper.' });
+            return res
+                .status(404)
+                .json({ message: "No cheat record found for this user and paper." });
         }
     } catch (error) {
         next(error);
         // Error handling
-        res.status(500).json({ message: 'Server error. Please try again later.', error });
+        res
+            .status(500)
+            .json({ message: "Server error. Please try again later.", error });
     }
 };
 
+const newExam = async (req, res, next) => {
+    console.log('Files:', req.files);
+    console.log('Body:', req.body);
+
+    const {
+        isQuiz,
+        isFastQuiz,
+        isPublished,
+        classyear,
+        startTime,
+        endTime,
+        questions,
+        paperKey,
+        title,
+    } = req.body;
+
+    try {
+        // Check required fields
+        if (typeof isQuiz === "undefined") {
+            return res.status(400).json({ message: "isQuiz is required." });
+        }
+        if (typeof isFastQuiz === "undefined") {
+            return res.status(400).json({ message: "isFastQuiz is required." });
+        }
+        if (typeof isPublished === "undefined") {
+            return res.status(400).json({ message: "isPublished is required." });
+        }
+        if (!classyear) {
+            return res.status(400).json({ message: "Class year is required." });
+        }
+        if (!startTime || !endTime) {
+            return res.status(400).json({ message: "Start time and End time are required." });
+        }
+        if (!questions) {
+            return res.status(400).json({ message: "Questions are required." });
+        }
+
+        // Parse the questions if it's a string
+        let parsedQuestions = [];
+        try {
+            parsedQuestions = JSON.parse(questions); // Parse questions if it's a string
+        } catch (error) {
+            return res.status(400).json({ message: "Invalid questions format." });
+        }
+
+        // Ensure questions is an array
+        if (!Array.isArray(parsedQuestions)) {
+            return res.status(400).json({ message: "Questions must be an array." });
+        }
+
+        if (!paperKey) {
+            return res.status(400).json({ message: "Paper key is required." });
+        }
+        if (!title) {
+            return res.status(400).json({ message: "Title is required." });
+        }
+
+        // Check if the exam already exists
+        const existingExam = await QuestionPaper.findOne({ paperKey });
+        if (existingExam) {
+            return res.status(400).json({ message: "Exam already exists." });
+        }
+
+        // Log the parsed questions for debugging
+        console.log('Parsed Questions:', parsedQuestions);
+
+        // Map the questions to include the uploaded image
+        const uploadedFiles = req.files;
+        const updatedQuestions = parsedQuestions.map((question, index) => {
+            let i = 0
+            // If an image exists for the current question, set the image field
+            if (question.image === null) {
+                question.image = null;
+            }
+            if (question.image !== null) {
+                if(i<uploadedFiles.length){
+                    question.image = `/database/uploads/${uploadedFiles[i].filename}`;
+                    i++;
+                }
+            } else {
+                question.image = null;
+            }
+            return question;
+        });
+
+        console.log('Updated Questions:', updatedQuestions);
+
+        // Create and save the new exam
+        const newQuestionPaper = new QuestionPaper({
+            isQuiz,
+            isFastQuiz,
+            isPublished,
+            classyear,
+            startTime,
+            endTime,
+            questions: updatedQuestions,
+            paperKey,
+            title,
+        });
+
+        await newQuestionPaper.save();
+
+        return res.status(201).json({ message: "New exam created successfully!" });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
 
 
 
@@ -319,4 +448,5 @@ module.exports = {
     storeResult,
     postCheat,
     getCheatStatus,
+    newExam,
 };
