@@ -3,11 +3,14 @@ import { FaExpandAlt, FaCompress } from "react-icons/fa";
 import { IoWarningOutline } from "react-icons/io5";
 import { BiTimer } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate,useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import io from "socket.io-client";
-
+import axios from "axios";
+import { toast } from "react-toastify";
 const ExamInterface = () => {
+  const navigate = useNavigate();
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [isOptionLocked, setIsOptionLocked] = useState(false);
   const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
@@ -16,6 +19,15 @@ const ExamInterface = () => {
   const [isTabActive, setIsTabActive] = useState(true);
   const [timer, setTimer] = useState(30);
   const [isLocked, setIsLocked] = useState(false);
+
+  //  Make State For Option Selection Manually for Store
+  const [optionSelected, setOptionSelected] = useState(null);
+  const [isSubmitActive, setIsSubmitActive] = useState(false);
+
+
+  // For Is Cheated or Not with First And Second Warning
+  const [isCheated, setIsCheated] = useState(false);
+
 
   // Socket Io states
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null); // null = no answer yet
@@ -110,6 +122,7 @@ const ExamInterface = () => {
         setIsAnswerCorrect(null); // Reset answer state on new question
 
         // Reset the option selection state for the new question
+        setIsSubmitActive(false);
         setIsOptionLocked(false); // Unlock options for the new question
         setSelectedOption(null); // Reset the selected option
       }
@@ -169,52 +182,259 @@ const ExamInterface = () => {
     }
   };
 
-  // Handle option selection and display feedback color based on answer correctness
-  const handleOptionSelect = (answer) => {
-    if (!isOptionLocked && currentQuestion) {
-      const isCorrect = currentQuestion.options.some(
-        (option) => option.optionText === answer && option.isCorrect
+  // Handle CheatFunction
+  const handleCheatFunction = async (e) => {
+    e.preventDefault();
+
+    const cheatData = {
+      user: user._id, // Replace with the actual user ID from your application state
+      paperKey: paperKey, // Replace with the actual paper key from your application state
+    };
+
+    try {
+      const response = await axios.post(
+        `${API}/api/exam/set/cheat`, // Endpoint URL
+        cheatData,
+        {
+          headers: {
+            Authorization: authorizationToken, // Replace with the actual token
+            "Content-Type": "application/json",
+          },
+          withCredentials: true, // Ensures cookies are sent with the request (if needed)
+          credentials: "include",
+        }
       );
-      // const isCorrect = optionIndex === examQuestions[currentQuestion].correctAnswer;
-      setIsAnswerCorrect(isCorrect);
-      setSelectedOption(answer);
-      // log points what he earned based on time and if wrong then set point to zero
-      let earnedPoints = 0;
-      if (isCorrect) {
-        // Total time limit of the question
-        const totalTimeLimit = currentQuestion.timeLimit; // e.g., 30 seconds
-        const defaultPoints = 800; // Default points if currentQuestion.points is undefined
-        const pointsForCorrectAnswer = currentQuestion.points || defaultPoints; // Points for the question
 
-        // Calculate the earned points based on remaining time
-        const timeSegments = 20; // Number of segments
-        const segmentDuration = totalTimeLimit / timeSegments; // Duration of each segment
-        const maxPointsPercent = 100; // Maximum percentage of points
-
-        // Calculate the segment index based on remaining time
-        const segmentIndex = Math.max(
-          0,
-          Math.floor(remainingTime / segmentDuration)
-        );
-
-        // Determine the percentage of points based on the segment index
-        const percentagePoints = Math.min(
-          maxPointsPercent,
-          5 + segmentIndex * 5
-        ); // Starting at 5% and increasing by 5% per segment
-
-        // Calculate the earned points
-        earnedPoints =
-          (percentagePoints * pointsForCorrectAnswer) / maxPointsPercent;
-
-        // Log or save the points earned
-        // console.log(`Points earned: ${earnedPoints}`);
+      // Handle success response
+      if (response.status === 200 || response.status === 201) {
+        GetIsCheated()
+      } else {
+        toast.error(response.data.message); // Display error message if not 200/201
       }
 
-      // Log or save the points earned
-      console.log(`Points earned: ${earnedPoints}`);
-      // Lock options until timer reaches 0
-      setIsOptionLocked(true);
+    } catch (error) {
+      // Handle errors
+      if (error.response) {
+        toast.error(error.response.data.message || "An error occurred while submitting.");
+      } else if (error.request) {
+        toast.error("No response received from the server.");
+      } else {
+        toast.error("An error occurred while setting up the request.");
+      }
+    }
+  };
+
+
+  const GetIsCheated = async () => {
+    try {
+      // Assuming `user._id` and `paperKey` are available from your app state or context
+      const userId = user._id;
+      const PaperKey = paperKey;
+  
+      // Make GET request to check cheat status
+      const response = await axios.get(
+        `${API}/api/exam/cheat-status/${userId}/${PaperKey}`,
+        {
+          headers: {
+            Authorization: authorizationToken, // Include the auth token
+          },
+          withCredentials: true, // Ensures cookies are sent with the request (if needed)
+          credentials: "include",
+
+        }
+      );
+  
+      // Handle success response
+      if (response.status === 200) {
+        const { isCheat } = response.data;
+  
+        // If isCheat is true, update state and navigate to dashboard
+        if (isCheat) {
+          setIsCheated(true);
+          toast.warning("You Cheated Exam Go OUT");
+          navigate("/user/dashboard"); // Navigate to dashboard
+        } else {
+          setIsCheated(false); // Set false if not cheated
+        }
+      } else {
+        // Handle non-200 responses
+        console.log(response.data.message);
+      }
+    } catch (error) {
+      console.error(`Error occurred while getting cheat status: ${error}`);
+      // Handle error: You can show a toast or any other user feedback
+    }
+  };
+  useEffect(() => {
+    GetIsCheated();
+  }, []);
+
+  // HANDLE FOR SUBMITING MANNUALY IF NOT FAST QUIZ
+  const handleSubmitMannual = async (e) => {
+    e.preventDefault();
+
+    if (!examData.isFastQuiz && currentQuestion) {
+
+
+      console.log("Answer submitted:", selectedOption);
+      // Additional submission logic here (e.g., saving points or answer)
+      if (!isOptionLocked && currentQuestion) {
+        const isCorrect = currentQuestion.options.some(
+          (option) => option.optionText === selectedOption && option.isCorrect
+        );
+        setIsAnswerCorrect(isCorrect);
+        let final_point = 0;
+        if (isCorrect) {
+          const defaultPoints = 1000; // default point for Mannual Quiz
+          const pointsForCorrectAnswer =
+            currentQuestion.maxPoint || defaultPoints;
+          console.log(`Answer is correct ${pointsForCorrectAnswer}`);
+          final_point = pointsForCorrectAnswer;
+        }
+        if (!isCorrect) {
+          const defaultPoints = 0; // default point for Mannual Quiz
+          const pointsForIncorrectAnswer = defaultPoints;
+          console.log(`Answer is Incorrect ${pointsForIncorrectAnswer}`);
+          final_point = pointsForIncorrectAnswer;
+        }
+
+        try {
+          // Axios POST request to store the answer
+          const response = await axios.post(
+            `${API}/api/exam/set/result`,
+            {
+              question: currentQuestion.questionText, // Question text or ID
+              answer: selectedOption, // Selected answer
+              points: final_point, // Points earned
+              paperKey: paperKey, // Paper key for identification
+              user: user._id, // User ID
+            },
+            {
+              headers: {
+                Authorization: authorizationToken, // Replace 'userToken' with the token variable
+                "Content-Type": "application/json", // Specify JSON content type
+              },
+              withCredentials: true, // Ensures cookies are sent with the request (if needed)
+              credentials: "include",
+            }
+          );
+          const data = response.data; // Directly access response data
+
+          if (response.status !== 201) {
+            toast.error(data.message || "An unexpected error occurred.");
+          } else {
+            toast.success(data.message || "Submission successful!");
+            setIsSubmitActive(true);
+            setIsOptionLocked(true); // Lock all options after submission
+          }
+        } catch (error) {
+          // Handle errors
+          if (error.response) {
+            toast.error(error.response.data.message || "An error occurred while submitting.");
+          } else if (error.request) {
+            toast.error("No response received from the server.");
+          } else {
+            toast.error("An error occurred while setting up the request.");
+          }
+        }
+      }
+    }
+  };
+
+  // Handle option selection and display feedback color based on answer correctness
+  const handleOptionSelect = async (answer) => {
+    if (!examData.isFastQuiz) {
+      setSelectedOption(answer); // Allow users to change their selection before submission
+      setIsAnswerCorrect(false); // Reset correctness state
+      setIsOptionLocked(false);
+    }
+
+    if (examData.isFastQuiz) {
+      if (!isOptionLocked && currentQuestion) {
+        const isCorrect = currentQuestion.options.some(
+          (option) => option.optionText === answer && option.isCorrect
+        );
+        // const isCorrect = optionIndex === examQuestions[currentQuestion].correctAnswer;
+        setIsAnswerCorrect(isCorrect);
+        setSelectedOption(answer);
+        // log points what he earned based on time and if wrong then set point to zero
+        let earnedPoints = 0;
+        if (isCorrect) {
+          // Total time limit of the question
+          const totalTimeLimit = currentQuestion.timeLimit; // e.g., 30 seconds
+          const defaultPoints = 800; // Default points if currentQuestion.points is undefined
+          const pointsForCorrectAnswer =
+            currentQuestion.maxPoint || defaultPoints; // Points for the question
+
+          // Calculate the earned points based on remaining time
+          const timeSegments = 20; // Number of segments
+          const segmentDuration = totalTimeLimit / timeSegments; // Duration of each segment
+          const maxPointsPercent = 100; // Maximum percentage of points
+
+          // Calculate the segment index based on remaining time
+          const segmentIndex = Math.max(
+            0,
+            Math.floor(remainingTime / segmentDuration)
+          );
+
+          // Determine the percentage of points based on the segment index
+          const percentagePoints = Math.min(
+            maxPointsPercent,
+            5 + segmentIndex * 5
+          ); // Starting at 5% and increasing by 5% per segment
+
+          // Calculate the earned points
+          earnedPoints =
+            (percentagePoints * pointsForCorrectAnswer) / maxPointsPercent;
+
+          // Log or save the points earned
+          // console.log(`Points earned: ${earnedPoints}`);
+        }
+
+        // Log or save the points earned
+        console.log(`Points earned: ${earnedPoints}`);
+        // Lock options until timer reaches 0
+
+        try {
+          // Axios POST request to store the answer
+          const response = await axios.post(
+            `${API}/api/exam/set/result`,
+            {
+              question: currentQuestion.questionText, // Question text or ID
+              answer: answer, // Selected answer
+              points: earnedPoints, // Points earned
+              paperKey: paperKey, // Paper key for identification
+              user: user._id, // User ID
+            },
+            {
+              headers: {
+                Authorization: authorizationToken, // Replace 'userToken' with the token variable
+                "Content-Type": "application/json", // Specify JSON content type
+              },
+              withCredentials: true, // Ensures cookies are sent with the request (if needed)
+              credentials: "include",
+            }
+          );
+          const data = response.data; // Directly access response data
+
+          if (response.status !== 201) {
+            toast.error(data.message || "An unexpected error occurred.");
+          } else {
+            toast.success(data.message || "Submission successful!");
+            setIsOptionLocked(true); // Lock all options after submission
+          }
+        } catch (error) {
+          // Handle errors
+          if (error.response) {
+            toast.error(error.response.data.message || "An error occurred while submitting.");
+            setIsOptionLocked(true);
+          } else if (error.request) {
+            toast.error("No response received from the server.");
+          } else {
+            toast.error("An error occurred while setting up the request.");
+          }
+        }
+      }
     }
   };
 
@@ -294,9 +514,10 @@ const ExamInterface = () => {
               has been recorded.
             </p>
             <button
-              onClick={() => {
+              onClick={(e) => {
                 setShowWarning(false);
                 console.log("exam cheated");
+                handleCheatFunction(e); // this is function
               }}
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
             >
@@ -346,22 +567,22 @@ const ExamInterface = () => {
 
             {currentQuestion.image !== null && (
               <div className="my-4">
-              <img
-                src={`${API}${currentQuestion.image}`}
-                alt="Question Illustration"
-                className="w-full h-auto rounded-lg border object-cover p-6 border-gray-200 shadow-md"
-              />
-            </div>
+                <img
+                  src={`${API}${currentQuestion.image}`}
+                  alt="Question Illustration"
+                  className="w-full h-auto rounded-lg border object-cover p-6 border-gray-200 shadow-md"
+                />
+              </div>
             )}
           </div>
 
           {/* Options */}
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             {currentQuestion?.options?.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleOptionSelect(option.optionText)}
-                disabled={isOptionLocked}
+                disabled={examData.isFastQuiz && isOptionLocked}
                 className={`w-full p-4 text-left rounded-lg transition-colors ${
                   selectedOption === option.optionText
                     ? isAnswerCorrect
@@ -373,7 +594,44 @@ const ExamInterface = () => {
                 {option.optionText}
               </button>
             ))}
+          </div> */}
+          <div className="space-y-4">
+            {currentQuestion?.options?.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleOptionSelect(option.optionText)}
+                disabled={isOptionLocked} // Lock only for fast quizzes after selection
+                className={`w-full p-4 text-left rounded-lg transition-colors ${selectedOption === option.optionText
+                  ? "bg-gray-400 text-white" // Highlight selected option in gray
+                  : "bg-gray-100 hover:bg-gray-200"
+                  } ${isOptionLocked ||
+                    (!examData.isFastQuiz &&
+                      isOptionLocked &&
+                      selectedOption !== option.optionText)
+                    ? "cursor-not-allowed opacity-75"
+                    : ""
+                  }`}
+              >
+                {option.optionText}
+              </button>
+            ))}
           </div>
+
+          {/* Submit Answer Button */}
+          {!examData.isFastQuiz && (
+            <div className="mt-6 text-center">
+              <button
+                onClick={handleSubmitMannual}
+                disabled={!selectedOption || isOptionLocked || isSubmitActive} // Disable if no option selected or already submitted
+                className={`px-6 py-3 rounded-lg text-white font-medium transition-colors ${!selectedOption || isOptionLocked || isSubmitActive
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+                  }`}
+              >
+                Submit Answer
+              </button>
+            </div>
+          )}
 
           {/* Question Time Left Bar */}
           <p className="mt-5 text-xs">Question Time Left:</p>
@@ -394,7 +652,7 @@ const ExamInterface = () => {
                                 width: `${((currentQuestion + 1) / examQuestions.length) * 100}%`,
                             }}
                         ></div>
-                    </div> */}
+          </div> */}
         </div>
       </div>
     </div>

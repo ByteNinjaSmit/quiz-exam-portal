@@ -217,7 +217,7 @@ const CreateExam = () => {
       // Append non-file fields
       formData.append("isQuiz", isQuiz);
       formData.append("isFastQuiz", isFastQuiz);
-      formData.append("isPublished", isPublished);
+      formData.append("isPublished", isPublished=true);
       formData.append("classyear", examData.classYear);
       formData.append(
         "startTime",
@@ -240,7 +240,71 @@ const CreateExam = () => {
         }
     });
 
+      const response = await axios.post(
+        `${API}/api/exam/new-exam`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: authorizationToken,
+          },
+          withCredentials: true, // Ensures cookies are sent with the request (if needed)
+          credentials: "include",
+          onUploadProgress: (progressEvent) => {
+            const percentage = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setProgress(percentage); // Update progress state
+          },
+        }
+      );
+      const data = await response.data;
+      if (response.status !== 201) {
+        toast.error(data.message);
+        setProgress(0);
+      }
+      if (response.status === 201) {
+        toast.success(data.message);
+        setProgress(0);
+        navigate("/admin/dashboard");
+      }
+    } catch (error) {
+      setProgress(0);
+      console.error(error);
+      toast.error("An error occurred during the exam creation.");
+    }
+  };
 
+  // handeling save as draft
+  const handleSaveDraft = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      // Append non-file fields
+      formData.append("isQuiz", isQuiz);
+      formData.append("isFastQuiz", isFastQuiz);
+      formData.append("isPublished", isPublished=false);
+      formData.append("classyear", examData.classYear);
+      formData.append(
+        "startTime",
+        convertToISTAndFormatForMongo(examData.startTime)
+      );
+      formData.append(
+        "endTime",
+        convertToISTAndFormatForMongo(examData.endTime)
+      );
+      formData.append("paperKey", examData.paperKey);
+      formData.append("title", examData.title);
+
+      // Append questions as a JSON string
+      formData.append("questions", JSON.stringify(examData.questions));
+
+      // Append file uploads (if any)
+      examData.questions.forEach((question, index) => {
+        if (question.image && question.image instanceof File) {
+            formData.append('files', question.image); // Append each file
+        }
+    });
 
       const response = await axios.post(
         `${API}/api/exam/new-exam`,
@@ -882,7 +946,7 @@ const CreateExam = () => {
             className="px-6 py-3 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors flex items-center"
             onClick={(e) => {
               setIsPublished(false);
-              handleSubmit(e);
+              handleSaveDraft(e);
             }}
           >
             <FaDraft2Digital className="mr-2" /> Save as Draft

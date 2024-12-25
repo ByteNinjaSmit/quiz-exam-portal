@@ -6,6 +6,10 @@ const cheatSchema = new mongoose.Schema({
         ref: 'User',
         required:true,
     },
+    isWarning:{
+        type:Boolean,
+        default:false
+    },
     isCheat:{
         type:Boolean,
         default:false,

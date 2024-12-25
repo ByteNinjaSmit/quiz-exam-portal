@@ -221,8 +221,8 @@ const storeResult = async (req, res, next) => {
         if (existingResult) {
             // If a result already exists, respond with an appropriate message
             return res
-                .status(409)
-                .json({ message: "You have already submitted this result." });
+                .status(400)
+                .json({ message: "You have already submitted Answer." });
         }
 
         // If no existing result is found, create a new result entry
@@ -237,7 +237,7 @@ const storeResult = async (req, res, next) => {
         await newResult.save();
 
         // Respond with a success message
-        res.status(201).json({ message: "Result submitted successfully." });
+        res.status(201).json({ message: "Answer submitted successfully." });
     } catch (error) {
         // Catch and handle any errors
         next(error);
@@ -264,18 +264,28 @@ const postCheat = async (req, res, next) => {
         let cheatRecord = await Cheat.findOne({ user, paperKey });
 
         if (cheatRecord) {
-            // If a record exists, update `isCheat` to true
-            cheatRecord.isCheat = true;
-            await cheatRecord.save();
-            return res
-                .status(200)
-                .json({ message: "Cheat status updated successfully." });
+            // If record exists, check if `isWarning` is true
+            if (cheatRecord.isWarning) {
+                // If `isWarning` is true, update `isCheat` to true
+                cheatRecord.isCheat = true;
+                await cheatRecord.save();
+                return res
+                    .status(200)
+                    .json({ message: "Cheat status updated successfully." });
+            } else {
+                // If `isWarning` is false, set `isWarning` to true
+                cheatRecord.isWarning = true;
+                await cheatRecord.save();
+                return res
+                    .status(200)
+                    .json({ message: "Warning status set successfully." });
+            }
         } else {
-            // If no record exists, create a new cheat record
+            // If no record exists, create a new record with `isWarning` true
             const newCheatRecord = new Cheat({
                 user,
                 paperKey,
-                isCheat: true, // Setting isCheat to true directly on creation
+                isWarning: true, // Setting `isWarning` to true on creation
             });
 
             await newCheatRecord.save();
@@ -285,10 +295,6 @@ const postCheat = async (req, res, next) => {
         }
     } catch (error) {
         next(error);
-        // Error handling
-        res
-            .status(500)
-            .json({ message: "Server error. Please try again later.", error });
     }
 };
 // ----------------
@@ -329,8 +335,8 @@ const getCheatStatus = async (req, res, next) => {
 };
 
 const newExam = async (req, res, next) => {
-    console.log('Files:', req.files);
-    console.log('Body:', req.body);
+    // console.log('Files:', req.files);
+    // console.log('Body:', req.body);
 
     const {
         isQuiz,
@@ -392,28 +398,25 @@ const newExam = async (req, res, next) => {
         }
 
         // Log the parsed questions for debugging
-        console.log('Parsed Questions:', parsedQuestions);
+        // console.log('Parsed Questions:', parsedQuestions);
 
         // Map the questions to include the uploaded image
+        let i = 0
         const uploadedFiles = req.files;
         const updatedQuestions = parsedQuestions.map((question, index) => {
-            let i = 0
+            
             // If an image exists for the current question, set the image field
-            if (question.image === null) {
-                question.image = null;
-            }
             if (question.image !== null) {
-                if(i<uploadedFiles.length){
-                    question.image = `/database/uploads/${uploadedFiles[i].filename}`;
-                    i++;
-                }
+                
+                question.image = `/database/uploads/${uploadedFiles[i].filename}`;
+                i++;
             } else {
                 question.image = null;
             }
             return question;
         });
 
-        console.log('Updated Questions:', updatedQuestions);
+        // console.log('Updated Questions:', updatedQuestions);
 
         // Create and save the new exam
         const newQuestionPaper = new QuestionPaper({
