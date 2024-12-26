@@ -1,443 +1,243 @@
 import React, { useState, useEffect } from "react";
-import {
-  FiSearch,
-  FiAlertCircle,
-  FiUser,
-  FiMail,
-  FiPhone,
-  FiHome,
-  FiKey,
-} from "react-icons/fi";
-import {
-  MdAdd,
-  MdEdit,
-  MdDelete,
-  MdWarning,
-  MdBed,
-  MdPerson,
-  MdBusinessCenter,
-  MdDashboard,
-  MdLocationOn,
-} from "react-icons/md";
-import { Link, useNavigate, Navigate, NavLink } from "react-router-dom";
+import { MdEdit, MdDelete, MdAutorenew, MdSearch, MdNavigateNext, MdNavigateBefore, MdPerson, MdDashboard, MdAdd } from "react-icons/md";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../store/auth";
-import { ChevronDown, ChevronUp, Search, Save, RefreshCw } from "lucide-react";
-
 const SeeAllUsers = () => {
-  const [users, setUsers] = useState([]);
+  const mockData = [
+    { id: 1, name: "John Anderson", username: "john_a", class: "10", division: "A", rollNumber: "101" },
+    { id: 2, name: "Emma Wilson", username: "emma_w", class: "10", division: "B", rollNumber: "102" },
+    { id: 3, name: "Michael Brown", username: "michael_b", class: "11", division: "A", rollNumber: "103" },
+    { id: 4, name: "Sarah Davis", username: "sarah_d", class: "11", division: "B", rollNumber: "104" },
+    { id: 5, name: "James Miller", username: "james_m", class: "12", division: "A", rollNumber: "105" },
+    { id: 6, name: "Lisa Taylor", username: "lisa_t", class: "12", division: "B", rollNumber: "106" },
+    { id: 7, name: "David Clark", username: "david_c", class: "10", division: "C", rollNumber: "107" },
+    { id: 8, name: "Emily White", username: "emily_w", class: "11", division: "C", rollNumber: "108" },
+    { id: 9, name: "Robert Lee", username: "robert_l", class: "12", division: "C", rollNumber: "109" },
+    { id: 10, name: "Anna Moore", username: "anna_m", class: "10", division: "A", rollNumber: "110" },
+    { id: 11, name: "Anna Moore", username: "anna_m", class: "10", division: "A", rollNumber: "111" },
+    { id: 12, name: "Anna Moore", username: "anna_m", class: "10", division: "A", rollNumber: "112" }
+  ];
+
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [userData, setUserData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showCreateForm, setShowCreateForm] = useState(false);
-  const [selectedRoom, setSelectedRoom] = useState("All Rooms");
-  const [selectHostel, setSelectHostel] = useState("All Hostels");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isRoomOpen, setIsRoomOpen] = useState(false);
-  const [isHostelOpen, setIsHostelOpen] = useState(false);
-  const [newUser, setNewUser] = useState({
-    name: "",
-    username: "",
-    email: "",
-    phone: "",
-    hostel: "",
-    room: "",
-    status: "Active",
-  });
-  const [filters, setFilters] = useState({
-    hostel: [],
-    room: [],
-    status: [],
-  });
+  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedDivision, setSelectedDivision] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage, setRecordsPerPage] = useState(10);
-  const [selectedUsers, setSelectedUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [entriesPerPage, setEntriesPerPage] = useState(20);
   const { API } = useAuth(); // Custom hook from AuthContext
 
-  //  Getting Users
-  const getUsers = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${API}/api/dev/get-all-users`);
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
   useEffect(() => {
-    getUsers();
-  }, []);
+    setLoading(true)
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(`${API}/api/dev/get-all-users`);
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        const data = await response.json();
+        setUserData(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUsers();
+  }, [])
 
-  const uniqueRooms = new Set(users.map((student) => student?.room));
-  const rooms = Array.from(uniqueRooms);
-  const uniqueHostel = new Set(users.map((student) => student?.hostelId));
-  const Hostels = Array.from(uniqueHostel);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setUserData(mockData);
+  //     setLoading(false);
+  //   }, 1000);
+  // }, []);
 
-  // Assuming `newData` contains the attendance and status for each student Filtering
-  const filteredStudents = users?.filter((student) => {
-    const isInSelectedRoom =
-      selectedRoom === "All Rooms" || student?.room === selectedRoom;
-      const isInSelectedHostel =
-      selectHostel === "All Hostels" || student?.hostelId === selectHostel;
-    return (
-      isInSelectedRoom &&
-      (student.username.toLowerCase().includes(searchQuery.toLowerCase()) || student?.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        student?.room.includes(searchQuery)) && isInSelectedHostel
-    );
-  });
+const filteredData = userData.filter(user => {
+  const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.username.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesClass = selectedClass === "" || user.classy === selectedClass;
+  const matchesDivision = selectedDivision === "" || user.division === selectedDivision;
+  return matchesSearch && matchesClass && matchesDivision;
+});
 
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-  };
+const indexOfLastEntry = currentPage * entriesPerPage;
+const indexOfFirstEntry = indexOfLastEntry - entriesPerPage;
+const currentEntries = filteredData.slice(indexOfFirstEntry, indexOfLastEntry);
 
-  const handleFilterChange = (type, value) => {
-    setFilters((prev) => ({
-      ...prev,
-      [type]: value,
-    }));
-  };
+const totalPages = Math.ceil(filteredData.length / entriesPerPage);
 
-  const clearFilters = () => {
-    setFilters({
-      hostel: [],
-      room: [],
-      status: [],
-    });
-  };
+const handleEdit = (id) => {
+  console.log("Edit user:", id);
+};
 
-  const handleSort = (column) => {
-    // Implement sorting logic
-  };
+const handleDelete = (id) => {
+  console.log("Delete user:", id);
+};
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+const uniqueClasses = [...new Set(userData.map(user => user.classy))];
+const uniqueDivisions = [...new Set(userData.map(user => user.division))];
 
-  const handleBulkAction = () => {
-    setShowModal(true);
-  };
+return (
+  <div className="min-h-screen bg-gradient-to-br from-[#F0F1F3] to-[#F0F1F3] p-6">
+    <div className="flex flex-col md:flex-row md:justify-between items-center max-w-7xl mx-auto gap-2 mb-3">
+      <h1 className="text-3xl font-bold mb-8 animate-slide-in flex items-center">
+        <MdPerson className="mr-2" /> See All Users
+      </h1>
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 p-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-8 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-12 bg-gray-200 rounded"></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="h-10 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-          <div className="space-y-2">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-16 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center text-red-500">
-          <FiAlertCircle className="w-12 h-12 mx-auto mb-4" />
-          <p className="text-xl">{error}</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold mb-8 animate-slide-in flex items-center">
-          <MdPerson className="mr-2" /> See All Users
-        </h1>
-
-        {/* Button and Dashboard Icon */}
-        <div className="flex items-center">
-          <Link
-            to={`/developer/dev/dashboard`}
-            className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
-          >
-            <MdDashboard className="mr-2" /> Go to Dashboard
-          </Link>
-        </div>
-      </div>
-
-      {/* Create User Form */}
-      <div className="mb-8">
-        <button
-          // onClick={() => setShowCreateForm(!showCreateForm)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-700 transition duration-200"
+      {/* Button and Dashboard Icon */}
+      <div className="flex items-center">
+        <Link
+          to={`/developer/dev/dashboard`}
+          className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
         >
-          <MdAdd className="mr-2" /> Create New User
-        </button>
+          <MdDashboard className="mr-2" /> Go to Dashboard
+        </Link>
       </div>
+    </div>
 
-      {/* Rest of the component remains the same */}
-      {/* Search and Filters Section */}
-      <div className="space-y-4 mb-8">
-        <div className="relative">
-          <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+
+    {/* Create User Form */}
+    <div className="flex mb-8 max-w-7xl mx-auto max-md:justify-center max-md:items-center">
+      <button
+        // onClick={() => setShowCreateForm(!showCreateForm)}
+        className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-700 transition duration-200"
+      >
+        <MdAdd className="mr-2" /> Create New User
+      </button>
+    </div>
+
+    <div className="max-w-7xl mx-auto bg-[#FFFFFF] rounded-lg shadow-lg p-6">
+      <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="relative flex-1">
+          <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#3A0CA3]" />
           <input
             type="text"
-            placeholder="Search by Name or Username"
-            className="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search by name or username..."
+            className="w-full pl-10 pr-4 py-2 border border-[#E0E0E0] border-input rounded-md focus:ring-2 focus:ring-[#F72585] focus:outline-none"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="relative w-full sm:w-auto">
-            <button
-              onClick={() => setIsHostelOpen(!isHostelOpen)}
-              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:w-auto"
-            >
-              {selectHostel}
-              {isHostelOpen ? (
-                <ChevronUp className="ml-2 h-4 w-4" />
-              ) : (
-                <ChevronDown className="ml-2 h-4 w-4" />
-              )}
-            </button>
-            {isHostelOpen && (
-              <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg ">
-                <ul className="max-h-60 overflow-auto rounded-md py-1 text-base">
-                  <li
-                    onClick={() => {
-                      setSelectHostel("All Hostels"); // Set to "All Rooms"
-                      setIsHostelOpen(false);
-                    }}
-                    className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-                  >
-                    All Hostels
-                  </li>
-                  {Hostels.map((hostel) => (
-                    <li
-                      key={hostel}
-                      onClick={() => {
-                        setSelectHostel(hostel);
-                        setIsHostelOpen(false);
-                      }}
-                      className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-                    >
-                      {hostel}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
-          <div className="relative w-full sm:w-auto">
-            <button
-              onClick={() => setIsRoomOpen(!isRoomOpen)}
-              className="flex w-full items-center justify-between rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:w-auto"
-            >
-              {selectedRoom}
-              {isRoomOpen ? (
-                <ChevronUp className="ml-2 h-4 w-4" />
-              ) : (
-                <ChevronDown className="ml-2 h-4 w-4" />
-              )}
-            </button>
-            {isRoomOpen && (
-              <div className="absolute z-10 mt-1 w-full rounded-md bg-white shadow-lg sm:w-48">
-                <ul className="max-h-60 overflow-auto rounded-md py-1 text-base">
-                  <li
-                    onClick={() => {
-                      setSelectedRoom("All Rooms"); // Set to "All Rooms"
-                      setIsRoomOpen(false);
-                    }}
-                    className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-                  >
-                    All Rooms
-                  </li>
-                  {rooms.map((room) => (
-                    <li
-                      key={room}
-                      onClick={() => {
-                        setSelectedRoom(room);
-                        setIsRoomOpen(false);
-                      }}
-                      className="cursor-pointer px-4 py-2 hover:bg-gray-100"
-                    >
-                      {room}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
-          <button
-            onClick={clearFilters}
-            className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg transition duration-200"
+        <div className="flex gap-4">
+          <select
+            className="px-4 py-2 border border-[#E0E0E0] border-input rounded-md focus:ring-2 focus:ring-[#F72585] focus:outline-none"
+            value={selectedClass}
+            onChange={(e) => setSelectedClass(e.target.value)}
           >
-            Clear Filters
-          </button>
+            <option value="">All Classes</option>
+            {uniqueClasses.map(cls => (
+              <option key={cls} value={cls}>Class {cls}</option>
+            ))}
+          </select>
+          <select
+            className="px-4 py-2 border border-[#E0E0E0] border-input rounded-md focus:ring-2 focus:ring-[#F72585] focus:outline-none"
+            value={selectedDivision}
+            onChange={(e) => setSelectedDivision(e.target.value)}
+          >
+            <option value="">All Divisions</option>
+            {uniqueDivisions.map(div => (
+              <option key={div} value={div}>Division {div}</option>
+            ))}
+          </select>
         </div>
       </div>
-
-      {/* User Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
+      <div className="flex items-center gap-2 mb-2">
+        <select
+          className="px-4 py-2 border border-input rounded-md focus:ring-2 focus:ring-[#F72585] focus:outline-none"
+          value={entriesPerPage}
+          onChange={(e) => {
+            setEntriesPerPage(Number(e.target.value));
+            setCurrentPage(1);
+          }}
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
+        <span className="text-sm text-[#3A0CA3]">
+          entries per page
+        </span>
+      </div>
+      <div className="overflow-x-auto">
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <MdAutorenew className="animate-spin text-4xl text-[#F72585]" />
+          </div>
+        ) : (
+          <table className="w-full">
+            <thead className="bg-[#F0F1F3] sticky top-0">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  <input
-                    type="checkbox"
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedUsers(users?.map((user) => user?._id));
-                      } else {
-                        setSelectedUsers([]);
-                      }
-                    }}
-                  />
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Username
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Hostel
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Room
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Username</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Class</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Division</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Roll Number</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {filteredStudents?.map((user, index) => (
+            <tbody className="bg-white divide-y divide-border">
+              {currentEntries.map((user, index) => (
                 <tr
-                  key={index}
-                  className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                  key={user.id}
+                  className={`${index % 2 === 0 ? "bg-white" : "bg-[#F0F1F3]"} hover:bg-[#F0F1F3] transition-colors duration-200 hover:shadow-md`}
                 >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      checked={selectedUsers.includes(user._id)}
-                      onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedUsers([...selectedUsers, user._id]);
-                        } else {
-                          setSelectedUsers(
-                            selectedUsers.filter((id) => id !== user._id)
-                          );
-                        }
-                      }}
-                    />
-                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.username}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.classy}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.division}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{user.rollNo}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {user.username}
-                  </td>
-
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {user.hostelId}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{user.room}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                    <button className="text-blue-600 hover:text-blue-900">
-                      <MdEdit className="w-5 h-5" />
-                    </button>
-                    <button className="text-red-600 hover:text-red-900">
-                      <MdDelete className="w-5 h-5" />
-                    </button>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => handleEdit(user.id)}
+                        className="text-accent hover:text-[#F72585] transition-colors duration-200"
+                        title="Edit user"
+                      >
+                        <MdEdit size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(user.id)}
+                        className="text-[#FF4C4C] hover:text-[#FF4C4C] transition-colors duration-200"
+                        title="Delete user"
+                      >
+                        <MdDelete size={20} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        </div>
+        )}
+      </div>
 
-        {/* Pagination */}
-        <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-          <div className="flex-1 flex justify-between sm:hidden">
-            <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-              Previous
+      <div className="mt-6 flex flex-col md:flex-row justify-end items-center gap-4">
+        <div className="flex items-center gap-4">
+          <span className="text-sm text-[#3A0CA3]">
+            Showing {indexOfFirstEntry + 1} to {Math.min(indexOfLastEntry, filteredData.length)} of {filteredData.length} results
+          </span>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="p-2 rounded-md bg-[#F0F1F3] hover:bg-[#F0F1F3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            >
+              <MdNavigateBefore size={20} />
             </button>
-            <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
-              Next
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className="p-2 rounded-md bg-[#F0F1F3] hover:bg-[#F0F1F3] disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            >
+              <MdNavigateNext size={20} />
             </button>
-          </div>
-          <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-            <div>
-              <p className="text-sm text-gray-700">
-                Showing <span className="font-medium">1</span> to{" "}
-                <span className="font-medium">10</span> of{" "}
-                <span className="font-medium">{users.length}</span> results
-              </p>
-            </div>
-            <div>
-              <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
-                <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                  Previous
-                </button>
-                <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                  Next
-                </button>
-              </nav>
-            </div>
           </div>
         </div>
       </div>
-
-      {/* Floating Action Button */}
-      <button className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full p-4 shadow-lg hover:bg-blue-700 transition duration-200 group">
-        <MdAdd className="w-6 h-6" />
-        <span className="absolute right-full mr-2 bg-gray-900 text-white px-2 py-1 rounded text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          Add New User
-        </span>
-      </button>
-
-      {/* Confirmation Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-          <div className="bg-white p-8 rounded-lg shadow-xl">
-            <h2 className="text-xl font-bold mb-4">Confirm Action</h2>
-            <p className="mb-6">
-              Are you sure you want to perform this action?
-            </p>
-            <div className="flex justify-end space-x-4">
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  setShowModal(false);
-                  // Implement bulk action logic
-                }}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
-  );
+  </div>
+);
 };
 
 export default SeeAllUsers;
