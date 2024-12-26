@@ -32,6 +32,13 @@ const upload = multer({
 // To upload file
 router.route("/new-exam").post(authMiddleware,upload.array('files',20),examController.newExam);
 
+// Get Recent Exam Result For home
+router.route("/get/results/:userId").get(examController.GetResultsOfUserRecent);
+//  GET ALL Paper Of Single User
+router.route("/get/all/results/:userId").get(examController.GetResultsOfUser);
+// GET Result Of Single Question Paper
+router.route("/get/result/:userId/:key").get(examController.GetResultOfSinglePaper);
+
 
 
 module.exports = router;

@@ -44,7 +44,6 @@ const CreateExam = () => {
   const [showQuestionEditor, setShowQuestionEditor] = useState(false);
   const [isFastQuiz, setIsFastQuiz] = useState(false);
   const [isQuiz, setIsQuiz] = useState(false);
-  const [isPublished, setIsPublished] = useState(false);
   const [progress, setProgress] = useState(0); // State to track upload progress
   const [showQuestionEdit, setShowQuestionEdit] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState({
@@ -902,7 +901,6 @@ const CreateExam = () => {
           <button
             className="px-6 py-3 bg-indigo-100 text-indigo-700 rounded-lg hover:bg-indigo-200 transition-colors flex items-center"
             onClick={(e) => {
-              setIsPublished(false);
               handleSaveDraft(e);
             }}
           >
@@ -911,7 +909,7 @@ const CreateExam = () => {
           <button
             className="px-6 py-3 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors flex items-center"
             onClick={(e) => {
-              setIsPublished(true);
+
               handleSubmit(e);
             }}
           >

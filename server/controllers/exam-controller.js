@@ -404,10 +404,10 @@ const newExam = async (req, res, next) => {
         let i = 0
         const uploadedFiles = req.files;
         const updatedQuestions = parsedQuestions.map((question, index) => {
-            
+
             // If an image exists for the current question, set the image field
             if (question.image !== null) {
-                
+
                 question.image = `/database/uploads/${uploadedFiles[i].filename}`;
                 i++;
             } else {
@@ -440,6 +440,156 @@ const newExam = async (req, res, next) => {
     }
 };
 
+//  GET Result OF Student OF All Recent For Home Page
+const GetResultsOfUserRecent = async (req, res, next) => {
+    try {
+        const userId = req.params.userId; // Get the userId from request parameters
+
+        // Fetch all results for the user
+        const results = await Result.find({ user: userId });
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "No results found for the user." });
+        }
+
+        // Group results by paperKey
+        const groupedResults = results.reduce((acc, result) => {
+            if (!acc[result.paperKey]) {
+                acc[result.paperKey] = [];
+            }
+            acc[result.paperKey].push(result);
+            return acc;
+        }, {});
+
+        // Prepare response data
+        const responseData = [];
+
+        for (const paperKey of Object.keys(groupedResults)) {
+            const paperResults = groupedResults[paperKey];
+
+            // Calculate total points for this paperKey
+            const totalPoints = paperResults.reduce((sum, result) => sum + result.points, 0);
+
+            // Fetch the corresponding question paper
+            const questionPaper = await QuestionPaper.findOne({ paperKey });
+
+            if (!questionPaper) {
+                return res.status(404).json({ message: `Question paper with paperKey ${paperKey} not found.` });
+            }
+
+            // Push data for this paperKey to response array
+            responseData.push({
+                title: questionPaper.title,
+                paperKey,
+                totalPoints,
+            });
+        }
+
+        // Sort response data by creation time (assumes latest entries are at the end) and return the last two entries
+        const latestResults = responseData.slice(-2);
+        // Return the grouped results with calculated points
+        return res.status(200).json(latestResults);
+    } catch (error) {
+        console.error("Error fetching student results:", error);
+        return res.status(500).json({ message: "Internal server error.", error: error.message });
+    }
+}
+
+// For All Results Of User
+const GetResultsOfUser = async (req, res, next) => {
+    try {
+        const userId = req.params.userId; // Get the userId from request parameters
+
+        // Fetch all results for the user
+        const results = await Result.find({ user: userId });
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: "No results found for the user." });
+        }
+
+        // Group results by paperKey
+        const groupedResults = results.reduce((acc, result) => {
+            if (!acc[result.paperKey]) {
+                acc[result.paperKey] = [];
+            }
+            acc[result.paperKey].push(result);
+            return acc;
+        }, {});
+
+        // Prepare response data
+        const responseData = [];
+
+        for (const paperKey of Object.keys(groupedResults)) {
+            const paperResults = groupedResults[paperKey];
+
+            // Calculate total points for this paperKey
+            const totalPoints = paperResults.reduce((sum, result) => sum + result.points, 0);
+
+            // Fetch the corresponding question paper
+            const questionPaper = await QuestionPaper.findOne({ paperKey });
+
+            if (!questionPaper) {
+                return res.status(404).json({ message: `Question paper with paperKey ${paperKey} not found.` });
+            }
+
+            // Push data for this paperKey to response array
+            responseData.push({
+                title: questionPaper.title,
+                paperKey,
+                totalPoints,
+            });
+        }
+
+        // Return the grouped results with calculated points
+        return res.status(200).json(responseData);
+    } catch (error) {
+        next(error);
+    }
+}
+
+// For Single Result
+const GetResultOfSinglePaper = async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        const paperKey = req.params.key;
+        if (!userId || !paperKey) {
+            return res.status(400).json({ message: "Invalid request parameters." });
+        }
+
+        // Fetch all results for the user and paperKey
+        const paperResults = await Result.find({ user: userId, paperKey });
+        if (paperResults.length === 0) {
+            return res.status(404).json({ success: false, message: "No results found for the user and paper key." });
+        }
+
+
+        // Calculate total points
+        const totalPoints = paperResults.reduce((sum, result) => sum + result.points, 0);
+
+
+        const questionPaper = await QuestionPaper.findOne({ paperKey });
+        if (!questionPaper) {
+            return res.status(404).json({ success: false, message: `Question paper with paperKey ${paperKey} not found.` });
+        }
+        // Prepare response data
+        const responseData = {
+            title: questionPaper.title,
+            paperKey,
+            totalPoints,
+            results: paperResults.map(result => ({
+                question: result.question,
+                answer: result.answer,
+                points: result.points,
+            })),
+        };
+
+        // Return the grouped results with calculated points
+        return res.status(200).json( responseData );
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 
 module.exports = {
@@ -452,4 +602,7 @@ module.exports = {
     postCheat,
     getCheatStatus,
     newExam,
+    GetResultsOfUserRecent,
+    GetResultsOfUser,
+    GetResultOfSinglePaper,
 };
