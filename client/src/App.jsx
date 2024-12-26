@@ -20,6 +20,7 @@ import SeeAllUsers from "./pages/dev/All-Users";
 import DeveloperLogin from "./pages/dev/Login-Dev";
 import { DeveloperLayout } from "./components/layout/Developer-Layout";
 import SeeAllAdmins from "./pages/dev/All-Admins";
+import UserResults from "./pages/client/Results";
 
 
 
@@ -51,6 +52,7 @@ const App = () => {
 
               <Route exact path="dashboard" element={<Dashboard />} />
               <Route exact path="paper/:title/:paperKey/:id" element={<ExamInterface />} />
+              <Route exact path="results" element={<UserResults />} />
             </Route>
 
 

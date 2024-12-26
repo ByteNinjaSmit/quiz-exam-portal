@@ -22,6 +22,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [exams, setExams] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [results, setResults] = useState(null);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -51,7 +52,33 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     };
+
+    const fetchResults = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API}/api/exam/get/results/${user._id}`, {
+          method: "GET",
+          headers: {
+            Authorization: authorizationToken,
+          },
+          // include credential
+        });
+        if (!response.ok) {
+          toast.error(`Error Fetching Exams: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log(data[0]);
+
+        setResults(data);
+      } catch (error) {
+        console.error(error);
+        toast.error(error.messsage);
+      } finally {
+        setIsLoading(false);
+      }
+    }
     fetchExams();
+    fetchResults();
   }, []);
 
   const dummyData = {
@@ -312,25 +339,34 @@ const Dashboard = () => {
               </h2>
               <FaChartBar className="text-purple-600" />
             </div>
-            {dummyData.examResults.map((result, index) => (
+            {results?.map((result, index) => (
               <div
                 key={index}
                 className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
               >
                 <h3 className="font-semibold text-indigo-700">
-                  {result.subject}
+                  {result?.title}
                 </h3>
                 <div className="flex justify-between mt-2">
-                  <span className="text-purple-600">Score: {result.score}</span>
-                  <span className="text-indigo-600 font-semibold">
-                    Grade: {result.grade}
-                  </span>
+                  <span className="text-purple-600">Score: {result?.totalPoints}</span>
+                  {/* Make Proper This Button */}
+                  <Link to={`/user/result/${user?._id}/${result?.paperKey}`}>
+                    <button
+                      className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                    >
+                      View Result
+                    </button>
+                  </Link>
+
                 </div>
               </div>
             ))}
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-              View All Results
-            </button>
+            <Link to={`/user/results`}>
+              <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                View All Results
+              </button>
+            </Link>
+
           </div>
         </div>
       </div>

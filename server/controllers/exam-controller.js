@@ -537,6 +537,7 @@ const GetResultsOfUser = async (req, res, next) => {
                 title: questionPaper.title,
                 paperKey,
                 totalPoints,
+                time:questionPaper.startTime,
             });
         }
 
