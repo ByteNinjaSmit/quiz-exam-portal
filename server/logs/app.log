@@ -1,0 +1,1220 @@
+2024-12-27T20:09:06.631Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:09:19.738Z [32minfo[39m: Job 98 added to the queue
+2024-12-27T20:09:19.740Z [32minfo[39m: Job directory: D:\Projects\quiz-exam-portal\server\workers\temp\job-eb10a789-1235-4e7d-b819-5eff1a31f154
+2024-12-27T20:09:19.741Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-eb10a789-1235-4e7d-b819-5eff1a31f154\code.cpp
+2024-12-27T20:09:19.741Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-eb10a789-1235-4e7d-b819-5eff1a31f154\input.txt
+2024-12-27T20:09:19.742Z [32minfo[39m: Running command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-eb10a789-1235-4e7d-b819-5eff1a31f154:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:09:20.546Z [31merror[39m: Error executing job eb10a789-1235-4e7d-b819-5eff1a31f154: /sandbox/code.cpp:3:22: warning: multi-character literal with 14 characters exceeds 'int' size of 4 bytes
+    3 | int main() { cout << 'Hello from C++'; return 0; }
+      |                      ^~~~~~~~~~~~~~~~
+
+2024-12-27T20:09:20.547Z [31merror[39m: Job eb10a789-1235-4e7d-b819-5eff1a31f154 failed during execution: undefined
+2024-12-27T20:09:20.547Z [31merror[39m: Job eb10a789-1235-4e7d-b819-5eff1a31f154 failed: undefined
+2024-12-27T20:09:20.550Z [32minfo[39m: Cleaned up temporary files for job eb10a789-1235-4e7d-b819-5eff1a31f154
+2024-12-27T20:09:20.553Z [31merror[39m: Error in code execution for job eb10a789-1235-4e7d-b819-5eff1a31f154: Error
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:09:27.681Z [32minfo[39m: Job 99 added to the queue
+2024-12-27T20:09:27.682Z [32minfo[39m: Job directory: D:\Projects\quiz-exam-portal\server\workers\temp\job-7a49f31b-2dea-49ba-9f29-b232818a4487
+2024-12-27T20:09:27.682Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7a49f31b-2dea-49ba-9f29-b232818a4487\code.cpp
+2024-12-27T20:09:27.683Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7a49f31b-2dea-49ba-9f29-b232818a4487\input.txt
+2024-12-27T20:09:27.683Z [32minfo[39m: Running command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-7a49f31b-2dea-49ba-9f29-b232818a4487:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:09:28.472Z [32minfo[39m: Job 7a49f31b-2dea-49ba-9f29-b232818a4487 executed successfully. Output: Hello, C++ World!
+
+2024-12-27T20:09:28.472Z [32minfo[39m: Job 7a49f31b-2dea-49ba-9f29-b232818a4487 output: Hello, C++ World!
+
+2024-12-27T20:09:28.474Z [32minfo[39m: Cleaned up temporary files for job 7a49f31b-2dea-49ba-9f29-b232818a4487
+2024-12-27T20:09:28.475Z [32minfo[39m: Job 99 state: completed
+2024-12-27T20:09:28.475Z [32minfo[39m: Job 99 completed successfully: Hello, C++ World!
+
+2024-12-27T20:09:35.451Z [32minfo[39m: Job 100 added to the queue
+2024-12-27T20:09:35.452Z [32minfo[39m: Job directory: D:\Projects\quiz-exam-portal\server\workers\temp\job-0e827457-2b84-4a09-b45d-248cc3f4d9b5
+2024-12-27T20:09:35.453Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0e827457-2b84-4a09-b45d-248cc3f4d9b5\code.py
+2024-12-27T20:09:35.453Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0e827457-2b84-4a09-b45d-248cc3f4d9b5\input.txt
+2024-12-27T20:09:35.453Z [32minfo[39m: Running command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-0e827457-2b84-4a09-b45d-248cc3f4d9b5:/sandbox" python:3.10 python3 /sandbox/code.py < /sandbox/input.txt
+2024-12-27T20:09:35.462Z [31merror[39m: Error executing job 0e827457-2b84-4a09-b45d-248cc3f4d9b5: The system cannot find the path specified.
+
+2024-12-27T20:09:35.463Z [31merror[39m: Job 0e827457-2b84-4a09-b45d-248cc3f4d9b5 failed during execution: undefined
+2024-12-27T20:09:35.463Z [31merror[39m: Job 0e827457-2b84-4a09-b45d-248cc3f4d9b5 failed: undefined
+2024-12-27T20:09:35.464Z [32minfo[39m: Cleaned up temporary files for job 0e827457-2b84-4a09-b45d-248cc3f4d9b5
+2024-12-27T20:09:35.465Z [31merror[39m: Error in code execution for job 0e827457-2b84-4a09-b45d-248cc3f4d9b5: Error
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:09:53.848Z [32minfo[39m: Job 101 added to the queue
+2024-12-27T20:09:53.848Z [32minfo[39m: Job directory: D:\Projects\quiz-exam-portal\server\workers\temp\job-2ffe30ea-2c14-48a5-971f-536b0ced4e4d
+2024-12-27T20:09:53.849Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-2ffe30ea-2c14-48a5-971f-536b0ced4e4d\code.py
+2024-12-27T20:09:53.850Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-2ffe30ea-2c14-48a5-971f-536b0ced4e4d\input.txt
+2024-12-27T20:09:53.850Z [32minfo[39m: Running command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-2ffe30ea-2c14-48a5-971f-536b0ced4e4d:/sandbox" python:3.10 python3 /sandbox/code.py < /sandbox/input.txt
+2024-12-27T20:09:53.859Z [31merror[39m: Error executing job 2ffe30ea-2c14-48a5-971f-536b0ced4e4d: The system cannot find the path specified.
+
+2024-12-27T20:09:53.859Z [31merror[39m: Job 2ffe30ea-2c14-48a5-971f-536b0ced4e4d failed during execution: undefined
+2024-12-27T20:09:53.860Z [31merror[39m: Job 2ffe30ea-2c14-48a5-971f-536b0ced4e4d failed: undefined
+2024-12-27T20:09:53.862Z [32minfo[39m: Cleaned up temporary files for job 2ffe30ea-2c14-48a5-971f-536b0ced4e4d
+2024-12-27T20:09:53.863Z [31merror[39m: Error in code execution for job 2ffe30ea-2c14-48a5-971f-536b0ced4e4d: Error
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:10:07.070Z [32minfo[39m: Job 102 added to the queue
+2024-12-27T20:10:07.071Z [32minfo[39m: Job directory: D:\Projects\quiz-exam-portal\server\workers\temp\job-e1bdb425-d970-4161-a8db-e27f97493fe0
+2024-12-27T20:10:07.072Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e1bdb425-d970-4161-a8db-e27f97493fe0\code.py
+2024-12-27T20:10:07.073Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e1bdb425-d970-4161-a8db-e27f97493fe0\input.txt
+2024-12-27T20:10:07.073Z [32minfo[39m: Running command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-e1bdb425-d970-4161-a8db-e27f97493fe0:/sandbox" python:3.10 python3 /sandbox/code.py < /sandbox/input.txt
+2024-12-27T20:10:07.083Z [31merror[39m: Error executing job e1bdb425-d970-4161-a8db-e27f97493fe0: The system cannot find the path specified.
+
+2024-12-27T20:10:07.084Z [31merror[39m: Job e1bdb425-d970-4161-a8db-e27f97493fe0 failed during execution: undefined
+2024-12-27T20:10:07.084Z [31merror[39m: Job e1bdb425-d970-4161-a8db-e27f97493fe0 failed: undefined
+2024-12-27T20:10:07.085Z [32minfo[39m: Cleaned up temporary files for job e1bdb425-d970-4161-a8db-e27f97493fe0
+2024-12-27T20:10:07.085Z [31merror[39m: Error in code execution for job e1bdb425-d970-4161-a8db-e27f97493fe0: Error
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:11:43.391Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:11:51.668Z [32minfo[39m: Job 103 added to the queue
+2024-12-27T20:11:51.669Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-a80a8b49-02e2-4c35-a273-46a6ebe92a72
+2024-12-27T20:11:51.670Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a80a8b49-02e2-4c35-a273-46a6ebe92a72\code.py
+2024-12-27T20:11:51.671Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a80a8b49-02e2-4c35-a273-46a6ebe92a72\input.txt
+2024-12-27T20:11:51.672Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-a80a8b49-02e2-4c35-a273-46a6ebe92a72:/sandbox" python:3.10 python3 /sandbox/code.py < /sandbox/input.txt
+2024-12-27T20:11:51.686Z [31merror[39m: Error executing job a80a8b49-02e2-4c35-a273-46a6ebe92a72: The system cannot find the path specified.
+
+2024-12-27T20:11:51.687Z [31merror[39m: Job a80a8b49-02e2-4c35-a273-46a6ebe92a72 failed: The system cannot find the path specified.
+
+2024-12-27T20:11:51.688Z [32minfo[39m: Cleaned up temporary files for job a80a8b49-02e2-4c35-a273-46a6ebe92a72
+2024-12-27T20:11:51.691Z [31merror[39m: Error in code execution for job a80a8b49-02e2-4c35-a273-46a6ebe92a72: Error: The system cannot find the path specified.
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:12:13.395Z [32minfo[39m: Job 104 added to the queue
+2024-12-27T20:12:13.396Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-1a37f1be-3d46-47fd-8c27-a69c2d02bec5
+2024-12-27T20:12:13.397Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1a37f1be-3d46-47fd-8c27-a69c2d02bec5\code.cpp
+2024-12-27T20:12:13.398Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1a37f1be-3d46-47fd-8c27-a69c2d02bec5\input.txt
+2024-12-27T20:12:13.398Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-1a37f1be-3d46-47fd-8c27-a69c2d02bec5:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:12:14.236Z [31merror[39m: Error executing job 1a37f1be-3d46-47fd-8c27-a69c2d02bec5: /sandbox/code.cpp:3:22: warning: multi-character literal with 14 characters exceeds 'int' size of 4 bytes
+    3 | int main() { cout << 'Hello from C++'; return 0; }
+      |                      ^~~~~~~~~~~~~~~~
+
+2024-12-27T20:12:14.236Z [31merror[39m: Job 1a37f1be-3d46-47fd-8c27-a69c2d02bec5 failed: /sandbox/code.cpp:3:22: warning: multi-character literal with 14 characters exceeds 'int' size of 4 bytes
+    3 | int main() { cout << 'Hello from C++'; return 0; }
+      |                      ^~~~~~~~~~~~~~~~
+
+2024-12-27T20:12:14.238Z [32minfo[39m: Cleaned up temporary files for job 1a37f1be-3d46-47fd-8c27-a69c2d02bec5
+2024-12-27T20:12:14.253Z [31merror[39m: Error in code execution for job 1a37f1be-3d46-47fd-8c27-a69c2d02bec5: Error: /sandbox/code.cpp:3:22: warning: multi-character literal with 14 characters exceeds 'int' size of 4 bytes
+    3 | int main() { cout << 'Hello from C++'; return 0; }
+      |                      ^~~~~~~~~~~~~~~~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:12:23.925Z [32minfo[39m: Job 105 added to the queue
+2024-12-27T20:12:23.927Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-a16e8462-8df6-465a-a76d-daf35e529ef1
+2024-12-27T20:12:23.928Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a16e8462-8df6-465a-a76d-daf35e529ef1\code.cpp
+2024-12-27T20:12:23.929Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a16e8462-8df6-465a-a76d-daf35e529ef1\input.txt
+2024-12-27T20:12:23.929Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-a16e8462-8df6-465a-a76d-daf35e529ef1:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:12:24.765Z [32minfo[39m: Job a16e8462-8df6-465a-a76d-daf35e529ef1 executed successfully with output: Hello from C++
+2024-12-27T20:12:24.767Z [32minfo[39m: Cleaned up temporary files for job a16e8462-8df6-465a-a76d-daf35e529ef1
+2024-12-27T20:12:24.768Z [32minfo[39m: Job 105 state: completed
+2024-12-27T20:12:24.768Z [32minfo[39m: Job 105 completed successfully: Hello from C++
+2024-12-27T20:12:30.785Z [32minfo[39m: Job 106 added to the queue
+2024-12-27T20:12:30.786Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-85a9aa9a-b98c-4d87-9768-2eb8663b7386
+2024-12-27T20:12:30.787Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-85a9aa9a-b98c-4d87-9768-2eb8663b7386\code.cpp
+2024-12-27T20:12:30.787Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-85a9aa9a-b98c-4d87-9768-2eb8663b7386\input.txt
+2024-12-27T20:12:30.787Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-85a9aa9a-b98c-4d87-9768-2eb8663b7386:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:12:31.632Z [32minfo[39m: Job 85a9aa9a-b98c-4d87-9768-2eb8663b7386 executed successfully with output: Hello, C++ World!
+
+2024-12-27T20:12:31.634Z [32minfo[39m: Cleaned up temporary files for job 85a9aa9a-b98c-4d87-9768-2eb8663b7386
+2024-12-27T20:12:31.634Z [32minfo[39m: Job 106 state: completed
+2024-12-27T20:12:31.634Z [32minfo[39m: Job 106 completed successfully: Hello, C++ World!
+
+2024-12-27T20:12:35.347Z [32minfo[39m: Job 107 added to the queue
+2024-12-27T20:12:35.348Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-5ed9339b-2a1f-499c-ae8e-a2106ee344a6
+2024-12-27T20:12:35.349Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5ed9339b-2a1f-499c-ae8e-a2106ee344a6\code.cpp
+2024-12-27T20:12:35.349Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5ed9339b-2a1f-499c-ae8e-a2106ee344a6\input.txt
+2024-12-27T20:12:35.349Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-5ed9339b-2a1f-499c-ae8e-a2106ee344a6:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:12:36.123Z [32minfo[39m: Job 5ed9339b-2a1f-499c-ae8e-a2106ee344a6 executed successfully with output: Hello, C++ World!
+
+2024-12-27T20:12:36.125Z [32minfo[39m: Cleaned up temporary files for job 5ed9339b-2a1f-499c-ae8e-a2106ee344a6
+2024-12-27T20:12:36.126Z [32minfo[39m: Job 107 state: completed
+2024-12-27T20:12:36.126Z [32minfo[39m: Job 107 completed successfully: Hello, C++ World!
+
+2024-12-27T20:12:40.327Z [32minfo[39m: Job 108 added to the queue
+2024-12-27T20:12:40.328Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-6b98c031-d80e-4b60-b7e4-3b75b829d821
+2024-12-27T20:12:40.329Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-6b98c031-d80e-4b60-b7e4-3b75b829d821\code.py
+2024-12-27T20:12:40.330Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-6b98c031-d80e-4b60-b7e4-3b75b829d821\input.txt
+2024-12-27T20:12:40.330Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-6b98c031-d80e-4b60-b7e4-3b75b829d821:/sandbox" python:3.10 python3 /sandbox/code.py < /sandbox/input.txt
+2024-12-27T20:12:40.343Z [31merror[39m: Error executing job 6b98c031-d80e-4b60-b7e4-3b75b829d821: The system cannot find the path specified.
+
+2024-12-27T20:12:40.343Z [31merror[39m: Job 6b98c031-d80e-4b60-b7e4-3b75b829d821 failed: The system cannot find the path specified.
+
+2024-12-27T20:12:40.344Z [32minfo[39m: Cleaned up temporary files for job 6b98c031-d80e-4b60-b7e4-3b75b829d821
+2024-12-27T20:12:40.345Z [31merror[39m: Error in code execution for job 6b98c031-d80e-4b60-b7e4-3b75b829d821: Error: The system cannot find the path specified.
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:12:43.775Z [32minfo[39m: Job 109 added to the queue
+2024-12-27T20:12:43.776Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-03e380ad-0f29-4e77-8eb6-16d2bb60b759
+2024-12-27T20:12:43.776Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-03e380ad-0f29-4e77-8eb6-16d2bb60b759\code.cpp
+2024-12-27T20:12:43.776Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-03e380ad-0f29-4e77-8eb6-16d2bb60b759\input.txt
+2024-12-27T20:12:43.777Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-03e380ad-0f29-4e77-8eb6-16d2bb60b759:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:12:44.572Z [32minfo[39m: Job 03e380ad-0f29-4e77-8eb6-16d2bb60b759 executed successfully with output: Hello from C++
+2024-12-27T20:12:44.573Z [32minfo[39m: Cleaned up temporary files for job 03e380ad-0f29-4e77-8eb6-16d2bb60b759
+2024-12-27T20:12:44.574Z [32minfo[39m: Job 109 state: completed
+2024-12-27T20:12:44.575Z [32minfo[39m: Job 109 completed successfully: Hello from C++
+2024-12-27T20:12:48.751Z [32minfo[39m: Job 110 added to the queue
+2024-12-27T20:12:48.752Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-b4e913ca-45fc-47e9-bceb-c44928c3e073
+2024-12-27T20:12:48.754Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b4e913ca-45fc-47e9-bceb-c44928c3e073\code.py
+2024-12-27T20:12:48.755Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b4e913ca-45fc-47e9-bceb-c44928c3e073\input.txt
+2024-12-27T20:12:48.755Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-b4e913ca-45fc-47e9-bceb-c44928c3e073:/sandbox" python:3.10 python3 /sandbox/code.py < /sandbox/input.txt
+2024-12-27T20:12:48.765Z [31merror[39m: Error executing job b4e913ca-45fc-47e9-bceb-c44928c3e073: The system cannot find the path specified.
+
+2024-12-27T20:12:48.765Z [31merror[39m: Job b4e913ca-45fc-47e9-bceb-c44928c3e073 failed: The system cannot find the path specified.
+
+2024-12-27T20:12:48.766Z [32minfo[39m: Cleaned up temporary files for job b4e913ca-45fc-47e9-bceb-c44928c3e073
+2024-12-27T20:12:48.767Z [31merror[39m: Error in code execution for job b4e913ca-45fc-47e9-bceb-c44928c3e073: Error: The system cannot find the path specified.
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:14:20.832Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:15:23.507Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:15:34.790Z [32minfo[39m: Job 111 added to the queue
+2024-12-27T20:15:34.792Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-f9471833-e870-4405-8529-fe3c8a782bf6
+2024-12-27T20:15:34.793Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-f9471833-e870-4405-8529-fe3c8a782bf6\code.py
+2024-12-27T20:15:34.793Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-f9471833-e870-4405-8529-fe3c8a782bf6\input.txt
+2024-12-27T20:15:34.794Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-f9471833-e870-4405-8529-fe3c8a782bf6:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:15:47.146Z [31merror[39m: Error executing job f9471833-e870-4405-8529-fe3c8a782bf6: Unable to find image 'python:3.10' locally
+3.10: Pulling from library/python
+0a96bdb82805: Already exists
+54c7be425079: Already exists
+7aa8176e6d89: Already exists
+1523f4b3f560: Already exists
+83ec4e83e66b: Pulling fs layer
+ee8db358fbe4: Pulling fs layer
+ddfcc6240e72: Pulling fs layer
+ddfcc6240e72: Verifying Checksum
+ddfcc6240e72: Download complete
+83ec4e83e66b: Verifying Checksum
+83ec4e83e66b: Download complete
+ee8db358fbe4: Verifying Checksum
+ee8db358fbe4: Download complete
+83ec4e83e66b: Pull complete
+ee8db358fbe4: Pull complete
+ddfcc6240e72: Pull complete
+Digest: sha256:81b81c80d41ec59dcee2c373b8e1d73a0b6949df793db1b043a033ca6837e02d
+Status: Downloaded newer image for python:3.10
+
+2024-12-27T20:15:47.147Z [31merror[39m: Job f9471833-e870-4405-8529-fe3c8a782bf6 failed: Unable to find image 'python:3.10' locally
+3.10: Pulling from library/python
+0a96bdb82805: Already exists
+54c7be425079: Already exists
+7aa8176e6d89: Already exists
+1523f4b3f560: Already exists
+83ec4e83e66b: Pulling fs layer
+ee8db358fbe4: Pulling fs layer
+ddfcc6240e72: Pulling fs layer
+ddfcc6240e72: Verifying Checksum
+ddfcc6240e72: Download complete
+83ec4e83e66b: Verifying Checksum
+83ec4e83e66b: Download complete
+ee8db358fbe4: Verifying Checksum
+ee8db358fbe4: Download complete
+83ec4e83e66b: Pull complete
+ee8db358fbe4: Pull complete
+ddfcc6240e72: Pull complete
+Digest: sha256:81b81c80d41ec59dcee2c373b8e1d73a0b6949df793db1b043a033ca6837e02d
+Status: Downloaded newer image for python:3.10
+
+2024-12-27T20:15:47.149Z [32minfo[39m: Cleaned up temporary files for job f9471833-e870-4405-8529-fe3c8a782bf6
+2024-12-27T20:15:47.158Z [31merror[39m: Error in code execution for job f9471833-e870-4405-8529-fe3c8a782bf6: Error: Unable to find image 'python:3.10' locally
+3.10: Pulling from library/python
+0a96bdb82805: Already exists
+54c7be425079: Already exists
+7aa8176e6d89: Already exists
+1523f4b3f560: Already exists
+83ec4e83e66b: Pulling fs layer
+ee8db358fbe4: Pulling fs layer
+ddfcc6240e72: Pulling fs layer
+ddfcc6240e72: Verifying Checksum
+ddfcc6240e72: Download complete
+83ec4e83e66b: Verifying Checksum
+83ec4e83e66b: Download complete
+ee8db358fbe4: Verifying Checksum
+ee8db358fbe4: Download complete
+83ec4e83e66b: Pull complete
+ee8db358fbe4: Pull complete
+ddfcc6240e72: Pull complete
+Digest: sha256:81b81c80d41ec59dcee2c373b8e1d73a0b6949df793db1b043a033ca6837e02d
+Status: Downloaded newer image for python:3.10
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:15:56.889Z [32minfo[39m: Job 112 added to the queue
+2024-12-27T20:15:56.890Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-7f183db7-8c3e-42e5-b67f-e0cdfa6bdf84
+2024-12-27T20:15:56.890Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7f183db7-8c3e-42e5-b67f-e0cdfa6bdf84\code.py
+2024-12-27T20:15:56.891Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7f183db7-8c3e-42e5-b67f-e0cdfa6bdf84\input.txt
+2024-12-27T20:15:56.891Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-7f183db7-8c3e-42e5-b67f-e0cdfa6bdf84:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:15:57.446Z [32minfo[39m: Job 7f183db7-8c3e-42e5-b67f-e0cdfa6bdf84 executed successfully with output: Hello from Python!
+
+2024-12-27T20:15:57.447Z [32minfo[39m: Cleaned up temporary files for job 7f183db7-8c3e-42e5-b67f-e0cdfa6bdf84
+2024-12-27T20:15:57.448Z [32minfo[39m: Job 112 state: completed
+2024-12-27T20:15:57.448Z [32minfo[39m: Job 112 completed successfully: Hello from Python!
+
+2024-12-27T20:16:00.289Z [32minfo[39m: Job 113 added to the queue
+2024-12-27T20:16:00.290Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-523f0aa0-b41c-4bc9-98be-dcf7a023b75d
+2024-12-27T20:16:00.291Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-523f0aa0-b41c-4bc9-98be-dcf7a023b75d\code.py
+2024-12-27T20:16:00.291Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-523f0aa0-b41c-4bc9-98be-dcf7a023b75d\input.txt
+2024-12-27T20:16:00.292Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-523f0aa0-b41c-4bc9-98be-dcf7a023b75d:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:16:00.889Z [32minfo[39m: Job 523f0aa0-b41c-4bc9-98be-dcf7a023b75d executed successfully with output: Hello from Python!
+
+2024-12-27T20:16:00.891Z [32minfo[39m: Cleaned up temporary files for job 523f0aa0-b41c-4bc9-98be-dcf7a023b75d
+2024-12-27T20:16:00.892Z [32minfo[39m: Job 113 state: completed
+2024-12-27T20:16:00.892Z [32minfo[39m: Job 113 completed successfully: Hello from Python!
+
+2024-12-27T20:16:09.864Z [32minfo[39m: Job 114 added to the queue
+2024-12-27T20:16:09.864Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-1da9deda-2274-4067-9343-7116f6de51a3
+2024-12-27T20:16:09.865Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1da9deda-2274-4067-9343-7116f6de51a3\code.py
+2024-12-27T20:16:09.865Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1da9deda-2274-4067-9343-7116f6de51a3\input.txt
+2024-12-27T20:16:09.866Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-1da9deda-2274-4067-9343-7116f6de51a3:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:16:10.412Z [31merror[39m: Error executing job 1da9deda-2274-4067-9343-7116f6de51a3:   File "/sandbox/code.py", line 1
+    print('Hello from Python!'
+         ^
+SyntaxError: '(' was never closed
+
+2024-12-27T20:16:10.413Z [31merror[39m: Job 1da9deda-2274-4067-9343-7116f6de51a3 failed:   File "/sandbox/code.py", line 1
+    print('Hello from Python!'
+         ^
+SyntaxError: '(' was never closed
+
+2024-12-27T20:16:10.414Z [32minfo[39m: Cleaned up temporary files for job 1da9deda-2274-4067-9343-7116f6de51a3
+2024-12-27T20:16:10.414Z [31merror[39m: Error in code execution for job 1da9deda-2274-4067-9343-7116f6de51a3: Error:   File "/sandbox/code.py", line 1
+    print('Hello from Python!'
+         ^
+SyntaxError: '(' was never closed
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:16:22.719Z [32minfo[39m: Job 115 added to the queue
+2024-12-27T20:16:22.720Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-0b36844b-fa3c-48c3-b81b-3b97078e71df
+2024-12-27T20:16:22.720Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0b36844b-fa3c-48c3-b81b-3b97078e71df\code.py
+2024-12-27T20:16:22.721Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0b36844b-fa3c-48c3-b81b-3b97078e71df\input.txt
+2024-12-27T20:16:22.721Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-0b36844b-fa3c-48c3-b81b-3b97078e71df:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:16:23.292Z [31merror[39m: Error executing job 0b36844b-fa3c-48c3-b81b-3b97078e71df:   File "/sandbox/code.py", line 1
+    print('Hello from Python!)'
+         ^
+SyntaxError: '(' was never closed
+
+2024-12-27T20:16:23.292Z [31merror[39m: Job 0b36844b-fa3c-48c3-b81b-3b97078e71df failed:   File "/sandbox/code.py", line 1
+    print('Hello from Python!)'
+         ^
+SyntaxError: '(' was never closed
+
+2024-12-27T20:16:23.294Z [32minfo[39m: Cleaned up temporary files for job 0b36844b-fa3c-48c3-b81b-3b97078e71df
+2024-12-27T20:16:23.295Z [31merror[39m: Error in code execution for job 0b36844b-fa3c-48c3-b81b-3b97078e71df: Error:   File "/sandbox/code.py", line 1
+    print('Hello from Python!)'
+         ^
+SyntaxError: '(' was never closed
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:16:30.776Z [32minfo[39m: Job 116 added to the queue
+2024-12-27T20:16:30.777Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-a88793fc-dd6a-4917-ae76-b01695d94650
+2024-12-27T20:16:30.777Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a88793fc-dd6a-4917-ae76-b01695d94650\code.py
+2024-12-27T20:16:30.778Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a88793fc-dd6a-4917-ae76-b01695d94650\input.txt
+2024-12-27T20:16:30.778Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-a88793fc-dd6a-4917-ae76-b01695d94650:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:16:31.337Z [32minfo[39m: Job a88793fc-dd6a-4917-ae76-b01695d94650 executed successfully with output: Hello from Python!
+
+2024-12-27T20:16:31.338Z [32minfo[39m: Cleaned up temporary files for job a88793fc-dd6a-4917-ae76-b01695d94650
+2024-12-27T20:16:31.339Z [32minfo[39m: Job 116 state: completed
+2024-12-27T20:16:31.339Z [32minfo[39m: Job 116 completed successfully: Hello from Python!
+
+2024-12-27T20:17:45.696Z [32minfo[39m: Job 117 added to the queue
+2024-12-27T20:17:45.697Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3
+2024-12-27T20:17:45.698Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3\code.java
+2024-12-27T20:17:45.699Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3\input.txt
+2024-12-27T20:17:45.699Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:17:46.667Z [31merror[39m: Error executing job 3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3: Exception in thread "main" java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+	at code.main(code.java:6)
+
+2024-12-27T20:17:46.668Z [31merror[39m: Job 3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3 failed: Exception in thread "main" java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+	at code.main(code.java:6)
+
+2024-12-27T20:17:46.669Z [32minfo[39m: Cleaned up temporary files for job 3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3
+2024-12-27T20:17:46.670Z [31merror[39m: Error in code execution for job 3a3a6f6b-e365-4eb2-8566-fdd78eae2fa3: Error: Exception in thread "main" java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+	at code.main(code.java:6)
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:17:50.112Z [32minfo[39m: Job 118 added to the queue
+2024-12-27T20:17:50.113Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-da5ea14f-bc3d-4cc2-b44c-17e76d0fb290
+2024-12-27T20:17:50.114Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-da5ea14f-bc3d-4cc2-b44c-17e76d0fb290\code.java
+2024-12-27T20:17:50.115Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-da5ea14f-bc3d-4cc2-b44c-17e76d0fb290\input.txt
+2024-12-27T20:17:50.115Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-da5ea14f-bc3d-4cc2-b44c-17e76d0fb290:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:17:51.027Z [31merror[39m: Error executing job da5ea14f-bc3d-4cc2-b44c-17e76d0fb290: Exception in thread "main" java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+	at code.main(code.java:6)
+
+2024-12-27T20:17:51.028Z [31merror[39m: Job da5ea14f-bc3d-4cc2-b44c-17e76d0fb290 failed: Exception in thread "main" java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+	at code.main(code.java:6)
+
+2024-12-27T20:17:51.029Z [32minfo[39m: Cleaned up temporary files for job da5ea14f-bc3d-4cc2-b44c-17e76d0fb290
+2024-12-27T20:17:51.030Z [31merror[39m: Error in code execution for job da5ea14f-bc3d-4cc2-b44c-17e76d0fb290: Error: Exception in thread "main" java.util.NoSuchElementException: No line found
+	at java.base/java.util.Scanner.nextLine(Scanner.java:1651)
+	at code.main(code.java:6)
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:18:28.642Z [32minfo[39m: Job 119 added to the queue
+2024-12-27T20:18:28.643Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-e28ce779-3287-4e99-ad7f-eb32987af2cd
+2024-12-27T20:18:28.644Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e28ce779-3287-4e99-ad7f-eb32987af2cd\code.java
+2024-12-27T20:18:28.645Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e28ce779-3287-4e99-ad7f-eb32987af2cd\input.txt
+2024-12-27T20:18:28.645Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-e28ce779-3287-4e99-ad7f-eb32987af2cd:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:18:29.636Z [32minfo[39m: Job e28ce779-3287-4e99-ad7f-eb32987af2cd executed successfully with output: No input received.
+
+2024-12-27T20:18:29.638Z [32minfo[39m: Cleaned up temporary files for job e28ce779-3287-4e99-ad7f-eb32987af2cd
+2024-12-27T20:18:29.639Z [32minfo[39m: Job 119 state: completed
+2024-12-27T20:18:29.640Z [32minfo[39m: Job 119 completed successfully: No input received.
+
+2024-12-27T20:19:16.238Z [32minfo[39m: Job 120 added to the queue
+2024-12-27T20:19:16.239Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-0ca693be-bb18-4f26-ac0d-e6d1c3a33abd
+2024-12-27T20:19:16.240Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0ca693be-bb18-4f26-ac0d-e6d1c3a33abd\code.java
+2024-12-27T20:19:16.240Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0ca693be-bb18-4f26-ac0d-e6d1c3a33abd\input.txt
+2024-12-27T20:19:16.241Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-0ca693be-bb18-4f26-ac0d-e6d1c3a33abd:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:19:17.193Z [32minfo[39m: Job 0ca693be-bb18-4f26-ac0d-e6d1c3a33abd executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:19:17.194Z [32minfo[39m: Cleaned up temporary files for job 0ca693be-bb18-4f26-ac0d-e6d1c3a33abd
+2024-12-27T20:19:17.195Z [32minfo[39m: Job 120 state: completed
+2024-12-27T20:19:17.195Z [32minfo[39m: Job 120 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:19:29.739Z [32minfo[39m: Job 121 added to the queue
+2024-12-27T20:19:29.740Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-00318e21-f8e6-43e3-8717-1feb86cf3e88
+2024-12-27T20:19:29.741Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-00318e21-f8e6-43e3-8717-1feb86cf3e88\code.java
+2024-12-27T20:19:29.742Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-00318e21-f8e6-43e3-8717-1feb86cf3e88\input.txt
+2024-12-27T20:19:29.742Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-00318e21-f8e6-43e3-8717-1feb86cf3e88:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:19:30.735Z [32minfo[39m: Job 00318e21-f8e6-43e3-8717-1feb86cf3e88 executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:19:30.736Z [32minfo[39m: Cleaned up temporary files for job 00318e21-f8e6-43e3-8717-1feb86cf3e88
+2024-12-27T20:19:30.737Z [32minfo[39m: Job 121 state: completed
+2024-12-27T20:19:30.737Z [32minfo[39m: Job 121 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:20:03.797Z [32minfo[39m: Job 122 added to the queue
+2024-12-27T20:20:03.798Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-51e1eadd-ae78-4ead-919c-82c5678f1b97
+2024-12-27T20:20:03.798Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-51e1eadd-ae78-4ead-919c-82c5678f1b97\code.py
+2024-12-27T20:20:03.799Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-51e1eadd-ae78-4ead-919c-82c5678f1b97\input.txt
+2024-12-27T20:20:03.799Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-51e1eadd-ae78-4ead-919c-82c5678f1b97:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:20:04.402Z [31merror[39m: Error executing job 51e1eadd-ae78-4ead-919c-82c5678f1b97: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    print(input())
+EOFError: EOF when reading a line
+
+2024-12-27T20:20:04.403Z [31merror[39m: Job 51e1eadd-ae78-4ead-919c-82c5678f1b97 failed: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    print(input())
+EOFError: EOF when reading a line
+
+2024-12-27T20:20:04.405Z [32minfo[39m: Cleaned up temporary files for job 51e1eadd-ae78-4ead-919c-82c5678f1b97
+2024-12-27T20:20:04.406Z [31merror[39m: Error in code execution for job 51e1eadd-ae78-4ead-919c-82c5678f1b97: Error: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    print(input())
+EOFError: EOF when reading a line
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:20:30.370Z [32minfo[39m: Job 123 added to the queue
+2024-12-27T20:20:30.371Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-f788f098-b322-403c-9024-43cb5fe873c2
+2024-12-27T20:20:30.371Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-f788f098-b322-403c-9024-43cb5fe873c2\code.py
+2024-12-27T20:20:30.372Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-f788f098-b322-403c-9024-43cb5fe873c2\input.txt
+2024-12-27T20:20:30.372Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-f788f098-b322-403c-9024-43cb5fe873c2:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:20:30.935Z [31merror[39m: Error executing job f788f098-b322-403c-9024-43cb5fe873c2: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    print(input('Enter a Input: '))
+EOFError: EOF when reading a line
+
+2024-12-27T20:20:30.935Z [31merror[39m: Job f788f098-b322-403c-9024-43cb5fe873c2 failed: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    print(input('Enter a Input: '))
+EOFError: EOF when reading a line
+
+2024-12-27T20:20:30.936Z [32minfo[39m: Cleaned up temporary files for job f788f098-b322-403c-9024-43cb5fe873c2
+2024-12-27T20:20:30.937Z [31merror[39m: Error in code execution for job f788f098-b322-403c-9024-43cb5fe873c2: Error: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    print(input('Enter a Input: '))
+EOFError: EOF when reading a line
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:21:21.968Z [32minfo[39m: Job 124 added to the queue
+2024-12-27T20:21:21.969Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429
+2024-12-27T20:21:21.969Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429\code.py
+2024-12-27T20:21:21.969Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429\input.txt
+2024-12-27T20:21:21.970Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:21:22.581Z [31merror[39m: Error executing job 0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    with open('input.txt', 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'input.txt'
+
+2024-12-27T20:21:22.581Z [31merror[39m: Job 0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429 failed: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    with open('input.txt', 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'input.txt'
+
+2024-12-27T20:21:22.583Z [32minfo[39m: Cleaned up temporary files for job 0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429
+2024-12-27T20:21:22.584Z [31merror[39m: Error in code execution for job 0e7c89dc-3dc9-4da8-83aa-e2ccf89b6429: Error: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    with open('input.txt', 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'input.txt'
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:21:54.204Z [32minfo[39m: Job 125 added to the queue
+2024-12-27T20:21:54.205Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-af3de173-cc70-4d4a-b690-8a4c869a8f14
+2024-12-27T20:21:54.206Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-af3de173-cc70-4d4a-b690-8a4c869a8f14\code.py
+2024-12-27T20:21:54.207Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-af3de173-cc70-4d4a-b690-8a4c869a8f14\input.txt
+2024-12-27T20:21:54.207Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-af3de173-cc70-4d4a-b690-8a4c869a8f14:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:21:54.868Z [32minfo[39m: Job af3de173-cc70-4d4a-b690-8a4c869a8f14 executed successfully with output: Hellow
+
+2024-12-27T20:21:54.870Z [32minfo[39m: Cleaned up temporary files for job af3de173-cc70-4d4a-b690-8a4c869a8f14
+2024-12-27T20:21:54.871Z [32minfo[39m: Job 125 state: completed
+2024-12-27T20:21:54.871Z [32minfo[39m: Job 125 completed successfully: Hellow
+
+2024-12-27T20:22:10.520Z [32minfo[39m: Job 126 added to the queue
+2024-12-27T20:22:10.521Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-fb6c3d9f-ad49-4402-8db9-59aa49704edd
+2024-12-27T20:22:10.522Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-fb6c3d9f-ad49-4402-8db9-59aa49704edd\code.py
+2024-12-27T20:22:10.523Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-fb6c3d9f-ad49-4402-8db9-59aa49704edd\input.txt
+2024-12-27T20:22:10.523Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-fb6c3d9f-ad49-4402-8db9-59aa49704edd:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:22:11.162Z [32minfo[39m: Job fb6c3d9f-ad49-4402-8db9-59aa49704edd executed successfully with output: Hellow
+2
+
+2024-12-27T20:22:11.163Z [32minfo[39m: Cleaned up temporary files for job fb6c3d9f-ad49-4402-8db9-59aa49704edd
+2024-12-27T20:22:11.165Z [32minfo[39m: Job 126 state: completed
+2024-12-27T20:22:11.165Z [32minfo[39m: Job 126 completed successfully: Hellow
+2
+
+2024-12-27T20:23:59.512Z [32minfo[39m: Job 127 added to the queue
+2024-12-27T20:23:59.513Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-46d2433e-adf1-48c2-997c-968328f68cfd
+2024-12-27T20:23:59.514Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-46d2433e-adf1-48c2-997c-968328f68cfd\code.java
+2024-12-27T20:23:59.514Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-46d2433e-adf1-48c2-997c-968328f68cfd\input.txt
+2024-12-27T20:23:59.514Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-46d2433e-adf1-48c2-997c-968328f68cfd:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:24:00.369Z [32minfo[39m: Job 46d2433e-adf1-48c2-997c-968328f68cfd executed successfully with output: Input received: 
+Input file was empty or not provided correctly.
+
+2024-12-27T20:24:00.370Z [32minfo[39m: Cleaned up temporary files for job 46d2433e-adf1-48c2-997c-968328f68cfd
+2024-12-27T20:24:00.371Z [32minfo[39m: Job 127 state: completed
+2024-12-27T20:24:00.371Z [32minfo[39m: Job 127 completed successfully: Input received: 
+Input file was empty or not provided correctly.
+
+2024-12-27T20:25:01.776Z [32minfo[39m: Job 128 added to the queue
+2024-12-27T20:25:01.777Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-42854aa7-9944-4126-8a17-92a454916a10
+2024-12-27T20:25:01.778Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-42854aa7-9944-4126-8a17-92a454916a10\code.java
+2024-12-27T20:25:01.778Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-42854aa7-9944-4126-8a17-92a454916a10\input.txt
+2024-12-27T20:25:01.779Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-42854aa7-9944-4126-8a17-92a454916a10:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:25:02.706Z [32minfo[39m: Job 42854aa7-9944-4126-8a17-92a454916a10 executed successfully with output: Hello World
+
+2024-12-27T20:25:02.707Z [32minfo[39m: Cleaned up temporary files for job 42854aa7-9944-4126-8a17-92a454916a10
+2024-12-27T20:25:02.708Z [32minfo[39m: Job 128 state: completed
+2024-12-27T20:25:02.709Z [32minfo[39m: Job 128 completed successfully: Hello World
+
+2024-12-27T20:27:14.983Z [32minfo[39m: Job 129 added to the queue
+2024-12-27T20:27:14.984Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-80b0dfe7-38d8-478b-8029-f23946dccbd6
+2024-12-27T20:27:14.985Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-80b0dfe7-38d8-478b-8029-f23946dccbd6\code.java
+2024-12-27T20:27:14.986Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-80b0dfe7-38d8-478b-8029-f23946dccbd6\input.txt
+2024-12-27T20:27:14.986Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-80b0dfe7-38d8-478b-8029-f23946dccbd6:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:27:15.909Z [32minfo[39m: Job 80b0dfe7-38d8-478b-8029-f23946dccbd6 executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:27:15.911Z [32minfo[39m: Cleaned up temporary files for job 80b0dfe7-38d8-478b-8029-f23946dccbd6
+2024-12-27T20:27:15.912Z [32minfo[39m: Job 129 state: completed
+2024-12-27T20:27:15.912Z [32minfo[39m: Job 129 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:27:58.185Z [32minfo[39m: Job 130 added to the queue
+2024-12-27T20:27:58.186Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e
+2024-12-27T20:27:58.187Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e\code.py
+2024-12-27T20:27:58.187Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e\input.txt
+2024-12-27T20:27:58.187Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:27:58.790Z [31merror[39m: Error executing job e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    with open('input.txt', 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'input.txt'
+
+2024-12-27T20:27:58.790Z [31merror[39m: Job e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e failed: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    with open('input.txt', 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'input.txt'
+
+2024-12-27T20:27:58.791Z [32minfo[39m: Cleaned up temporary files for job e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e
+2024-12-27T20:27:58.792Z [31merror[39m: Error in code execution for job e791b01f-0f6e-48a6-bbe6-0ce27ffd2d5e: Error: Traceback (most recent call last):
+  File "/sandbox/code.py", line 1, in <module>
+    with open('input.txt', 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'input.txt'
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:28:58.551Z [32minfo[39m: Job 131 added to the queue
+2024-12-27T20:28:58.552Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-bcbe940c-ad51-4e78-8c99-5108a8d3b77c
+2024-12-27T20:28:58.552Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-bcbe940c-ad51-4e78-8c99-5108a8d3b77c\code.java
+2024-12-27T20:28:58.553Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-bcbe940c-ad51-4e78-8c99-5108a8d3b77c\input.txt
+2024-12-27T20:28:58.553Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-bcbe940c-ad51-4e78-8c99-5108a8d3b77c:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:28:59.431Z [32minfo[39m: Job bcbe940c-ad51-4e78-8c99-5108a8d3b77c executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:28:59.433Z [32minfo[39m: Cleaned up temporary files for job bcbe940c-ad51-4e78-8c99-5108a8d3b77c
+2024-12-27T20:28:59.433Z [32minfo[39m: Job 131 state: completed
+2024-12-27T20:28:59.433Z [32minfo[39m: Job 131 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:33:34.063Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:33:35.603Z [32minfo[39m: Job 132 added to the queue
+2024-12-27T20:33:35.605Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-07974e8b-ca6e-402a-9f74-793c77fb1a6f
+2024-12-27T20:33:35.606Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-07974e8b-ca6e-402a-9f74-793c77fb1a6f\code.java
+2024-12-27T20:33:35.607Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-07974e8b-ca6e-402a-9f74-793c77fb1a6f\input.txt
+2024-12-27T20:33:35.607Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-07974e8b-ca6e-402a-9f74-793c77fb1a6f:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:33:36.517Z [32minfo[39m: Job 07974e8b-ca6e-402a-9f74-793c77fb1a6f output: Input file was empty or not provided correctly.
+
+2024-12-27T20:33:36.517Z [32minfo[39m: Job 07974e8b-ca6e-402a-9f74-793c77fb1a6f executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:33:36.519Z [32minfo[39m: Cleaned up temporary files for job 07974e8b-ca6e-402a-9f74-793c77fb1a6f
+2024-12-27T20:33:36.520Z [32minfo[39m: Job 132 state: completed
+2024-12-27T20:33:36.520Z [32minfo[39m: Job 132 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:33:41.046Z [32minfo[39m: Job 133 added to the queue
+2024-12-27T20:33:41.047Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-7503bba3-9b88-4ff6-941a-ab5e3d030875
+2024-12-27T20:33:41.047Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7503bba3-9b88-4ff6-941a-ab5e3d030875\code.java
+2024-12-27T20:33:41.048Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7503bba3-9b88-4ff6-941a-ab5e3d030875\input.txt
+2024-12-27T20:33:41.048Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-7503bba3-9b88-4ff6-941a-ab5e3d030875:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:33:41.913Z [32minfo[39m: Job 7503bba3-9b88-4ff6-941a-ab5e3d030875 output: Hello World
+
+2024-12-27T20:33:41.914Z [32minfo[39m: Job 7503bba3-9b88-4ff6-941a-ab5e3d030875 executed successfully with output: Hello World
+
+2024-12-27T20:33:41.915Z [32minfo[39m: Cleaned up temporary files for job 7503bba3-9b88-4ff6-941a-ab5e3d030875
+2024-12-27T20:33:41.916Z [32minfo[39m: Job 133 state: completed
+2024-12-27T20:33:41.916Z [32minfo[39m: Job 133 completed successfully: Hello World
+
+2024-12-27T20:33:51.584Z [32minfo[39m: Job 134 added to the queue
+2024-12-27T20:33:51.585Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-186be99d-3843-4432-bd8d-b4da16fcc977
+2024-12-27T20:33:51.585Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-186be99d-3843-4432-bd8d-b4da16fcc977\code.py
+2024-12-27T20:33:51.586Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-186be99d-3843-4432-bd8d-b4da16fcc977\input.txt
+2024-12-27T20:33:51.586Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-186be99d-3843-4432-bd8d-b4da16fcc977:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:33:52.192Z [32minfo[39m: Job 186be99d-3843-4432-bd8d-b4da16fcc977 output: Hellow
+2
+
+2024-12-27T20:33:52.193Z [32minfo[39m: Job 186be99d-3843-4432-bd8d-b4da16fcc977 executed successfully with output: Hellow
+2
+
+2024-12-27T20:33:52.194Z [32minfo[39m: Cleaned up temporary files for job 186be99d-3843-4432-bd8d-b4da16fcc977
+2024-12-27T20:33:52.195Z [32minfo[39m: Job 134 state: completed
+2024-12-27T20:33:52.195Z [32minfo[39m: Job 134 completed successfully: Hellow
+2
+
+2024-12-27T20:34:06.082Z [32minfo[39m: Job 135 added to the queue
+2024-12-27T20:34:06.083Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-7ff04f9a-28af-4fc7-a6ca-f2cfedc3c8d4
+2024-12-27T20:34:06.084Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7ff04f9a-28af-4fc7-a6ca-f2cfedc3c8d4\code.cpp
+2024-12-27T20:34:06.084Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7ff04f9a-28af-4fc7-a6ca-f2cfedc3c8d4\input.txt
+2024-12-27T20:34:06.084Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-7ff04f9a-28af-4fc7-a6ca-f2cfedc3c8d4:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:34:06.853Z [32minfo[39m: Job 7ff04f9a-28af-4fc7-a6ca-f2cfedc3c8d4 output: Hello, C++ World!
+
+2024-12-27T20:34:06.854Z [32minfo[39m: Job 7ff04f9a-28af-4fc7-a6ca-f2cfedc3c8d4 executed successfully with output: Hello, C++ World!
+
+2024-12-27T20:34:06.856Z [32minfo[39m: Cleaned up temporary files for job 7ff04f9a-28af-4fc7-a6ca-f2cfedc3c8d4
+2024-12-27T20:34:06.856Z [32minfo[39m: Job 135 state: completed
+2024-12-27T20:34:06.857Z [32minfo[39m: Job 135 completed successfully: Hello, C++ World!
+
+2024-12-27T20:34:28.056Z [32minfo[39m: Job 136 added to the queue
+2024-12-27T20:34:28.057Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-0084ca13-6b67-4116-9ea5-b59b0d3beb54
+2024-12-27T20:34:28.058Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0084ca13-6b67-4116-9ea5-b59b0d3beb54\code.java
+2024-12-27T20:34:28.059Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0084ca13-6b67-4116-9ea5-b59b0d3beb54\input.txt
+2024-12-27T20:34:28.060Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-0084ca13-6b67-4116-9ea5-b59b0d3beb54:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:34:28.945Z [32minfo[39m: Job 0084ca13-6b67-4116-9ea5-b59b0d3beb54 output: Input file was empty or not provided correctly.
+
+2024-12-27T20:34:28.946Z [32minfo[39m: Job 0084ca13-6b67-4116-9ea5-b59b0d3beb54 executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:34:28.947Z [32minfo[39m: Cleaned up temporary files for job 0084ca13-6b67-4116-9ea5-b59b0d3beb54
+2024-12-27T20:34:28.948Z [32minfo[39m: Job 136 state: completed
+2024-12-27T20:34:28.948Z [32minfo[39m: Job 136 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:35:38.299Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:35:42.096Z [32minfo[39m: Job 137 added to the queue
+2024-12-27T20:35:42.097Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-e5432392-3ef4-4f92-be6f-5857261d2663
+2024-12-27T20:35:42.098Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e5432392-3ef4-4f92-be6f-5857261d2663\code.java
+2024-12-27T20:35:42.099Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e5432392-3ef4-4f92-be6f-5857261d2663\input.txt
+2024-12-27T20:35:42.099Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-e5432392-3ef4-4f92-be6f-5857261d2663:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:35:43.015Z [32minfo[39m: Job e5432392-3ef4-4f92-be6f-5857261d2663 output: Input file was empty or not provided correctly.
+
+2024-12-27T20:35:43.015Z [32minfo[39m: Job e5432392-3ef4-4f92-be6f-5857261d2663 executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:35:43.017Z [32minfo[39m: Cleaned up temporary files for job e5432392-3ef4-4f92-be6f-5857261d2663
+2024-12-27T20:35:43.019Z [32minfo[39m: Job 137 state: completed
+2024-12-27T20:35:43.019Z [32minfo[39m: Job 137 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:35:54.940Z [32minfo[39m: Job 138 added to the queue
+2024-12-27T20:35:54.941Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-e54e40b7-cdca-47c0-8f15-84f7c91f5aec
+2024-12-27T20:35:54.942Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e54e40b7-cdca-47c0-8f15-84f7c91f5aec\code.py
+2024-12-27T20:35:54.943Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e54e40b7-cdca-47c0-8f15-84f7c91f5aec\input.txt
+2024-12-27T20:35:54.943Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-e54e40b7-cdca-47c0-8f15-84f7c91f5aec:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:35:55.576Z [32minfo[39m: Job e54e40b7-cdca-47c0-8f15-84f7c91f5aec output: Hellow
+2
+
+2024-12-27T20:35:55.577Z [32minfo[39m: Job e54e40b7-cdca-47c0-8f15-84f7c91f5aec executed successfully with output: Hellow
+2
+
+2024-12-27T20:35:55.578Z [32minfo[39m: Cleaned up temporary files for job e54e40b7-cdca-47c0-8f15-84f7c91f5aec
+2024-12-27T20:35:55.579Z [32minfo[39m: Job 138 state: completed
+2024-12-27T20:35:55.579Z [32minfo[39m: Job 138 completed successfully: Hellow
+2
+
+2024-12-27T20:36:09.247Z [32minfo[39m: Job 139 added to the queue
+2024-12-27T20:36:09.248Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-3ef1947e-63ec-4127-97ba-b82a781e0aba
+2024-12-27T20:36:09.249Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-3ef1947e-63ec-4127-97ba-b82a781e0aba\code.java
+2024-12-27T20:36:09.249Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-3ef1947e-63ec-4127-97ba-b82a781e0aba\input.txt
+2024-12-27T20:36:09.249Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-3ef1947e-63ec-4127-97ba-b82a781e0aba:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code /sandbox/input.txt"
+2024-12-27T20:36:10.112Z [32minfo[39m: Job 3ef1947e-63ec-4127-97ba-b82a781e0aba output: Input file was empty or not provided correctly.
+
+2024-12-27T20:36:10.112Z [32minfo[39m: Job 3ef1947e-63ec-4127-97ba-b82a781e0aba executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:36:10.114Z [32minfo[39m: Cleaned up temporary files for job 3ef1947e-63ec-4127-97ba-b82a781e0aba
+2024-12-27T20:36:10.115Z [32minfo[39m: Job 139 state: completed
+2024-12-27T20:36:10.115Z [32minfo[39m: Job 139 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:36:50.220Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:36:51.602Z [32minfo[39m: Job 140 added to the queue
+2024-12-27T20:36:51.604Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-c065815e-f5b2-401c-849b-07d42a433d07
+2024-12-27T20:36:51.605Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-c065815e-f5b2-401c-849b-07d42a433d07\code.java
+2024-12-27T20:36:51.605Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-c065815e-f5b2-401c-849b-07d42a433d07\input.txt
+2024-12-27T20:36:51.605Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-c065815e-f5b2-401c-849b-07d42a433d07:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:36:52.579Z [32minfo[39m: Job c065815e-f5b2-401c-849b-07d42a433d07 output: Input received: Hello World
+
+2024-12-27T20:36:52.579Z [32minfo[39m: Job c065815e-f5b2-401c-849b-07d42a433d07 executed successfully with output: Input received: Hello World
+
+2024-12-27T20:36:52.581Z [32minfo[39m: Cleaned up temporary files for job c065815e-f5b2-401c-849b-07d42a433d07
+2024-12-27T20:36:52.583Z [32minfo[39m: Job 140 state: completed
+2024-12-27T20:36:52.583Z [32minfo[39m: Job 140 completed successfully: Input received: Hello World
+
+2024-12-27T20:36:59.904Z [32minfo[39m: Job 141 added to the queue
+2024-12-27T20:36:59.905Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-9190bc3c-a5bd-40a4-958e-bd5633f7bfeb
+2024-12-27T20:36:59.906Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-9190bc3c-a5bd-40a4-958e-bd5633f7bfeb\code.java
+2024-12-27T20:36:59.906Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-9190bc3c-a5bd-40a4-958e-bd5633f7bfeb\input.txt
+2024-12-27T20:36:59.906Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-9190bc3c-a5bd-40a4-958e-bd5633f7bfeb:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:37:00.817Z [32minfo[39m: Job 9190bc3c-a5bd-40a4-958e-bd5633f7bfeb output: Hello World
+
+2024-12-27T20:37:00.818Z [32minfo[39m: Job 9190bc3c-a5bd-40a4-958e-bd5633f7bfeb executed successfully with output: Hello World
+
+2024-12-27T20:37:00.819Z [32minfo[39m: Cleaned up temporary files for job 9190bc3c-a5bd-40a4-958e-bd5633f7bfeb
+2024-12-27T20:37:00.820Z [32minfo[39m: Job 141 state: completed
+2024-12-27T20:37:00.820Z [32minfo[39m: Job 141 completed successfully: Hello World
+
+2024-12-27T20:37:24.102Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:37:31.181Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:38:09.255Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:38:13.698Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:38:26.575Z [32minfo[39m: Job 142 added to the queue
+2024-12-27T20:38:26.577Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-4f7ea23f-4539-402e-96be-fb08d33f2495
+2024-12-27T20:38:26.578Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-4f7ea23f-4539-402e-96be-fb08d33f2495\code.java
+2024-12-27T20:38:26.579Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-4f7ea23f-4539-402e-96be-fb08d33f2495\input.txt
+2024-12-27T20:38:26.580Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-4f7ea23f-4539-402e-96be-fb08d33f2495:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:38:27.497Z [32minfo[39m: Job 4f7ea23f-4539-402e-96be-fb08d33f2495 output: Input received: 
+
+2024-12-27T20:38:27.498Z [32minfo[39m: Job 4f7ea23f-4539-402e-96be-fb08d33f2495 executed successfully with output: Input received: 
+
+2024-12-27T20:38:27.500Z [32minfo[39m: Cleaned up temporary files for job 4f7ea23f-4539-402e-96be-fb08d33f2495
+2024-12-27T20:38:27.502Z [32minfo[39m: Job 142 state: completed
+2024-12-27T20:38:27.502Z [32minfo[39m: Job 142 completed successfully: Input received: 
+
+2024-12-27T20:38:38.015Z [32minfo[39m: Job 143 added to the queue
+2024-12-27T20:38:38.016Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-685ab6f4-458e-4d61-ab08-c52df5121e95
+2024-12-27T20:38:38.017Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-685ab6f4-458e-4d61-ab08-c52df5121e95\code.java
+2024-12-27T20:38:38.018Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-685ab6f4-458e-4d61-ab08-c52df5121e95\input.txt
+2024-12-27T20:38:38.018Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-685ab6f4-458e-4d61-ab08-c52df5121e95:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:38:38.852Z [31merror[39m: Error executing job 685ab6f4-458e-4d61-ab08-c52df5121e95: /sandbox/code.java:6: error: illegal start of type
+        } else {
+          ^
+/sandbox/code.java:9: error: <identifier> expected
+        sc.close();
+                ^
+/sandbox/code.java:11: error: class, interface, or enum expected
+}
+^
+3 errors
+
+2024-12-27T20:38:38.853Z [31merror[39m: Job 685ab6f4-458e-4d61-ab08-c52df5121e95 failed: /sandbox/code.java:6: error: illegal start of type
+        } else {
+          ^
+/sandbox/code.java:9: error: <identifier> expected
+        sc.close();
+                ^
+/sandbox/code.java:11: error: class, interface, or enum expected
+}
+^
+3 errors
+
+2024-12-27T20:38:38.854Z [32minfo[39m: Cleaned up temporary files for job 685ab6f4-458e-4d61-ab08-c52df5121e95
+2024-12-27T20:38:38.856Z [31merror[39m: Error in code execution for job 685ab6f4-458e-4d61-ab08-c52df5121e95: Error: /sandbox/code.java:6: error: illegal start of type
+        } else {
+          ^
+/sandbox/code.java:9: error: <identifier> expected
+        sc.close();
+                ^
+/sandbox/code.java:11: error: class, interface, or enum expected
+}
+^
+3 errors
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:38:41.581Z [32minfo[39m: Job 144 added to the queue
+2024-12-27T20:38:41.582Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-6653a696-440c-4340-b83e-7f128853ea32
+2024-12-27T20:38:41.582Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-6653a696-440c-4340-b83e-7f128853ea32\code.java
+2024-12-27T20:38:41.583Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-6653a696-440c-4340-b83e-7f128853ea32\input.txt
+2024-12-27T20:38:41.583Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-6653a696-440c-4340-b83e-7f128853ea32:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:38:42.506Z [32minfo[39m: Job 6653a696-440c-4340-b83e-7f128853ea32 output: Input received: Hello World
+
+2024-12-27T20:38:42.507Z [32minfo[39m: Job 6653a696-440c-4340-b83e-7f128853ea32 executed successfully with output: Input received: Hello World
+
+2024-12-27T20:38:42.509Z [32minfo[39m: Cleaned up temporary files for job 6653a696-440c-4340-b83e-7f128853ea32
+2024-12-27T20:38:42.510Z [32minfo[39m: Job 144 state: completed
+2024-12-27T20:38:42.510Z [32minfo[39m: Job 144 completed successfully: Input received: Hello World
+
+2024-12-27T20:38:47.551Z [32minfo[39m: Job 145 added to the queue
+2024-12-27T20:38:47.552Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-2a5cfcbd-8df0-423c-921c-5a5ca0552399
+2024-12-27T20:38:47.553Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-2a5cfcbd-8df0-423c-921c-5a5ca0552399\code.py
+2024-12-27T20:38:47.553Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-2a5cfcbd-8df0-423c-921c-5a5ca0552399\input.txt
+2024-12-27T20:38:47.554Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-2a5cfcbd-8df0-423c-921c-5a5ca0552399:/sandbox" python:3.10 python3 /sandbox/code.py < /sandbox/input.txt
+2024-12-27T20:38:47.564Z [31merror[39m: Error executing job 2a5cfcbd-8df0-423c-921c-5a5ca0552399: The system cannot find the path specified.
+
+2024-12-27T20:38:47.564Z [31merror[39m: Job 2a5cfcbd-8df0-423c-921c-5a5ca0552399 failed: The system cannot find the path specified.
+
+2024-12-27T20:38:47.565Z [32minfo[39m: Cleaned up temporary files for job 2a5cfcbd-8df0-423c-921c-5a5ca0552399
+2024-12-27T20:38:47.566Z [31merror[39m: Error in code execution for job 2a5cfcbd-8df0-423c-921c-5a5ca0552399: Error: The system cannot find the path specified.
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:39:04.025Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:39:11.900Z [32minfo[39m: Job 146 added to the queue
+2024-12-27T20:39:11.902Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-d1407559-314d-41e6-a655-9930bdd1b2e4
+2024-12-27T20:39:11.903Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d1407559-314d-41e6-a655-9930bdd1b2e4\code.py
+2024-12-27T20:39:11.903Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d1407559-314d-41e6-a655-9930bdd1b2e4\input.txt
+2024-12-27T20:39:11.904Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-d1407559-314d-41e6-a655-9930bdd1b2e4:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:39:12.482Z [32minfo[39m: Job d1407559-314d-41e6-a655-9930bdd1b2e4 output: Hellow
+2
+
+2024-12-27T20:39:12.483Z [32minfo[39m: Job d1407559-314d-41e6-a655-9930bdd1b2e4 executed successfully with output: Hellow
+2
+
+2024-12-27T20:39:12.485Z [32minfo[39m: Cleaned up temporary files for job d1407559-314d-41e6-a655-9930bdd1b2e4
+2024-12-27T20:39:12.486Z [32minfo[39m: Job 146 state: completed
+2024-12-27T20:39:12.487Z [32minfo[39m: Job 146 completed successfully: Hellow
+2
+
+2024-12-27T20:39:22.340Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:39:24.858Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:39:27.781Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:39:31.619Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:39:44.358Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:39:49.668Z [32minfo[39m: Job 147 added to the queue
+2024-12-27T20:39:49.669Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-60d0854d-fcd3-48e4-a344-ae1ea86f74ef
+2024-12-27T20:39:49.670Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-60d0854d-fcd3-48e4-a344-ae1ea86f74ef\code.py
+2024-12-27T20:39:49.671Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-60d0854d-fcd3-48e4-a344-ae1ea86f74ef\input.txt
+2024-12-27T20:39:49.672Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-60d0854d-fcd3-48e4-a344-ae1ea86f74ef:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:39:50.253Z [32minfo[39m: Job 60d0854d-fcd3-48e4-a344-ae1ea86f74ef output: Hellow
+2
+
+2024-12-27T20:39:50.253Z [32minfo[39m: Job 60d0854d-fcd3-48e4-a344-ae1ea86f74ef executed successfully with output: Hellow
+2
+
+2024-12-27T20:39:50.255Z [32minfo[39m: Cleaned up temporary files for job 60d0854d-fcd3-48e4-a344-ae1ea86f74ef
+2024-12-27T20:39:50.257Z [32minfo[39m: Job 147 state: completed
+2024-12-27T20:39:50.257Z [32minfo[39m: Job 147 completed successfully: Hellow
+2
+
+2024-12-27T20:39:59.713Z [32minfo[39m: Job 148 added to the queue
+2024-12-27T20:39:59.714Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-43a06291-f778-4fc8-b7ad-0208920d0b90
+2024-12-27T20:39:59.715Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-43a06291-f778-4fc8-b7ad-0208920d0b90\code.java
+2024-12-27T20:39:59.715Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-43a06291-f778-4fc8-b7ad-0208920d0b90\input.txt
+2024-12-27T20:39:59.716Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-43a06291-f778-4fc8-b7ad-0208920d0b90:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:40:00.674Z [32minfo[39m: Job 43a06291-f778-4fc8-b7ad-0208920d0b90 output: Input received: Hello World
+
+2024-12-27T20:40:00.675Z [32minfo[39m: Job 43a06291-f778-4fc8-b7ad-0208920d0b90 executed successfully with output: Input received: Hello World
+
+2024-12-27T20:40:00.677Z [32minfo[39m: Cleaned up temporary files for job 43a06291-f778-4fc8-b7ad-0208920d0b90
+2024-12-27T20:40:00.677Z [32minfo[39m: Job 148 state: completed
+2024-12-27T20:40:00.678Z [32minfo[39m: Job 148 completed successfully: Input received: Hello World
+
+2024-12-27T20:40:46.255Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:40:49.500Z [32minfo[39m: Server running on port 5000
+2024-12-27T20:40:54.890Z [32minfo[39m: Job 149 added to the queue
+2024-12-27T20:40:54.892Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-d112031e-4bc7-436a-8d55-42963b4f58a5
+2024-12-27T20:40:54.893Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d112031e-4bc7-436a-8d55-42963b4f58a5\code.java
+2024-12-27T20:40:54.894Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d112031e-4bc7-436a-8d55-42963b4f58a5\input.txt
+2024-12-27T20:40:54.894Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-d112031e-4bc7-436a-8d55-42963b4f58a5:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:40:55.767Z [32minfo[39m: Job d112031e-4bc7-436a-8d55-42963b4f58a5 executed successfully with output: Input received: Hello World
+
+2024-12-27T20:40:55.769Z [32minfo[39m: Cleaned up temporary files for job d112031e-4bc7-436a-8d55-42963b4f58a5
+2024-12-27T20:40:55.770Z [32minfo[39m: Job 149 state: completed
+2024-12-27T20:40:55.771Z [32minfo[39m: Job 149 completed successfully: Input received: Hello World
+
+2024-12-27T20:41:00.348Z [32minfo[39m: Job 150 added to the queue
+2024-12-27T20:41:00.349Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-5d28df78-1630-4ea3-a00a-e22001e56f07
+2024-12-27T20:41:00.350Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5d28df78-1630-4ea3-a00a-e22001e56f07\code.java
+2024-12-27T20:41:00.350Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5d28df78-1630-4ea3-a00a-e22001e56f07\input.txt
+2024-12-27T20:41:00.350Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-5d28df78-1630-4ea3-a00a-e22001e56f07:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:41:01.287Z [32minfo[39m: Job 5d28df78-1630-4ea3-a00a-e22001e56f07 executed successfully with output: Input received: Hello World
+
+2024-12-27T20:41:01.289Z [32minfo[39m: Cleaned up temporary files for job 5d28df78-1630-4ea3-a00a-e22001e56f07
+2024-12-27T20:41:01.290Z [32minfo[39m: Job 150 state: completed
+2024-12-27T20:41:01.290Z [32minfo[39m: Job 150 completed successfully: Input received: Hello World
+
+2024-12-27T20:41:07.186Z [32minfo[39m: Job 151 added to the queue
+2024-12-27T20:41:07.187Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-2b351725-45c8-4f4b-abf1-748069d16eba
+2024-12-27T20:41:07.188Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-2b351725-45c8-4f4b-abf1-748069d16eba\code.java
+2024-12-27T20:41:07.189Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-2b351725-45c8-4f4b-abf1-748069d16eba\input.txt
+2024-12-27T20:41:07.189Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-2b351725-45c8-4f4b-abf1-748069d16eba:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:41:08.086Z [32minfo[39m: Job 2b351725-45c8-4f4b-abf1-748069d16eba executed successfully with output: Hello World
+
+2024-12-27T20:41:08.088Z [32minfo[39m: Cleaned up temporary files for job 2b351725-45c8-4f4b-abf1-748069d16eba
+2024-12-27T20:41:08.089Z [32minfo[39m: Job 151 state: completed
+2024-12-27T20:41:08.089Z [32minfo[39m: Job 151 completed successfully: Hello World
+
+2024-12-27T20:41:13.186Z [32minfo[39m: Job 152 added to the queue
+2024-12-27T20:41:13.187Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-ae75eb97-dde7-4e90-bab2-07479684e063
+2024-12-27T20:41:13.188Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-ae75eb97-dde7-4e90-bab2-07479684e063\code.java
+2024-12-27T20:41:13.189Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-ae75eb97-dde7-4e90-bab2-07479684e063\input.txt
+2024-12-27T20:41:13.189Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-ae75eb97-dde7-4e90-bab2-07479684e063:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:41:14.051Z [31merror[39m: Error executing job ae75eb97-dde7-4e90-bab2-07479684e063: /sandbox/code.java:8: error: cannot find symbol
+        sc.close();
+        ^
+  symbol:   variable sc
+  location: class code
+1 error
+
+2024-12-27T20:41:14.052Z [31merror[39m: Job ae75eb97-dde7-4e90-bab2-07479684e063 failed: /sandbox/code.java:8: error: cannot find symbol
+        sc.close();
+        ^
+  symbol:   variable sc
+  location: class code
+1 error
+
+2024-12-27T20:41:14.053Z [32minfo[39m: Cleaned up temporary files for job ae75eb97-dde7-4e90-bab2-07479684e063
+2024-12-27T20:41:14.055Z [31merror[39m: Error in code execution for job ae75eb97-dde7-4e90-bab2-07479684e063: Error: /sandbox/code.java:8: error: cannot find symbol
+        sc.close();
+        ^
+  symbol:   variable sc
+  location: class code
+1 error
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:41:19.726Z [32minfo[39m: Job 153 added to the queue
+2024-12-27T20:41:19.727Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4
+2024-12-27T20:41:19.728Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4\code.java
+2024-12-27T20:41:19.729Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4\input.txt
+2024-12-27T20:41:19.729Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:41:20.585Z [31merror[39m: Error executing job 73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4: /sandbox/code.java:6: error: illegal start of type
+        } else {
+          ^
+/sandbox/code.java:9: error: <identifier> expected
+        sc.close();
+                ^
+/sandbox/code.java:11: error: class, interface, or enum expected
+}
+^
+3 errors
+
+2024-12-27T20:41:20.585Z [31merror[39m: Job 73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4 failed: /sandbox/code.java:6: error: illegal start of type
+        } else {
+          ^
+/sandbox/code.java:9: error: <identifier> expected
+        sc.close();
+                ^
+/sandbox/code.java:11: error: class, interface, or enum expected
+}
+^
+3 errors
+
+2024-12-27T20:41:20.587Z [32minfo[39m: Cleaned up temporary files for job 73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4
+2024-12-27T20:41:20.588Z [31merror[39m: Error in code execution for job 73d26a0a-7d08-42e9-ba9f-3a9260b0c9d4: Error: /sandbox/code.java:6: error: illegal start of type
+        } else {
+          ^
+/sandbox/code.java:9: error: <identifier> expected
+        sc.close();
+                ^
+/sandbox/code.java:11: error: class, interface, or enum expected
+}
+^
+3 errors
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T20:41:22.361Z [32minfo[39m: Job 154 added to the queue
+2024-12-27T20:41:22.362Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-4bf9da10-de16-40da-8b43-0b62267bd5fe
+2024-12-27T20:41:22.362Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-4bf9da10-de16-40da-8b43-0b62267bd5fe\code.java
+2024-12-27T20:41:22.363Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-4bf9da10-de16-40da-8b43-0b62267bd5fe\input.txt
+2024-12-27T20:41:22.363Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-4bf9da10-de16-40da-8b43-0b62267bd5fe:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:41:23.236Z [32minfo[39m: Job 4bf9da10-de16-40da-8b43-0b62267bd5fe executed successfully with output: Input received: Hello World
+
+2024-12-27T20:41:23.238Z [32minfo[39m: Cleaned up temporary files for job 4bf9da10-de16-40da-8b43-0b62267bd5fe
+2024-12-27T20:41:23.239Z [32minfo[39m: Job 154 state: completed
+2024-12-27T20:41:23.240Z [32minfo[39m: Job 154 completed successfully: Input received: Hello World
+
+2024-12-27T20:41:34.219Z [32minfo[39m: Job 155 added to the queue
+2024-12-27T20:41:34.220Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-d2a0b2f1-9b22-4f48-801b-0b2e443ab72e
+2024-12-27T20:41:34.221Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d2a0b2f1-9b22-4f48-801b-0b2e443ab72e\code.java
+2024-12-27T20:41:34.221Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d2a0b2f1-9b22-4f48-801b-0b2e443ab72e\input.txt
+2024-12-27T20:41:34.222Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-d2a0b2f1-9b22-4f48-801b-0b2e443ab72e:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:41:35.144Z [32minfo[39m: Job d2a0b2f1-9b22-4f48-801b-0b2e443ab72e executed successfully with output: Input received: Hello World
+
+2024-12-27T20:41:35.146Z [32minfo[39m: Cleaned up temporary files for job d2a0b2f1-9b22-4f48-801b-0b2e443ab72e
+2024-12-27T20:41:35.147Z [32minfo[39m: Job 155 state: completed
+2024-12-27T20:41:35.147Z [32minfo[39m: Job 155 completed successfully: Input received: Hello World
+
+2024-12-27T20:42:07.858Z [32minfo[39m: Job 156 added to the queue
+2024-12-27T20:42:07.859Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-a411a886-028b-477c-84e2-8239ef582c68
+2024-12-27T20:42:07.860Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a411a886-028b-477c-84e2-8239ef582c68\code.py
+2024-12-27T20:42:07.861Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a411a886-028b-477c-84e2-8239ef582c68\input.txt
+2024-12-27T20:42:07.861Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-a411a886-028b-477c-84e2-8239ef582c68:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:42:08.495Z [32minfo[39m: Job a411a886-028b-477c-84e2-8239ef582c68 executed successfully with output: 2
+
+2024-12-27T20:42:08.496Z [32minfo[39m: Cleaned up temporary files for job a411a886-028b-477c-84e2-8239ef582c68
+2024-12-27T20:42:08.497Z [32minfo[39m: Job 156 state: completed
+2024-12-27T20:42:08.498Z [32minfo[39m: Job 156 completed successfully: 2
+
+2024-12-27T20:43:10.220Z [32minfo[39m: Job 157 added to the queue
+2024-12-27T20:43:10.221Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-5f083a5c-5dcc-4e63-a526-2d0f9d039188
+2024-12-27T20:43:10.221Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5f083a5c-5dcc-4e63-a526-2d0f9d039188\code.cpp
+2024-12-27T20:43:10.222Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5f083a5c-5dcc-4e63-a526-2d0f9d039188\input.txt
+2024-12-27T20:43:10.222Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-5f083a5c-5dcc-4e63-a526-2d0f9d039188:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:43:10.950Z [32minfo[39m: Job 5f083a5c-5dcc-4e63-a526-2d0f9d039188 executed successfully with output: Input received: C++ test input
+
+2024-12-27T20:43:10.952Z [32minfo[39m: Cleaned up temporary files for job 5f083a5c-5dcc-4e63-a526-2d0f9d039188
+2024-12-27T20:43:10.953Z [32minfo[39m: Job 157 state: completed
+2024-12-27T20:43:10.953Z [32minfo[39m: Job 157 completed successfully: Input received: C++ test input
+
+2024-12-27T20:43:22.101Z [32minfo[39m: Job 158 added to the queue
+2024-12-27T20:43:22.102Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-bdbc70fb-524c-4695-b549-91e0a97fa0cc
+2024-12-27T20:43:22.103Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-bdbc70fb-524c-4695-b549-91e0a97fa0cc\code.cpp
+2024-12-27T20:43:22.103Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-bdbc70fb-524c-4695-b549-91e0a97fa0cc\input.txt
+2024-12-27T20:43:22.103Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-bdbc70fb-524c-4695-b549-91e0a97fa0cc:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:43:22.892Z [32minfo[39m: Job bdbc70fb-524c-4695-b549-91e0a97fa0cc executed successfully with output: Input received: 
+
+2024-12-27T20:43:22.893Z [32minfo[39m: Cleaned up temporary files for job bdbc70fb-524c-4695-b549-91e0a97fa0cc
+2024-12-27T20:43:22.894Z [32minfo[39m: Job 158 state: completed
+2024-12-27T20:43:22.894Z [32minfo[39m: Job 158 completed successfully: Input received: 
+
+2024-12-27T20:43:43.453Z [32minfo[39m: Job 159 added to the queue
+2024-12-27T20:43:43.454Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-d7785aea-94ec-4217-a899-d337b2dc8065
+2024-12-27T20:43:43.455Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d7785aea-94ec-4217-a899-d337b2dc8065\code.cpp
+2024-12-27T20:43:43.456Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d7785aea-94ec-4217-a899-d337b2dc8065\input.txt
+2024-12-27T20:43:43.456Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-d7785aea-94ec-4217-a899-d337b2dc8065:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:43:44.217Z [32minfo[39m: Job d7785aea-94ec-4217-a899-d337b2dc8065 executed successfully with output: Input received: C++ test input
+
+2024-12-27T20:43:44.219Z [32minfo[39m: Cleaned up temporary files for job d7785aea-94ec-4217-a899-d337b2dc8065
+2024-12-27T20:43:44.219Z [32minfo[39m: Job 159 state: completed
+2024-12-27T20:43:44.220Z [32minfo[39m: Job 159 completed successfully: Input received: C++ test input
+
+2024-12-27T20:43:53.983Z [32minfo[39m: Job 160 added to the queue
+2024-12-27T20:43:53.984Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-8a5cf8b9-56b8-40ae-a838-a487675a10c1
+2024-12-27T20:43:53.985Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-8a5cf8b9-56b8-40ae-a838-a487675a10c1\code.java
+2024-12-27T20:43:53.985Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-8a5cf8b9-56b8-40ae-a838-a487675a10c1\input.txt
+2024-12-27T20:43:53.985Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-8a5cf8b9-56b8-40ae-a838-a487675a10c1:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:43:54.879Z [32minfo[39m: Job 8a5cf8b9-56b8-40ae-a838-a487675a10c1 executed successfully with output: Input file was empty or not provided correctly.
+
+2024-12-27T20:43:54.880Z [32minfo[39m: Cleaned up temporary files for job 8a5cf8b9-56b8-40ae-a838-a487675a10c1
+2024-12-27T20:43:54.881Z [32minfo[39m: Job 160 state: completed
+2024-12-27T20:43:54.881Z [32minfo[39m: Job 160 completed successfully: Input file was empty or not provided correctly.
+
+2024-12-27T20:44:00.193Z [32minfo[39m: Job 161 added to the queue
+2024-12-27T20:44:00.193Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-05bcee89-dbc6-46ad-ac0b-2219ec0c8c12
+2024-12-27T20:44:00.194Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-05bcee89-dbc6-46ad-ac0b-2219ec0c8c12\code.java
+2024-12-27T20:44:00.195Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-05bcee89-dbc6-46ad-ac0b-2219ec0c8c12\input.txt
+2024-12-27T20:44:00.195Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-05bcee89-dbc6-46ad-ac0b-2219ec0c8c12:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-27T20:44:01.058Z [32minfo[39m: Job 05bcee89-dbc6-46ad-ac0b-2219ec0c8c12 executed successfully with output: Input received: dsdsa
+
+2024-12-27T20:44:01.060Z [32minfo[39m: Cleaned up temporary files for job 05bcee89-dbc6-46ad-ac0b-2219ec0c8c12
+2024-12-27T20:44:01.061Z [32minfo[39m: Job 161 state: completed
+2024-12-27T20:44:01.062Z [32minfo[39m: Job 161 completed successfully: Input received: dsdsa
+
+2024-12-27T20:44:11.019Z [32minfo[39m: Job 162 added to the queue
+2024-12-27T20:44:11.020Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-c6129851-37cc-43a4-b13c-bac176ffe4f8
+2024-12-27T20:44:11.021Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-c6129851-37cc-43a4-b13c-bac176ffe4f8\code.py
+2024-12-27T20:44:11.021Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-c6129851-37cc-43a4-b13c-bac176ffe4f8\input.txt
+2024-12-27T20:44:11.021Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-c6129851-37cc-43a4-b13c-bac176ffe4f8:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T20:44:11.639Z [32minfo[39m: Job c6129851-37cc-43a4-b13c-bac176ffe4f8 executed successfully with output: Input received: 
+
+2024-12-27T20:44:11.640Z [32minfo[39m: Cleaned up temporary files for job c6129851-37cc-43a4-b13c-bac176ffe4f8
+2024-12-27T20:44:11.641Z [32minfo[39m: Job 162 state: completed
+2024-12-27T20:44:11.641Z [32minfo[39m: Job 162 completed successfully: Input received: 
+
+2024-12-27T20:44:26.443Z [32minfo[39m: Job 163 added to the queue
+2024-12-27T20:44:26.443Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-6c656823-9b2d-40fe-8263-4ea6f440fc4c
+2024-12-27T20:44:26.444Z [31merror[39m: Job 6c656823-9b2d-40fe-8263-4ea6f440fc4c failed: Unsupported language
+2024-12-27T20:44:26.444Z [32minfo[39m: Cleaned up temporary files for job 6c656823-9b2d-40fe-8263-4ea6f440fc4c
+2024-12-27T20:44:26.445Z [31merror[39m: Error in code execution for job 6c656823-9b2d-40fe-8263-4ea6f440fc4c: Error: Unsupported language
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)

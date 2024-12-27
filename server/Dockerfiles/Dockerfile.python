@@ -1,0 +1,19 @@
+# ./server/Dockerfiles/Dockerfile.py
+# Dockerfile.python for the Python service
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy the app.py file from your project to the container
+COPY ./server/python-files/app.py /usr/src/app/
+
+
+# Install any required dependencies (if any)
+RUN pip install --no-cache-dir flask
+
+# Expose the application on port 5001
+EXPOSE 5001
+
+# Start the app
+CMD ["python", "app.py"]

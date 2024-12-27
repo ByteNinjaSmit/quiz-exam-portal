@@ -1,0 +1,50 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - '6379:6379'
+    networks:
+      - code-runner-network
+
+  server:
+    build:
+      context: .
+      dockerfile: /server/Dockerfile
+    volumes:
+      - ./server:/usr/src/app
+    container_name: server
+    ports:
+      - '5001:5000'
+    depends_on:
+      - redis
+    networks:
+      - code-runner-network
+
+  python-runner:
+    build:
+      context: .
+      dockerfile: /server/Dockerfiles/Dockerfile.python
+    container_name: python-runner
+    networks:
+      - code-runner-network
+
+  cpp-runner:
+    build:
+      context: .
+      dockerfile: /server/Dockerfiles/Dockerfile.cpp
+    container_name: cpp-runner
+    networks:
+      - code-runner-network
+
+  java-runner:
+    build:
+      context: .
+      dockerfile: /server/Dockerfiles/Dockerfile.java
+    container_name: java-runner
+    networks:
+      - code-runner-network
+
+networks:
+  code-runner-network:
+    driver: bridge
