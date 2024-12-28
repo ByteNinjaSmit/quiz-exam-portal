@@ -3,7 +3,7 @@ const logger = require('../utils/logger');
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
-  executeAndFetchResult: async (req, res) => {
+  executeAndFetchResult: async (req, res,next) => {
     const { language, code, input = '' } = req.body;
     const jobId = uuidv4();
 
@@ -48,7 +48,7 @@ module.exports = {
       logger.error(`Error in code execution for job ${jobId}: ${error.stack || error.message}`);
 
       // Respond with an error message
-      return res.status(500).json({
+      return res.status(400).json({
         error: 'Code execution failed',
         details: error.message || 'An unexpected error occurred',
       });

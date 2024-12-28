@@ -7,6 +7,20 @@ import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-monokai";
 import { FaBookmark, FaCode, FaPlay, FaDownload, FaTimes, FaPlus } from "react-icons/fa";
 import { BiReset } from "react-icons/bi";
+import axios from 'axios';
+import { useAuth } from "../../store/auth";
+
+// Code mirror
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { python } from '@codemirror/lang-python';
+import { java } from '@codemirror/lang-java';
+import { cpp } from '@codemirror/lang-cpp';
+import { oneDark } from '@codemirror/theme-one-dark';
+
+// Monaco Editor
+import MonacoEditor from '@monaco-editor/react';
+
 
 const CodingPlatform = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("python");
@@ -14,10 +28,12 @@ const CodingPlatform = () => {
   const [code, setCode] = useState("");
   const [testCases, setTestCases] = useState([]);
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(true);
-
+  const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [output, setOutput] = useState(null);
   const languages = [
     { id: "python", name: "Python", icon: "🐍" },
-    { id: "javascript", name: "JavaScript", icon: "⚡" },
+    { id: "cpp", name: "C++", icon: "⚡" },
     { id: "java", name: "Java", icon: "☕" }
   ];
 
@@ -43,13 +59,56 @@ const CodingPlatform = () => {
   const handleAddTestCase = () => {
     setTestCases([...testCases, { input: "", expectedOutput: "", result: null }]);
   };
-  console.log(code);
+
+  const handleRunCode = async (e) => {
+    e.preventDefault();
+
+
+    const input = " "; // Replace with dynamic input if needed
+
+    try {
+      const response = await axios.post(`${API}/api/code/run-code`,
+        {
+          language:selectedLanguage,
+          code: code,
+          input,
+        },
+        {
+          onUploadProgress: (progressEvent) => {
+            const progress = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            console.log(`Upload Progress: ${progress}%`);
+          },
+        }
+      );
+      
+      // console.log('Response:', response.data.result);
+      setOutput(response.data.result)
+      setErrorMessage(null);
+    } catch (error) {
+      if (error.response && error.response.data) {
+        // console.error('Error:', error.response.data);
+        // setErrorMessage({
+        //   error: error.response.data.error,
+        //   details: error.response.data.details,
+        // });
+        setOutput(error.response.data.details);
+      } else {
+        setErrorMessage({ error: 'Unexpected Error', details: error.message });
+      }
+    }
+  };
+  console.log(selectedLanguage);
+  console.log(`Test Cases: ${testCases[0]?.input}`);
+  console.log(`Output: ${output}`);
   
+
   return (
     <div className="min-h-screen bg-[#FAFAFB]">
-      <div className="flex flex-col lg:flex-row h-screen">
+      <div className="flex flex-col lg:flex-row h-screen overflow-y-auto">
         {/* Left Panel */}
-        <div className={`${isDescriptionVisible ? "block" : "hidden"} lg:block lg:w-2/5 bg-card p-6 overflow-y-auto border-r border-[#E0E0E0]`}>
+        <div className={`${isDescriptionVisible ? "block" : "hidden"} lg:block lg:w-2/5 bg-card p-6 border-r border-[#E0E0E0]`}>
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-[28px] font-semibold text-[#3A0CA3]">{problemData.title}</h1>
             <button className="p-2 hover:bg-[#F0F1F3] rounded-sm">
@@ -132,10 +191,11 @@ const CodingPlatform = () => {
               >
                 <option value="github">Light Theme</option>
                 <option value="monokai">Dark Theme</option>
+                <option value="dark">Dark</option>
               </select>
             </div>
 
-            <AceEditor
+            {/* <AceEditor
               mode={selectedLanguage}
               theme={editorTheme}
               onChange={setCode}
@@ -152,10 +212,47 @@ const CodingPlatform = () => {
                 tabSize: 2,
               }}
               className="border border-[#E0E0E0] rounded-sm text-sm"
-            />
+            /> */}
+
+            {/* <MonacoEditor
+              language={selectedLanguage} // Example: 'javascript', 'python', 'cpp', etc.
+              theme={editorTheme === 'dark' ? 'vs-dark' : 'vs-light'} // Monaco themes
+              value={code}
+              onChange={(value) => setCode(value)} // Updates the state with the editor's content
+              options={{
+                automaticLayout: true, // Adjust layout automatically
+                wordWrap: 'on', // Enable word wrapping
+                minimap: { enabled: false }, // Disable the minimap
+                fontSize: 14,
+                scrollBeyondLastLine: false, // Prevent scrolling beyond content
+              }}
+              height="400px"
+              className="border border-[#E0E0E0] rounded-sm text-sm"
+            />; */}
+
+            <CodeMirror
+              value={code}
+              height="400px"
+              extensions={[
+                selectedLanguage === 'javascript' ? javascript() :
+                  selectedLanguage === 'python' ? python() :
+                    selectedLanguage === 'cpp' ? cpp() : 
+                    selectedLanguage === 'java' ? java() : javascript(), // Default fallback
+              ]}
+              theme={editorTheme === 'dark' ? oneDark : undefined} // Default theme or dark theme
+              onChange={(value) => setCode(value)} // Updates the state with the editor's content
+              basicSetup={{
+                lineNumbers: true,
+                autocompletion: true,
+                highlightActiveLine: true,
+              }}
+              className="border border-[#E0E0E0] rounded-sm text-sm"
+            />;
 
             <div className="flex gap-2 mt-4">
-              <button className="flex items-center gap-2 px-4 py-2 bg-[#F72585] text-[#FFFFFF] rounded-sm hover:bg-opacity-90">
+              <button className="flex items-center gap-2 px-4 py-2 bg-[#F72585] text-[#FFFFFF] rounded-sm hover:bg-opacity-90"
+                onClick={(e) => handleRunCode(e)}
+              >
                 <FaPlay /> Run Code
               </button>
               <button className="flex items-center gap-2 px-4 py-2 bg-accent text-[#7209B7] rounded-sm hover:bg-opacity-90">
@@ -164,13 +261,13 @@ const CodingPlatform = () => {
               <button className="flex items-center gap-2 px-4 py-2 bg-[#F0F1F3] text-[#3A0CA3] rounded-sm hover:bg-opacity-90">
                 <BiReset /> Clear
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-[#F0F1F3] text-[#3A0CA3] rounded-sm hover:bg-opacity-90">
+              {/* <button className="flex items-center gap-2 px-4 py-2 bg-[#F0F1F3] text-[#3A0CA3] rounded-sm hover:bg-opacity-90">
                 <FaDownload /> Download
-              </button>
+              </button> */}
             </div>
           </div>
 
-          <div className="p-4 overflow-y-auto">
+          <div className="p-4 ">
             <div className="mb-4">
               <h2 className="text-lg font-semibold text-[#3A0CA3] mb-2">Test Cases</h2>
               <button
@@ -223,6 +320,7 @@ const CodingPlatform = () => {
                   </div>
                 </div>
               ))}
+              {/* Now here show Output code  */}
             </div>
           </div>
         </div>

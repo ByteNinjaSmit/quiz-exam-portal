@@ -1332,3 +1332,1064 @@ EOFError: EOF when reading a line
 2024-12-27T20:49:28.529Z [32minfo[39m: Job 170 state: completed
 2024-12-27T20:49:28.529Z [32minfo[39m: Job 170 completed successfully: Sorted array: [2, 3, 4, 5, 8]
 
+2024-12-27T20:57:31.075Z [32minfo[39m: Job 171 added to the queue
+2024-12-27T20:57:31.075Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-3f28f88f-dc3a-4d75-80c0-ed3783b6af53
+2024-12-27T20:57:31.076Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-3f28f88f-dc3a-4d75-80c0-ed3783b6af53\code.cpp
+2024-12-27T20:57:31.077Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-3f28f88f-dc3a-4d75-80c0-ed3783b6af53\input.txt
+2024-12-27T20:57:31.077Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-3f28f88f-dc3a-4d75-80c0-ed3783b6af53:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T20:57:31.895Z [32minfo[39m: Job 3f28f88f-dc3a-4d75-80c0-ed3783b6af53 executed successfully with output: Sorted array: 2 3 4 5 8 
+2024-12-27T20:57:31.897Z [32minfo[39m: Cleaned up temporary files for job 3f28f88f-dc3a-4d75-80c0-ed3783b6af53
+2024-12-27T20:57:31.898Z [32minfo[39m: Job 171 state: completed
+2024-12-27T20:57:31.898Z [32minfo[39m: Job 171 completed successfully: Sorted array: 2 3 4 5 8 
+2024-12-27T20:59:33.290Z [32minfo[39m: Server running on port 5000
+2024-12-27T21:02:48.731Z [32minfo[39m: Server running on port 5000
+2024-12-27T21:04:27.985Z [32minfo[39m: Job 172 added to the queue
+2024-12-27T21:04:27.987Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-b8797db3-6aa1-4320-8aa0-ce6cf40f04c6
+2024-12-27T21:04:27.988Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b8797db3-6aa1-4320-8aa0-ce6cf40f04c6\code.cpp
+2024-12-27T21:04:27.997Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b8797db3-6aa1-4320-8aa0-ce6cf40f04c6\input.txt
+2024-12-27T21:04:27.998Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-b8797db3-6aa1-4320-8aa0-ce6cf40f04c6:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:04:28.883Z [32minfo[39m: Job b8797db3-6aa1-4320-8aa0-ce6cf40f04c6 executed successfully with output: Sorted array: 2 3 4 5 8 
+2024-12-27T21:04:28.885Z [32minfo[39m: Cleaned up temporary files for job b8797db3-6aa1-4320-8aa0-ce6cf40f04c6
+2024-12-27T21:04:28.886Z [32minfo[39m: Job 172 state: completed
+2024-12-27T21:04:28.887Z [32minfo[39m: Job 172 completed successfully: Sorted array: 2 3 4 5 8 
+2024-12-27T21:04:37.334Z [32minfo[39m: Job 173 added to the queue
+2024-12-27T21:04:37.335Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-61e90de3-3dd8-4be3-9996-ec76d563ed0a
+2024-12-27T21:04:37.335Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-61e90de3-3dd8-4be3-9996-ec76d563ed0a\code.py
+2024-12-27T21:04:37.336Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-61e90de3-3dd8-4be3-9996-ec76d563ed0a\input.txt
+2024-12-27T21:04:37.336Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-61e90de3-3dd8-4be3-9996-ec76d563ed0a:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T21:04:38.022Z [32minfo[39m: Job 61e90de3-3dd8-4be3-9996-ec76d563ed0a executed successfully with output: Sorted array: [2, 3, 4, 5, 8]
+
+2024-12-27T21:04:38.023Z [32minfo[39m: Cleaned up temporary files for job 61e90de3-3dd8-4be3-9996-ec76d563ed0a
+2024-12-27T21:04:38.024Z [32minfo[39m: Job 173 state: completed
+2024-12-27T21:04:38.024Z [32minfo[39m: Job 173 completed successfully: Sorted array: [2, 3, 4, 5, 8]
+
+2024-12-27T21:04:40.928Z [32minfo[39m: Job 174 added to the queue
+2024-12-27T21:04:40.929Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-538182e0-286e-4e2c-9ce6-cd0be6204ed8
+2024-12-27T21:04:40.930Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-538182e0-286e-4e2c-9ce6-cd0be6204ed8\code.cpp
+2024-12-27T21:04:40.930Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-538182e0-286e-4e2c-9ce6-cd0be6204ed8\input.txt
+2024-12-27T21:04:40.930Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-538182e0-286e-4e2c-9ce6-cd0be6204ed8:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:04:41.751Z [32minfo[39m: Job 538182e0-286e-4e2c-9ce6-cd0be6204ed8 executed successfully with output: Enter the number of elements: The elements you entered are: 
+2024-12-27T21:04:41.753Z [32minfo[39m: Cleaned up temporary files for job 538182e0-286e-4e2c-9ce6-cd0be6204ed8
+2024-12-27T21:04:41.754Z [32minfo[39m: Job 174 state: completed
+2024-12-27T21:04:41.754Z [32minfo[39m: Job 174 completed successfully: Enter the number of elements: The elements you entered are: 
+2024-12-27T21:04:45.205Z [32minfo[39m: Job 175 added to the queue
+2024-12-27T21:04:45.206Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6
+2024-12-27T21:04:45.207Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6\code.cpp
+2024-12-27T21:04:45.208Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6\input.txt
+2024-12-27T21:04:45.208Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:04:45.860Z [31merror[39m: Error executing job fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:6:7: error: expected primary-expression before '<<' token
+    6 |     - << "Enter the number of elements: ";
+      |       ^~
+
+2024-12-27T21:04:45.860Z [31merror[39m: Job fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6 failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:6:7: error: expected primary-expression before '<<' token
+    6 |     - << "Enter the number of elements: ";
+      |       ^~
+
+2024-12-27T21:04:45.861Z [32minfo[39m: Cleaned up temporary files for job fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6
+2024-12-27T21:04:45.862Z [31merror[39m: Error in code execution for job fbcbb0de-3f2e-4b2f-9a05-40e0c45a8dd6: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:6:7: error: expected primary-expression before '<<' token
+    6 |     - << "Enter the number of elements: ";
+      |       ^~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T21:04:51.743Z [32minfo[39m: Job 176 added to the queue
+2024-12-27T21:04:51.744Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-5b82cd7c-6174-4cde-93e2-26e1f21fad61
+2024-12-27T21:04:51.744Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5b82cd7c-6174-4cde-93e2-26e1f21fad61\code.cpp
+2024-12-27T21:04:51.745Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5b82cd7c-6174-4cde-93e2-26e1f21fad61\input.txt
+2024-12-27T21:04:51.745Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-5b82cd7c-6174-4cde-93e2-26e1f21fad61:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:04:52.560Z [32minfo[39m: Job 5b82cd7c-6174-4cde-93e2-26e1f21fad61 executed successfully with output: Enter the number of elements: The elements you entered are: 
+2024-12-27T21:04:52.561Z [32minfo[39m: Cleaned up temporary files for job 5b82cd7c-6174-4cde-93e2-26e1f21fad61
+2024-12-27T21:04:52.562Z [32minfo[39m: Job 176 state: completed
+2024-12-27T21:04:52.562Z [32minfo[39m: Job 176 completed successfully: Enter the number of elements: The elements you entered are: 
+2024-12-27T21:04:58.788Z [32minfo[39m: Job 177 added to the queue
+2024-12-27T21:04:58.788Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-70c4cbba-c544-4cac-9c64-73cb246ac66d
+2024-12-27T21:04:58.789Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-70c4cbba-c544-4cac-9c64-73cb246ac66d\code.py
+2024-12-27T21:04:58.789Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-70c4cbba-c544-4cac-9c64-73cb246ac66d\input.txt
+2024-12-27T21:04:58.790Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-70c4cbba-c544-4cac-9c64-73cb246ac66d:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T21:04:59.376Z [31merror[39m: Error executing job 70c4cbba-c544-4cac-9c64-73cb246ac66d: Traceback (most recent call last):
+  File "/sandbox/code.py", line 3, in <module>
+    num = int(input('Enter a number (enter 0 to stop): '))
+EOFError: EOF when reading a line
+
+2024-12-27T21:04:59.377Z [31merror[39m: Job 70c4cbba-c544-4cac-9c64-73cb246ac66d failed: Traceback (most recent call last):
+  File "/sandbox/code.py", line 3, in <module>
+    num = int(input('Enter a number (enter 0 to stop): '))
+EOFError: EOF when reading a line
+
+2024-12-27T21:04:59.378Z [32minfo[39m: Cleaned up temporary files for job 70c4cbba-c544-4cac-9c64-73cb246ac66d
+2024-12-27T21:04:59.379Z [31merror[39m: Error in code execution for job 70c4cbba-c544-4cac-9c64-73cb246ac66d: Error: Traceback (most recent call last):
+  File "/sandbox/code.py", line 3, in <module>
+    num = int(input('Enter a number (enter 0 to stop): '))
+EOFError: EOF when reading a line
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-27T21:05:04.996Z [32minfo[39m: Job 178 added to the queue
+2024-12-27T21:05:04.997Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-27f418ea-bd8d-43d7-b8c8-bd04f2589d33
+2024-12-27T21:05:04.997Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-27f418ea-bd8d-43d7-b8c8-bd04f2589d33\code.cpp
+2024-12-27T21:05:04.998Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-27f418ea-bd8d-43d7-b8c8-bd04f2589d33\input.txt
+2024-12-27T21:05:04.998Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-27f418ea-bd8d-43d7-b8c8-bd04f2589d33:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:05:05.829Z [32minfo[39m: Job 27f418ea-bd8d-43d7-b8c8-bd04f2589d33 executed successfully with output: Enter the number of elements: The elements you entered are: 
+2024-12-27T21:05:05.830Z [32minfo[39m: Cleaned up temporary files for job 27f418ea-bd8d-43d7-b8c8-bd04f2589d33
+2024-12-27T21:05:05.831Z [32minfo[39m: Job 178 state: completed
+2024-12-27T21:05:05.831Z [32minfo[39m: Job 178 completed successfully: Enter the number of elements: The elements you entered are: 
+2024-12-27T21:05:35.140Z [32minfo[39m: Job 179 added to the queue
+2024-12-27T21:05:35.141Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-021bb714-9677-42a3-960f-c2a6c8e53d63
+2024-12-27T21:05:35.142Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-021bb714-9677-42a3-960f-c2a6c8e53d63\code.py
+2024-12-27T21:05:35.142Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-021bb714-9677-42a3-960f-c2a6c8e53d63\input.txt
+2024-12-27T21:05:35.143Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-021bb714-9677-42a3-960f-c2a6c8e53d63:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-27T21:05:35.702Z [32minfo[39m: Job 021bb714-9677-42a3-960f-c2a6c8e53d63 executed successfully with output: Factorial of 5 is 120
+
+2024-12-27T21:05:35.704Z [32minfo[39m: Cleaned up temporary files for job 021bb714-9677-42a3-960f-c2a6c8e53d63
+2024-12-27T21:05:35.704Z [32minfo[39m: Job 179 state: completed
+2024-12-27T21:05:35.704Z [32minfo[39m: Job 179 completed successfully: Factorial of 5 is 120
+
+2024-12-27T21:05:53.773Z [32minfo[39m: Job 180 added to the queue
+2024-12-27T21:05:53.774Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-995f3f04-6ae9-4307-8466-718d26c0e9c9
+2024-12-27T21:05:53.774Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-995f3f04-6ae9-4307-8466-718d26c0e9c9\code.cpp
+2024-12-27T21:05:53.775Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-995f3f04-6ae9-4307-8466-718d26c0e9c9\input.txt
+2024-12-27T21:05:53.775Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-995f3f04-6ae9-4307-8466-718d26c0e9c9:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:05:54.634Z [32minfo[39m: Job 995f3f04-6ae9-4307-8466-718d26c0e9c9 executed successfully with output: Counting up to 5: 1 2 3 4 5 
+
+2024-12-27T21:05:54.635Z [32minfo[39m: Cleaned up temporary files for job 995f3f04-6ae9-4307-8466-718d26c0e9c9
+2024-12-27T21:05:54.636Z [32minfo[39m: Job 180 state: completed
+2024-12-27T21:05:54.636Z [32minfo[39m: Job 180 completed successfully: Counting up to 5: 1 2 3 4 5 
+
+2024-12-27T21:06:02.233Z [32minfo[39m: Job 181 added to the queue
+2024-12-27T21:06:02.234Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-ceebc176-08c1-4d47-b38e-7c5d851de200
+2024-12-27T21:06:02.234Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-ceebc176-08c1-4d47-b38e-7c5d851de200\code.cpp
+2024-12-27T21:06:02.235Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-ceebc176-08c1-4d47-b38e-7c5d851de200\input.txt
+2024-12-27T21:06:02.235Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-ceebc176-08c1-4d47-b38e-7c5d851de200:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:06:03.023Z [32minfo[39m: Job ceebc176-08c1-4d47-b38e-7c5d851de200 executed successfully with output: Sorted array: 2 3 4 5 8 
+2024-12-27T21:06:03.025Z [32minfo[39m: Cleaned up temporary files for job ceebc176-08c1-4d47-b38e-7c5d851de200
+2024-12-27T21:06:03.025Z [32minfo[39m: Job 181 state: completed
+2024-12-27T21:06:03.026Z [32minfo[39m: Job 181 completed successfully: Sorted array: 2 3 4 5 8 
+2024-12-27T21:06:08.167Z [32minfo[39m: Job 182 added to the queue
+2024-12-27T21:06:08.168Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-d336dda6-b18e-4d39-9c58-46a1233d60b6
+2024-12-27T21:06:08.168Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d336dda6-b18e-4d39-9c58-46a1233d60b6\code.cpp
+2024-12-27T21:06:08.169Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-d336dda6-b18e-4d39-9c58-46a1233d60b6\input.txt
+2024-12-27T21:06:08.169Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-d336dda6-b18e-4d39-9c58-46a1233d60b6:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-27T21:06:08.984Z [32minfo[39m: Job d336dda6-b18e-4d39-9c58-46a1233d60b6 executed successfully with output: Sorted array: 1 2 3 4 5 6 7 8 9 10 11 22 33 44 55 66 77 88 99 100 
+2024-12-27T21:06:08.985Z [32minfo[39m: Cleaned up temporary files for job d336dda6-b18e-4d39-9c58-46a1233d60b6
+2024-12-27T21:06:08.986Z [32minfo[39m: Job 182 state: completed
+2024-12-27T21:06:08.987Z [32minfo[39m: Job 182 completed successfully: Sorted array: 1 2 3 4 5 6 7 8 9 10 11 22 33 44 55 66 77 88 99 100 
+2024-12-28T03:50:06.762Z [32minfo[39m: Server running on port 5000
+2024-12-28T04:05:12.477Z [32minfo[39m: Job 183 added to the queue
+2024-12-28T04:05:12.480Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-39f47587-b8fd-4819-9aba-80f108d01353
+2024-12-28T04:05:12.491Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-39f47587-b8fd-4819-9aba-80f108d01353\code.cpp
+2024-12-28T04:05:12.493Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-39f47587-b8fd-4819-9aba-80f108d01353\input.txt
+2024-12-28T04:05:12.494Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-39f47587-b8fd-4819-9aba-80f108d01353:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:05:12.801Z [31merror[39m: Error executing job 39f47587-b8fd-4819-9aba-80f108d01353: docker: error during connect: Head "http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/_ping": open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+See 'docker run --help'.
+
+2024-12-28T04:05:12.801Z [31merror[39m: Job 39f47587-b8fd-4819-9aba-80f108d01353 failed: docker: error during connect: Head "http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/_ping": open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+See 'docker run --help'.
+
+2024-12-28T04:05:12.804Z [32minfo[39m: Cleaned up temporary files for job 39f47587-b8fd-4819-9aba-80f108d01353
+2024-12-28T04:05:12.808Z [31merror[39m: Error in code execution for job 39f47587-b8fd-4819-9aba-80f108d01353: Error: docker: error during connect: Head "http://%2F%2F.%2Fpipe%2FdockerDesktopLinuxEngine/_ping": open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified.
+See 'docker run --help'.
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:06:08.873Z [32minfo[39m: Server running on port 5000
+2024-12-28T04:06:20.797Z [32minfo[39m: Job 184 added to the queue
+2024-12-28T04:06:20.800Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-a2937bb1-f71c-4a1e-995c-50ce875cf50a
+2024-12-28T04:06:20.802Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a2937bb1-f71c-4a1e-995c-50ce875cf50a\code.cpp
+2024-12-28T04:06:20.803Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-a2937bb1-f71c-4a1e-995c-50ce875cf50a\input.txt
+2024-12-28T04:06:20.804Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-a2937bb1-f71c-4a1e-995c-50ce875cf50a:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:06:21.976Z [32minfo[39m: Job a2937bb1-f71c-4a1e-995c-50ce875cf50a executed successfully with output: Hello World Code From Fronted
+
+2024-12-28T04:06:21.978Z [32minfo[39m: Cleaned up temporary files for job a2937bb1-f71c-4a1e-995c-50ce875cf50a
+2024-12-28T04:06:21.980Z [32minfo[39m: Job 184 state: completed
+2024-12-28T04:06:21.980Z [32minfo[39m: Job 184 completed successfully: Hello World Code From Fronted
+
+2024-12-28T04:06:48.950Z [32minfo[39m: Server running on port 5000
+2024-12-28T04:06:54.329Z [32minfo[39m: Job 185 added to the queue
+2024-12-28T04:06:54.332Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-28fcc67a-1c52-4b6b-a659-c9d3063982f3
+2024-12-28T04:06:54.334Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-28fcc67a-1c52-4b6b-a659-c9d3063982f3\code.cpp
+2024-12-28T04:06:54.337Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-28fcc67a-1c52-4b6b-a659-c9d3063982f3\input.txt
+2024-12-28T04:06:54.337Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-28fcc67a-1c52-4b6b-a659-c9d3063982f3:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:06:55.160Z [32minfo[39m: Job 28fcc67a-1c52-4b6b-a659-c9d3063982f3 executed successfully with output: Hello World Code From Fronted
+For Loop And this is Bubble Sort: 
+
+2024-12-28T04:06:55.161Z [32minfo[39m: Cleaned up temporary files for job 28fcc67a-1c52-4b6b-a659-c9d3063982f3
+2024-12-28T04:06:55.162Z [32minfo[39m: Job 185 state: completed
+2024-12-28T04:06:55.162Z [32minfo[39m: Job 185 completed successfully: Hello World Code From Fronted
+For Loop And this is Bubble Sort: 
+
+2024-12-28T04:08:34.233Z [32minfo[39m: Job 186 added to the queue
+2024-12-28T04:08:34.236Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-0f1082ee-7652-4381-bef8-8971e21ad185
+2024-12-28T04:08:34.237Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0f1082ee-7652-4381-bef8-8971e21ad185\code.cpp
+2024-12-28T04:08:34.239Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0f1082ee-7652-4381-bef8-8971e21ad185\input.txt
+2024-12-28T04:08:34.239Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-0f1082ee-7652-4381-bef8-8971e21ad185:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:08:35.237Z [32minfo[39m: Job 0f1082ee-7652-4381-bef8-8971e21ad185 executed successfully with output: Sorted array: 11 12 22 25 34 64 90 
+
+2024-12-28T04:08:35.238Z [32minfo[39m: Cleaned up temporary files for job 0f1082ee-7652-4381-bef8-8971e21ad185
+2024-12-28T04:08:35.239Z [32minfo[39m: Job 186 state: completed
+2024-12-28T04:08:35.239Z [32minfo[39m: Job 186 completed successfully: Sorted array: 11 12 22 25 34 64 90 
+
+2024-12-28T04:08:50.660Z [32minfo[39m: Job 187 added to the queue
+2024-12-28T04:08:50.661Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-26eb5073-cb86-47b0-9e3f-3d9036bacde6
+2024-12-28T04:08:50.663Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-26eb5073-cb86-47b0-9e3f-3d9036bacde6\code.cpp
+2024-12-28T04:08:50.664Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-26eb5073-cb86-47b0-9e3f-3d9036bacde6\input.txt
+2024-12-28T04:08:50.664Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-26eb5073-cb86-47b0-9e3f-3d9036bacde6:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:08:51.581Z [32minfo[39m: Job 26eb5073-cb86-47b0-9e3f-3d9036bacde6 executed successfully with output: Element found at index 3
+
+2024-12-28T04:08:51.583Z [32minfo[39m: Cleaned up temporary files for job 26eb5073-cb86-47b0-9e3f-3d9036bacde6
+2024-12-28T04:08:51.585Z [32minfo[39m: Job 187 state: completed
+2024-12-28T04:08:51.585Z [32minfo[39m: Job 187 completed successfully: Element found at index 3
+
+2024-12-28T04:09:05.435Z [32minfo[39m: Job 188 added to the queue
+2024-12-28T04:09:05.436Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-39080275-e0e8-4208-aeb1-865eccfd4b82
+2024-12-28T04:09:05.438Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-39080275-e0e8-4208-aeb1-865eccfd4b82\code.cpp
+2024-12-28T04:09:05.439Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-39080275-e0e8-4208-aeb1-865eccfd4b82\input.txt
+2024-12-28T04:09:05.440Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-39080275-e0e8-4208-aeb1-865eccfd4b82:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:09:06.265Z [32minfo[39m: Job 39080275-e0e8-4208-aeb1-865eccfd4b82 executed successfully with output: Linked List: 10 -> 20 -> 30 -> 40 -> NULL
+
+2024-12-28T04:09:06.266Z [32minfo[39m: Cleaned up temporary files for job 39080275-e0e8-4208-aeb1-865eccfd4b82
+2024-12-28T04:09:06.267Z [32minfo[39m: Job 188 state: completed
+2024-12-28T04:09:06.267Z [32minfo[39m: Job 188 completed successfully: Linked List: 10 -> 20 -> 30 -> 40 -> NULL
+
+2024-12-28T04:09:16.324Z [32minfo[39m: Job 189 added to the queue
+2024-12-28T04:09:16.326Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-21c8d786-4209-40b5-b30e-827134b7b14c
+2024-12-28T04:09:16.328Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-21c8d786-4209-40b5-b30e-827134b7b14c\code.cpp
+2024-12-28T04:09:16.330Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-21c8d786-4209-40b5-b30e-827134b7b14c\input.txt
+2024-12-28T04:09:16.330Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-21c8d786-4209-40b5-b30e-827134b7b14c:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:09:17.378Z [32minfo[39m: Job 21c8d786-4209-40b5-b30e-827134b7b14c executed successfully with output: DFS Traversal: 0 2 1 4 3 
+2024-12-28T04:09:17.381Z [32minfo[39m: Cleaned up temporary files for job 21c8d786-4209-40b5-b30e-827134b7b14c
+2024-12-28T04:09:17.382Z [32minfo[39m: Job 189 state: completed
+2024-12-28T04:09:17.383Z [32minfo[39m: Job 189 completed successfully: DFS Traversal: 0 2 1 4 3 
+2024-12-28T04:09:29.914Z [32minfo[39m: Job 190 added to the queue
+2024-12-28T04:09:29.916Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-b613cbc6-9343-4777-9896-9a9070da9169
+2024-12-28T04:09:29.919Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b613cbc6-9343-4777-9896-9a9070da9169\code.cpp
+2024-12-28T04:09:29.921Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b613cbc6-9343-4777-9896-9a9070da9169\input.txt
+2024-12-28T04:09:29.922Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-b613cbc6-9343-4777-9896-9a9070da9169:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:09:30.970Z [32minfo[39m: Job b613cbc6-9343-4777-9896-9a9070da9169 executed successfully with output: Shortest distances between every pair of vertices:
+0 3 INF INF 
+2 0 INF INF 
+7 7 0 1 
+6 9 INF 0 
+
+2024-12-28T04:09:30.972Z [32minfo[39m: Cleaned up temporary files for job b613cbc6-9343-4777-9896-9a9070da9169
+2024-12-28T04:09:30.973Z [32minfo[39m: Job 190 state: completed
+2024-12-28T04:09:30.973Z [32minfo[39m: Job 190 completed successfully: Shortest distances between every pair of vertices:
+0 3 INF INF 
+2 0 INF INF 
+7 7 0 1 
+6 9 INF 0 
+
+2024-12-28T04:09:43.488Z [32minfo[39m: Job 191 added to the queue
+2024-12-28T04:09:43.490Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-762bcfba-b7ce-44ac-a640-07a847f4410e
+2024-12-28T04:09:43.491Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-762bcfba-b7ce-44ac-a640-07a847f4410e\code.cpp
+2024-12-28T04:09:43.492Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-762bcfba-b7ce-44ac-a640-07a847f4410e\input.txt
+2024-12-28T04:09:43.493Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-762bcfba-b7ce-44ac-a640-07a847f4410e:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:09:44.463Z [32minfo[39m: Job 762bcfba-b7ce-44ac-a640-07a847f4410e executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:09:44.464Z [32minfo[39m: Cleaned up temporary files for job 762bcfba-b7ce-44ac-a640-07a847f4410e
+2024-12-28T04:09:44.466Z [32minfo[39m: Job 191 state: completed
+2024-12-28T04:09:44.466Z [32minfo[39m: Job 191 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:10:31.285Z [32minfo[39m: Job 192 added to the queue
+2024-12-28T04:10:31.286Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-13e3acc8-97ed-4076-8dcb-503a51757455
+2024-12-28T04:10:31.290Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-13e3acc8-97ed-4076-8dcb-503a51757455\code.cpp
+2024-12-28T04:10:31.292Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-13e3acc8-97ed-4076-8dcb-503a51757455\input.txt
+2024-12-28T04:10:31.292Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-13e3acc8-97ed-4076-8dcb-503a51757455:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:10:32.059Z [31merror[39m: Error executing job 13e3acc8-97ed-4076-8dcb-503a51757455: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:32: error: expected ';' before '}' token
+   35 |         std::cout << num << " "
+      |                                ^
+      |                                ;
+   36 |     }
+      |     ~                           
+
+2024-12-28T04:10:32.059Z [31merror[39m: Job 13e3acc8-97ed-4076-8dcb-503a51757455 failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:32: error: expected ';' before '}' token
+   35 |         std::cout << num << " "
+      |                                ^
+      |                                ;
+   36 |     }
+      |     ~                           
+
+2024-12-28T04:10:32.060Z [32minfo[39m: Cleaned up temporary files for job 13e3acc8-97ed-4076-8dcb-503a51757455
+2024-12-28T04:10:32.062Z [31merror[39m: Error in code execution for job 13e3acc8-97ed-4076-8dcb-503a51757455: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:32: error: expected ';' before '}' token
+   35 |         std::cout << num << " "
+      |                                ^
+      |                                ;
+   36 |     }
+      |     ~                           
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:10:53.471Z [32minfo[39m: Job 193 added to the queue
+2024-12-28T04:10:53.473Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-62317c4c-58ad-45f7-9ad2-1c22422c0599
+2024-12-28T04:10:53.474Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-62317c4c-58ad-45f7-9ad2-1c22422c0599\code.cpp
+2024-12-28T04:10:53.475Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-62317c4c-58ad-45f7-9ad2-1c22422c0599\input.txt
+2024-12-28T04:10:53.475Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-62317c4c-58ad-45f7-9ad2-1c22422c0599:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:10:54.274Z [31merror[39m: Error executing job 62317c4c-58ad-45f7-9ad2-1c22422c0599: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+2024-12-28T04:10:54.274Z [31merror[39m: Job 62317c4c-58ad-45f7-9ad2-1c22422c0599 failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+2024-12-28T04:10:54.276Z [32minfo[39m: Cleaned up temporary files for job 62317c4c-58ad-45f7-9ad2-1c22422c0599
+2024-12-28T04:10:54.277Z [31merror[39m: Error in code execution for job 62317c4c-58ad-45f7-9ad2-1c22422c0599: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:10:55.841Z [32minfo[39m: Job 194 added to the queue
+2024-12-28T04:10:55.843Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-859e8d9f-ff95-4af5-8ece-ddeddfe1df2a
+2024-12-28T04:10:55.846Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-859e8d9f-ff95-4af5-8ece-ddeddfe1df2a\code.cpp
+2024-12-28T04:10:55.848Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-859e8d9f-ff95-4af5-8ece-ddeddfe1df2a\input.txt
+2024-12-28T04:10:55.848Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-859e8d9f-ff95-4af5-8ece-ddeddfe1df2a:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:10:56.666Z [31merror[39m: Error executing job 859e8d9f-ff95-4af5-8ece-ddeddfe1df2a: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+2024-12-28T04:10:56.666Z [31merror[39m: Job 859e8d9f-ff95-4af5-8ece-ddeddfe1df2a failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+2024-12-28T04:10:56.667Z [32minfo[39m: Cleaned up temporary files for job 859e8d9f-ff95-4af5-8ece-ddeddfe1df2a
+2024-12-28T04:10:56.668Z [31merror[39m: Error in code execution for job 859e8d9f-ff95-4af5-8ece-ddeddfe1df2a: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:11:01.751Z [32minfo[39m: Job 195 added to the queue
+2024-12-28T04:11:01.752Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-f2f957d7-c476-4683-992b-85e3b405d703
+2024-12-28T04:11:01.755Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-f2f957d7-c476-4683-992b-85e3b405d703\code.cpp
+2024-12-28T04:11:01.756Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-f2f957d7-c476-4683-992b-85e3b405d703\input.txt
+2024-12-28T04:11:01.756Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-f2f957d7-c476-4683-992b-85e3b405d703:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:11:02.718Z [32minfo[39m: Job f2f957d7-c476-4683-992b-85e3b405d703 executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:11:02.719Z [32minfo[39m: Cleaned up temporary files for job f2f957d7-c476-4683-992b-85e3b405d703
+2024-12-28T04:11:02.720Z [32minfo[39m: Job 195 state: completed
+2024-12-28T04:11:02.720Z [32minfo[39m: Job 195 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:11:15.842Z [32minfo[39m: Job 196 added to the queue
+2024-12-28T04:11:15.843Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-ddd09e48-a4ae-4563-9623-88c37e830dcc
+2024-12-28T04:11:15.845Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-ddd09e48-a4ae-4563-9623-88c37e830dcc\code.cpp
+2024-12-28T04:11:15.846Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-ddd09e48-a4ae-4563-9623-88c37e830dcc\input.txt
+2024-12-28T04:11:15.846Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-ddd09e48-a4ae-4563-9623-88c37e830dcc:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:11:16.691Z [31merror[39m: Error executing job ddd09e48-a4ae-4563-9623-88c37e830dcc: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+2024-12-28T04:11:16.691Z [31merror[39m: Job ddd09e48-a4ae-4563-9623-88c37e830dcc failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+2024-12-28T04:11:16.692Z [32minfo[39m: Cleaned up temporary files for job ddd09e48-a4ae-4563-9623-88c37e830dcc
+2024-12-28T04:11:16.693Z [31merror[39m: Error in code execution for job ddd09e48-a4ae-4563-9623-88c37e830dcc: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:35:14: error: 'co' is not a member of 'std'
+   35 |         std::co<< num << " ";
+      |              ^~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:12:55.168Z [32minfo[39m: Job 197 added to the queue
+2024-12-28T04:12:55.169Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-0c98ccc5-83e2-4680-b087-72a93acd0244
+2024-12-28T04:12:55.169Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0c98ccc5-83e2-4680-b087-72a93acd0244\code.cpp
+2024-12-28T04:12:55.170Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-0c98ccc5-83e2-4680-b087-72a93acd0244\input.txt
+2024-12-28T04:12:55.170Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-0c98ccc5-83e2-4680-b087-72a93acd0244:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:12:56.089Z [32minfo[39m: Job 0c98ccc5-83e2-4680-b087-72a93acd0244 executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:12:56.090Z [32minfo[39m: Cleaned up temporary files for job 0c98ccc5-83e2-4680-b087-72a93acd0244
+2024-12-28T04:12:56.091Z [32minfo[39m: Job 197 state: completed
+2024-12-28T04:12:56.091Z [32minfo[39m: Job 197 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:13:00.967Z [32minfo[39m: Job 198 added to the queue
+2024-12-28T04:13:00.967Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-10ba66ab-7a2e-4d81-b399-946a22de1ae2
+2024-12-28T04:13:00.968Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-10ba66ab-7a2e-4d81-b399-946a22de1ae2\code.cpp
+2024-12-28T04:13:00.968Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-10ba66ab-7a2e-4d81-b399-946a22de1ae2\input.txt
+2024-12-28T04:13:00.969Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-10ba66ab-7a2e-4d81-b399-946a22de1ae2:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:13:01.724Z [31merror[39m: Error executing job 10ba66ab-7a2e-4d81-b399-946a22de1ae2: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:11: error: expected unqualified-id before '<<' token
+   37 |     std:: << std::endl;
+      |           ^~
+
+2024-12-28T04:13:01.724Z [31merror[39m: Job 10ba66ab-7a2e-4d81-b399-946a22de1ae2 failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:11: error: expected unqualified-id before '<<' token
+   37 |     std:: << std::endl;
+      |           ^~
+
+2024-12-28T04:13:01.725Z [32minfo[39m: Cleaned up temporary files for job 10ba66ab-7a2e-4d81-b399-946a22de1ae2
+2024-12-28T04:13:01.726Z [31merror[39m: Error in code execution for job 10ba66ab-7a2e-4d81-b399-946a22de1ae2: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:11: error: expected unqualified-id before '<<' token
+   37 |     std:: << std::endl;
+      |           ^~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:15:20.761Z [32minfo[39m: Job 199 added to the queue
+2024-12-28T04:15:20.765Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-9db1991f-782d-4cf9-bdb1-9f4d5686d811
+2024-12-28T04:15:20.767Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-9db1991f-782d-4cf9-bdb1-9f4d5686d811\code.cpp
+2024-12-28T04:15:20.769Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-9db1991f-782d-4cf9-bdb1-9f4d5686d811\input.txt
+2024-12-28T04:15:20.769Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-9db1991f-782d-4cf9-bdb1-9f4d5686d811:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:15:21.718Z [32minfo[39m: Job 9db1991f-782d-4cf9-bdb1-9f4d5686d811 executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:15:21.720Z [32minfo[39m: Cleaned up temporary files for job 9db1991f-782d-4cf9-bdb1-9f4d5686d811
+2024-12-28T04:15:21.721Z [32minfo[39m: Job 199 state: completed
+2024-12-28T04:15:21.721Z [32minfo[39m: Job 199 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:15:42.865Z [32minfo[39m: Job 200 added to the queue
+2024-12-28T04:15:42.868Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-e7de17f2-9bc3-46c1-8f94-beaeb9e38489
+2024-12-28T04:15:42.870Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e7de17f2-9bc3-46c1-8f94-beaeb9e38489\code.cpp
+2024-12-28T04:15:42.872Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e7de17f2-9bc3-46c1-8f94-beaeb9e38489\input.txt
+2024-12-28T04:15:42.873Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-e7de17f2-9bc3-46c1-8f94-beaeb9e38489:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:15:43.910Z [31merror[39m: Error executing job e7de17f2-9bc3-46c1-8f94-beaeb9e38489: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:5: error: 'stdcout' was not declared in this scope; did you mean 'stdout'?
+   37 |     stdcout << std::endl;
+      |     ^~~~~~~
+      |     stdout
+
+2024-12-28T04:15:43.910Z [31merror[39m: Job e7de17f2-9bc3-46c1-8f94-beaeb9e38489 failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:5: error: 'stdcout' was not declared in this scope; did you mean 'stdout'?
+   37 |     stdcout << std::endl;
+      |     ^~~~~~~
+      |     stdout
+
+2024-12-28T04:15:43.911Z [32minfo[39m: Cleaned up temporary files for job e7de17f2-9bc3-46c1-8f94-beaeb9e38489
+2024-12-28T04:15:43.912Z [31merror[39m: Error in code execution for job e7de17f2-9bc3-46c1-8f94-beaeb9e38489: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:5: error: 'stdcout' was not declared in this scope; did you mean 'stdout'?
+   37 |     stdcout << std::endl;
+      |     ^~~~~~~
+      |     stdout
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:15:58.014Z [32minfo[39m: Job 201 added to the queue
+2024-12-28T04:15:58.016Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-316aa460-9a6c-4573-a198-425a6e045e00
+2024-12-28T04:15:58.017Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-316aa460-9a6c-4573-a198-425a6e045e00\code.cpp
+2024-12-28T04:15:58.017Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-316aa460-9a6c-4573-a198-425a6e045e00\input.txt
+2024-12-28T04:15:58.018Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-316aa460-9a6c-4573-a198-425a6e045e00:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:15:59.027Z [32minfo[39m: Job 316aa460-9a6c-4573-a198-425a6e045e00 executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:15:59.029Z [32minfo[39m: Cleaned up temporary files for job 316aa460-9a6c-4573-a198-425a6e045e00
+2024-12-28T04:15:59.030Z [32minfo[39m: Job 201 state: completed
+2024-12-28T04:15:59.030Z [32minfo[39m: Job 201 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:16:17.980Z [32minfo[39m: Job 202 added to the queue
+2024-12-28T04:16:17.982Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-b27e0394-a291-4fe1-b910-9ccf8ec41b72
+2024-12-28T04:16:17.984Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b27e0394-a291-4fe1-b910-9ccf8ec41b72\code.cpp
+2024-12-28T04:16:17.985Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b27e0394-a291-4fe1-b910-9ccf8ec41b72\input.txt
+2024-12-28T04:16:17.986Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-b27e0394-a291-4fe1-b910-9ccf8ec41b72:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:16:18.974Z [32minfo[39m: Job b27e0394-a291-4fe1-b910-9ccf8ec41b72 executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:16:18.979Z [32minfo[39m: Cleaned up temporary files for job b27e0394-a291-4fe1-b910-9ccf8ec41b72
+2024-12-28T04:16:18.980Z [32minfo[39m: Job 202 state: completed
+2024-12-28T04:16:18.980Z [32minfo[39m: Job 202 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:16:22.419Z [32minfo[39m: Job 203 added to the queue
+2024-12-28T04:16:22.421Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-8e1a21fc-d94c-478e-934b-a0c33ae108fd
+2024-12-28T04:16:22.422Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-8e1a21fc-d94c-478e-934b-a0c33ae108fd\code.cpp
+2024-12-28T04:16:22.424Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-8e1a21fc-d94c-478e-934b-a0c33ae108fd\input.txt
+2024-12-28T04:16:22.425Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-8e1a21fc-d94c-478e-934b-a0c33ae108fd:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:16:23.180Z [31merror[39m: Error executing job 8e1a21fc-d94c-478e-934b-a0c33ae108fd: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:11: error: expected unqualified-id before '<<' token
+   37 |     std:: << std::endl;
+      |           ^~
+
+2024-12-28T04:16:23.180Z [31merror[39m: Job 8e1a21fc-d94c-478e-934b-a0c33ae108fd failed: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:11: error: expected unqualified-id before '<<' token
+   37 |     std:: << std::endl;
+      |           ^~
+
+2024-12-28T04:16:23.181Z [32minfo[39m: Cleaned up temporary files for job 8e1a21fc-d94c-478e-934b-a0c33ae108fd
+2024-12-28T04:16:23.182Z [31merror[39m: Error in code execution for job 8e1a21fc-d94c-478e-934b-a0c33ae108fd: Error: /sandbox/code.cpp: In function 'int main()':
+/sandbox/code.cpp:37:11: error: expected unqualified-id before '<<' token
+   37 |     std:: << std::endl;
+      |           ^~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:24:59.584Z [32minfo[39m: Job 204 added to the queue
+2024-12-28T04:24:59.587Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-5b45d1b4-4ed7-45d9-9118-b0872dcfa822
+2024-12-28T04:24:59.589Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5b45d1b4-4ed7-45d9-9118-b0872dcfa822\code.cpp
+2024-12-28T04:24:59.590Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5b45d1b4-4ed7-45d9-9118-b0872dcfa822\input.txt
+2024-12-28T04:24:59.591Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-5b45d1b4-4ed7-45d9-9118-b0872dcfa822:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:25:00.523Z [32minfo[39m: Job 5b45d1b4-4ed7-45d9-9118-b0872dcfa822 executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:25:00.525Z [32minfo[39m: Cleaned up temporary files for job 5b45d1b4-4ed7-45d9-9118-b0872dcfa822
+2024-12-28T04:25:00.526Z [32minfo[39m: Job 204 state: completed
+2024-12-28T04:25:00.526Z [32minfo[39m: Job 204 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:25:09.112Z [32minfo[39m: Job 205 added to the queue
+2024-12-28T04:25:09.115Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-495549a8-8748-4687-aece-a666ea70b20f
+2024-12-28T04:25:09.117Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-495549a8-8748-4687-aece-a666ea70b20f\code.cpp
+2024-12-28T04:25:09.119Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-495549a8-8748-4687-aece-a666ea70b20f\input.txt
+2024-12-28T04:25:09.120Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-495549a8-8748-4687-aece-a666ea70b20f:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:25:10.036Z [32minfo[39m: Job 495549a8-8748-4687-aece-a666ea70b20f executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:25:10.037Z [32minfo[39m: Cleaned up temporary files for job 495549a8-8748-4687-aece-a666ea70b20f
+2024-12-28T04:25:10.038Z [32minfo[39m: Job 205 state: completed
+2024-12-28T04:25:10.038Z [32minfo[39m: Job 205 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:33:03.609Z [32minfo[39m: Job 206 added to the queue
+2024-12-28T04:33:03.612Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-fdc396bc-e3b5-4680-86fc-750268cfcbed
+2024-12-28T04:33:03.613Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-fdc396bc-e3b5-4680-86fc-750268cfcbed\code.cpp
+2024-12-28T04:33:03.615Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-fdc396bc-e3b5-4680-86fc-750268cfcbed\input.txt
+2024-12-28T04:33:03.615Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-fdc396bc-e3b5-4680-86fc-750268cfcbed:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:33:04.532Z [32minfo[39m: Job fdc396bc-e3b5-4680-86fc-750268cfcbed executed successfully with output: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:33:04.535Z [32minfo[39m: Cleaned up temporary files for job fdc396bc-e3b5-4680-86fc-750268cfcbed
+2024-12-28T04:33:04.535Z [32minfo[39m: Job 206 state: completed
+2024-12-28T04:33:04.536Z [32minfo[39m: Job 206 completed successfully: Sorted array: 1 5 7 8 9 10 
+
+2024-12-28T04:39:07.560Z [32minfo[39m: Job 207 added to the queue
+2024-12-28T04:39:07.563Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-397b7f5c-4573-4519-abc7-5ecdac47a840
+2024-12-28T04:39:07.566Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-397b7f5c-4573-4519-abc7-5ecdac47a840\code.cpp
+2024-12-28T04:39:07.567Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-397b7f5c-4573-4519-abc7-5ecdac47a840\input.txt
+2024-12-28T04:39:07.568Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-397b7f5c-4573-4519-abc7-5ecdac47a840:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"
+2024-12-28T04:39:08.132Z [31merror[39m: Error executing job 397b7f5c-4573-4519-abc7-5ecdac47a840: /sandbox/code.cpp:1:1: error: expected unqualified-id before 'public'
+    1 | public class Main {
+      | ^~~~~~
+
+2024-12-28T04:39:08.133Z [31merror[39m: Job 397b7f5c-4573-4519-abc7-5ecdac47a840 failed: /sandbox/code.cpp:1:1: error: expected unqualified-id before 'public'
+    1 | public class Main {
+      | ^~~~~~
+
+2024-12-28T04:39:08.134Z [32minfo[39m: Cleaned up temporary files for job 397b7f5c-4573-4519-abc7-5ecdac47a840
+2024-12-28T04:39:08.135Z [31merror[39m: Error in code execution for job 397b7f5c-4573-4519-abc7-5ecdac47a840: Error: /sandbox/code.cpp:1:1: error: expected unqualified-id before 'public'
+    1 | public class Main {
+      | ^~~~~~
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:39:31.532Z [32minfo[39m: Job 208 added to the queue
+2024-12-28T04:39:31.533Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-7146e31b-bb0f-453e-a3e9-8b8be4ae59ca
+2024-12-28T04:39:31.535Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7146e31b-bb0f-453e-a3e9-8b8be4ae59ca\code.java
+2024-12-28T04:39:31.536Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-7146e31b-bb0f-453e-a3e9-8b8be4ae59ca\input.txt
+2024-12-28T04:39:31.536Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-7146e31b-bb0f-453e-a3e9-8b8be4ae59ca:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:39:32.645Z [31merror[39m: Error executing job 7146e31b-bb0f-453e-a3e9-8b8be4ae59ca: /sandbox/code.java:1: error: class Main is public, should be declared in a file named Main.java
+public class Main {
+       ^
+1 error
+
+2024-12-28T04:39:32.646Z [31merror[39m: Job 7146e31b-bb0f-453e-a3e9-8b8be4ae59ca failed: /sandbox/code.java:1: error: class Main is public, should be declared in a file named Main.java
+public class Main {
+       ^
+1 error
+
+2024-12-28T04:39:32.648Z [32minfo[39m: Cleaned up temporary files for job 7146e31b-bb0f-453e-a3e9-8b8be4ae59ca
+2024-12-28T04:39:32.649Z [31merror[39m: Error in code execution for job 7146e31b-bb0f-453e-a3e9-8b8be4ae59ca: Error: /sandbox/code.java:1: error: class Main is public, should be declared in a file named Main.java
+public class Main {
+       ^
+1 error
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:40:22.246Z [32minfo[39m: Job 209 added to the queue
+2024-12-28T04:40:22.248Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-43885547-1f4d-459e-80dc-43fdf0376fa5
+2024-12-28T04:40:22.249Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-43885547-1f4d-459e-80dc-43fdf0376fa5\code.java
+2024-12-28T04:40:22.250Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-43885547-1f4d-459e-80dc-43fdf0376fa5\input.txt
+2024-12-28T04:40:22.251Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-43885547-1f4d-459e-80dc-43fdf0376fa5:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:40:23.200Z [31merror[39m: Error executing job 43885547-1f4d-459e-80dc-43fdf0376fa5: /sandbox/code.java:1: error: class BubbleSortExample is public, should be declared in a file named BubbleSortExample.java
+public class BubbleSortExample {
+       ^
+1 error
+
+2024-12-28T04:40:23.201Z [31merror[39m: Job 43885547-1f4d-459e-80dc-43fdf0376fa5 failed: /sandbox/code.java:1: error: class BubbleSortExample is public, should be declared in a file named BubbleSortExample.java
+public class BubbleSortExample {
+       ^
+1 error
+
+2024-12-28T04:40:23.202Z [32minfo[39m: Cleaned up temporary files for job 43885547-1f4d-459e-80dc-43fdf0376fa5
+2024-12-28T04:40:23.204Z [31merror[39m: Error in code execution for job 43885547-1f4d-459e-80dc-43fdf0376fa5: Error: /sandbox/code.java:1: error: class BubbleSortExample is public, should be declared in a file named BubbleSortExample.java
+public class BubbleSortExample {
+       ^
+1 error
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:40:42.722Z [32minfo[39m: Job 210 added to the queue
+2024-12-28T04:40:42.723Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-e1406925-0cd8-44e4-bd26-3a3b626e317f
+2024-12-28T04:40:42.724Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e1406925-0cd8-44e4-bd26-3a3b626e317f\code.java
+2024-12-28T04:40:42.725Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-e1406925-0cd8-44e4-bd26-3a3b626e317f\input.txt
+2024-12-28T04:40:42.725Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-e1406925-0cd8-44e4-bd26-3a3b626e317f:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:40:43.599Z [31merror[39m: Error executing job e1406925-0cd8-44e4-bd26-3a3b626e317f: /sandbox/code.java:1: error: class Main is public, should be declared in a file named Main.java
+public class Main {
+       ^
+1 error
+
+2024-12-28T04:40:43.600Z [31merror[39m: Job e1406925-0cd8-44e4-bd26-3a3b626e317f failed: /sandbox/code.java:1: error: class Main is public, should be declared in a file named Main.java
+public class Main {
+       ^
+1 error
+
+2024-12-28T04:40:43.602Z [32minfo[39m: Cleaned up temporary files for job e1406925-0cd8-44e4-bd26-3a3b626e317f
+2024-12-28T04:40:43.604Z [31merror[39m: Error in code execution for job e1406925-0cd8-44e4-bd26-3a3b626e317f: Error: /sandbox/code.java:1: error: class Main is public, should be declared in a file named Main.java
+public class Main {
+       ^
+1 error
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:40:56.266Z [32minfo[39m: Job 211 added to the queue
+2024-12-28T04:40:56.268Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ee51729-5acd-4991-8df8-fdd796867727
+2024-12-28T04:40:56.269Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ee51729-5acd-4991-8df8-fdd796867727\code.java
+2024-12-28T04:40:56.271Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ee51729-5acd-4991-8df8-fdd796867727\input.txt
+2024-12-28T04:40:56.272Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-1ee51729-5acd-4991-8df8-fdd796867727:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:40:57.199Z [31merror[39m: Error executing job 1ee51729-5acd-4991-8df8-fdd796867727: /sandbox/code.java:1: error: class main is public, should be declared in a file named main.java
+public class main {
+       ^
+1 error
+
+2024-12-28T04:40:57.200Z [31merror[39m: Job 1ee51729-5acd-4991-8df8-fdd796867727 failed: /sandbox/code.java:1: error: class main is public, should be declared in a file named main.java
+public class main {
+       ^
+1 error
+
+2024-12-28T04:40:57.201Z [32minfo[39m: Cleaned up temporary files for job 1ee51729-5acd-4991-8df8-fdd796867727
+2024-12-28T04:40:57.203Z [31merror[39m: Error in code execution for job 1ee51729-5acd-4991-8df8-fdd796867727: Error: /sandbox/code.java:1: error: class main is public, should be declared in a file named main.java
+public class main {
+       ^
+1 error
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:41:54.866Z [32minfo[39m: Job 212 added to the queue
+2024-12-28T04:41:54.868Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ce717cc-5253-4618-95a1-055095c8687b
+2024-12-28T04:41:54.870Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ce717cc-5253-4618-95a1-055095c8687b\code.py
+2024-12-28T04:41:54.872Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ce717cc-5253-4618-95a1-055095c8687b\input.txt
+2024-12-28T04:41:54.872Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-1ce717cc-5253-4618-95a1-055095c8687b:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-28T04:41:55.592Z [32minfo[39m: Job 1ce717cc-5253-4618-95a1-055095c8687b executed successfully with output: ('apple', 'banana', 'cherry')
+
+2024-12-28T04:41:55.594Z [32minfo[39m: Cleaned up temporary files for job 1ce717cc-5253-4618-95a1-055095c8687b
+2024-12-28T04:41:55.594Z [32minfo[39m: Job 212 state: completed
+2024-12-28T04:41:55.594Z [32minfo[39m: Job 212 completed successfully: ('apple', 'banana', 'cherry')
+
+2024-12-28T04:42:47.797Z [32minfo[39m: Job 213 added to the queue
+2024-12-28T04:42:47.799Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-b9bab06f-4bf6-4223-b662-639f504f3b00
+2024-12-28T04:42:47.801Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b9bab06f-4bf6-4223-b662-639f504f3b00\code.py
+2024-12-28T04:42:47.802Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b9bab06f-4bf6-4223-b662-639f504f3b00\input.txt
+2024-12-28T04:42:47.802Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-b9bab06f-4bf6-4223-b662-639f504f3b00:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-28T04:42:48.395Z [31merror[39m: Error executing job b9bab06f-4bf6-4223-b662-639f504f3b00:   File "/sandbox/code.py", line 1
+    public class code {
+           ^^^^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:42:48.395Z [31merror[39m: Job b9bab06f-4bf6-4223-b662-639f504f3b00 failed:   File "/sandbox/code.py", line 1
+    public class code {
+           ^^^^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:42:48.397Z [32minfo[39m: Cleaned up temporary files for job b9bab06f-4bf6-4223-b662-639f504f3b00
+2024-12-28T04:42:48.398Z [31merror[39m: Error in code execution for job b9bab06f-4bf6-4223-b662-639f504f3b00: Error:   File "/sandbox/code.py", line 1
+    public class code {
+           ^^^^^
+SyntaxError: invalid syntax
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:43:09.256Z [32minfo[39m: Job 214 added to the queue
+2024-12-28T04:43:09.258Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-8778fd4a-bee8-452b-a9d8-80ccc59bece0
+2024-12-28T04:43:09.260Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-8778fd4a-bee8-452b-a9d8-80ccc59bece0\code.java
+2024-12-28T04:43:09.262Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-8778fd4a-bee8-452b-a9d8-80ccc59bece0\input.txt
+2024-12-28T04:43:09.262Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-8778fd4a-bee8-452b-a9d8-80ccc59bece0:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:43:10.157Z [32minfo[39m: Job 8778fd4a-bee8-452b-a9d8-80ccc59bece0 executed successfully with output: Hello World
+
+2024-12-28T04:43:10.159Z [32minfo[39m: Cleaned up temporary files for job 8778fd4a-bee8-452b-a9d8-80ccc59bece0
+2024-12-28T04:43:10.160Z [32minfo[39m: Job 214 state: completed
+2024-12-28T04:43:10.160Z [32minfo[39m: Job 214 completed successfully: Hello World
+
+2024-12-28T04:45:16.213Z [32minfo[39m: Job 215 added to the queue
+2024-12-28T04:45:16.215Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-1eec629f-fdf6-4f41-ac19-c60c06db912f
+2024-12-28T04:45:16.217Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1eec629f-fdf6-4f41-ac19-c60c06db912f\code.java
+2024-12-28T04:45:16.219Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1eec629f-fdf6-4f41-ac19-c60c06db912f\input.txt
+2024-12-28T04:45:16.219Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-1eec629f-fdf6-4f41-ac19-c60c06db912f:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:45:17.209Z [32minfo[39m: Job 1eec629f-fdf6-4f41-ac19-c60c06db912f executed successfully with output: Element found at index: 3
+
+2024-12-28T04:45:17.211Z [32minfo[39m: Cleaned up temporary files for job 1eec629f-fdf6-4f41-ac19-c60c06db912f
+2024-12-28T04:45:17.212Z [32minfo[39m: Job 215 state: completed
+2024-12-28T04:45:17.212Z [32minfo[39m: Job 215 completed successfully: Element found at index: 3
+
+2024-12-28T04:46:14.069Z [32minfo[39m: Job 216 added to the queue
+2024-12-28T04:46:14.070Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-049147a3-a27c-4364-9c28-14a0fd2f29ce
+2024-12-28T04:46:14.072Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-049147a3-a27c-4364-9c28-14a0fd2f29ce\code.java
+2024-12-28T04:46:14.072Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-049147a3-a27c-4364-9c28-14a0fd2f29ce\input.txt
+2024-12-28T04:46:14.073Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-049147a3-a27c-4364-9c28-14a0fd2f29ce:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:46:15.206Z [32minfo[39m: Job 049147a3-a27c-4364-9c28-14a0fd2f29ce executed successfully with output: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:46:15.208Z [32minfo[39m: Cleaned up temporary files for job 049147a3-a27c-4364-9c28-14a0fd2f29ce
+2024-12-28T04:46:15.209Z [32minfo[39m: Job 216 state: completed
+2024-12-28T04:46:15.212Z [32minfo[39m: Job 216 completed successfully: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:46:20.314Z [32minfo[39m: Job 217 added to the queue
+2024-12-28T04:46:20.316Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-916da78f-0653-401f-b3cc-485f193367aa
+2024-12-28T04:46:20.317Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-916da78f-0653-401f-b3cc-485f193367aa\code.java
+2024-12-28T04:46:20.319Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-916da78f-0653-401f-b3cc-485f193367aa\input.txt
+2024-12-28T04:46:20.319Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-916da78f-0653-401f-b3cc-485f193367aa:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:46:21.319Z [31merror[39m: Error executing job 916da78f-0653-401f-b3cc-485f193367aa: /sandbox/code.java:40: error: cannot find symbol
+        Dog  = new Dog("Buddy");
+        ^
+  symbol:   variable Dog
+  location: class code
+/sandbox/code.java:41: error: cannot find symbol
+        dog.speak(); // Calls the overridden method in Dog class
+        ^
+  symbol:   variable dog
+  location: class code
+2 errors
+
+2024-12-28T04:46:21.319Z [31merror[39m: Job 916da78f-0653-401f-b3cc-485f193367aa failed: /sandbox/code.java:40: error: cannot find symbol
+        Dog  = new Dog("Buddy");
+        ^
+  symbol:   variable Dog
+  location: class code
+/sandbox/code.java:41: error: cannot find symbol
+        dog.speak(); // Calls the overridden method in Dog class
+        ^
+  symbol:   variable dog
+  location: class code
+2 errors
+
+2024-12-28T04:46:21.321Z [32minfo[39m: Cleaned up temporary files for job 916da78f-0653-401f-b3cc-485f193367aa
+2024-12-28T04:46:21.322Z [31merror[39m: Error in code execution for job 916da78f-0653-401f-b3cc-485f193367aa: Error: /sandbox/code.java:40: error: cannot find symbol
+        Dog  = new Dog("Buddy");
+        ^
+  symbol:   variable Dog
+  location: class code
+/sandbox/code.java:41: error: cannot find symbol
+        dog.speak(); // Calls the overridden method in Dog class
+        ^
+  symbol:   variable dog
+  location: class code
+2 errors
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:46:28.084Z [32minfo[39m: Job 218 added to the queue
+2024-12-28T04:46:28.086Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-70b012d8-efec-40c2-8b3b-716f8a9e1359
+2024-12-28T04:46:28.088Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-70b012d8-efec-40c2-8b3b-716f8a9e1359\code.java
+2024-12-28T04:46:28.090Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-70b012d8-efec-40c2-8b3b-716f8a9e1359\input.txt
+2024-12-28T04:46:28.090Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-70b012d8-efec-40c2-8b3b-716f8a9e1359:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:46:29.098Z [32minfo[39m: Job 70b012d8-efec-40c2-8b3b-716f8a9e1359 executed successfully with output: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:46:29.099Z [32minfo[39m: Cleaned up temporary files for job 70b012d8-efec-40c2-8b3b-716f8a9e1359
+2024-12-28T04:46:29.100Z [32minfo[39m: Job 218 state: completed
+2024-12-28T04:46:29.101Z [32minfo[39m: Job 218 completed successfully: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:48:38.041Z [32minfo[39m: Job 219 added to the queue
+2024-12-28T04:48:38.043Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-9b704c29-2eca-472d-bf70-f1b74bce5894
+2024-12-28T04:48:38.045Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-9b704c29-2eca-472d-bf70-f1b74bce5894\code.java
+2024-12-28T04:48:38.046Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-9b704c29-2eca-472d-bf70-f1b74bce5894\input.txt
+2024-12-28T04:48:38.047Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-9b704c29-2eca-472d-bf70-f1b74bce5894:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:48:39.122Z [32minfo[39m: Job 9b704c29-2eca-472d-bf70-f1b74bce5894 executed successfully with output: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:48:39.124Z [32minfo[39m: Cleaned up temporary files for job 9b704c29-2eca-472d-bf70-f1b74bce5894
+2024-12-28T04:48:39.126Z [32minfo[39m: Job 219 state: completed
+2024-12-28T04:48:39.126Z [32minfo[39m: Job 219 completed successfully: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:52:59.766Z [32minfo[39m: Job 220 added to the queue
+2024-12-28T04:52:59.767Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-b798d808-e113-44fc-9baf-138c11482543
+2024-12-28T04:52:59.768Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b798d808-e113-44fc-9baf-138c11482543\code.py
+2024-12-28T04:52:59.770Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b798d808-e113-44fc-9baf-138c11482543\input.txt
+2024-12-28T04:52:59.770Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-b798d808-e113-44fc-9baf-138c11482543:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-28T04:53:00.442Z [31merror[39m: Error executing job b798d808-e113-44fc-9baf-138c11482543:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:53:00.442Z [31merror[39m: Job b798d808-e113-44fc-9baf-138c11482543 failed:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:53:00.443Z [32minfo[39m: Cleaned up temporary files for job b798d808-e113-44fc-9baf-138c11482543
+2024-12-28T04:53:00.444Z [31merror[39m: Error in code execution for job b798d808-e113-44fc-9baf-138c11482543: Error:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:53:07.836Z [32minfo[39m: Job 221 added to the queue
+2024-12-28T04:53:07.837Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-4b9ba72a-49ae-49d5-b789-3b0e389c7c38
+2024-12-28T04:53:07.839Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-4b9ba72a-49ae-49d5-b789-3b0e389c7c38\code.java
+2024-12-28T04:53:07.840Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-4b9ba72a-49ae-49d5-b789-3b0e389c7c38\input.txt
+2024-12-28T04:53:07.840Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-4b9ba72a-49ae-49d5-b789-3b0e389c7c38:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:53:08.829Z [32minfo[39m: Job 4b9ba72a-49ae-49d5-b789-3b0e389c7c38 executed successfully with output: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:53:08.830Z [32minfo[39m: Cleaned up temporary files for job 4b9ba72a-49ae-49d5-b789-3b0e389c7c38
+2024-12-28T04:53:08.831Z [32minfo[39m: Job 221 state: completed
+2024-12-28T04:53:08.831Z [32minfo[39m: Job 221 completed successfully: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:53:30.852Z [32minfo[39m: Job 222 added to the queue
+2024-12-28T04:53:30.853Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-5d6fc6f4-35e0-47da-b8f2-0b93718d9f7b
+2024-12-28T04:53:30.853Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5d6fc6f4-35e0-47da-b8f2-0b93718d9f7b\code.java
+2024-12-28T04:53:30.855Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-5d6fc6f4-35e0-47da-b8f2-0b93718d9f7b\input.txt
+2024-12-28T04:53:30.855Z [32minfo[39m: Executing command: docker run --rm -v "D:\Projects\quiz-exam-portal\server\workers\temp\job-5d6fc6f4-35e0-47da-b8f2-0b93718d9f7b:/sandbox" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"
+2024-12-28T04:53:31.822Z [32minfo[39m: Job 5d6fc6f4-35e0-47da-b8f2-0b93718d9f7b executed successfully with output: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:53:31.823Z [32minfo[39m: Cleaned up temporary files for job 5d6fc6f4-35e0-47da-b8f2-0b93718d9f7b
+2024-12-28T04:53:31.824Z [32minfo[39m: Job 222 state: completed
+2024-12-28T04:53:31.824Z [32minfo[39m: Job 222 completed successfully: The animal makes a sound
+Buddy barks
+
+2024-12-28T04:54:54.357Z [32minfo[39m: Job 223 added to the queue
+2024-12-28T04:54:54.359Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ab2212d-f07d-46ae-8607-e506951bcea6
+2024-12-28T04:54:54.360Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ab2212d-f07d-46ae-8607-e506951bcea6\code.py
+2024-12-28T04:54:54.362Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-1ab2212d-f07d-46ae-8607-e506951bcea6\input.txt
+2024-12-28T04:54:54.363Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-1ab2212d-f07d-46ae-8607-e506951bcea6:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-28T04:54:54.978Z [31merror[39m: Error executing job 1ab2212d-f07d-46ae-8607-e506951bcea6:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:54:54.979Z [31merror[39m: Job 1ab2212d-f07d-46ae-8607-e506951bcea6 failed:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:54:54.980Z [32minfo[39m: Cleaned up temporary files for job 1ab2212d-f07d-46ae-8607-e506951bcea6
+2024-12-28T04:54:54.981Z [31merror[39m: Error in code execution for job 1ab2212d-f07d-46ae-8607-e506951bcea6: Error:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T04:55:35.601Z [32minfo[39m: Job 224 added to the queue
+2024-12-28T04:55:35.602Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02
+2024-12-28T04:55:35.604Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02\code.py
+2024-12-28T04:55:35.605Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02\input.txt
+2024-12-28T04:55:35.605Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-28T04:55:36.185Z [31merror[39m: Error executing job 98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:55:36.185Z [31merror[39m: Job 98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02 failed:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T04:55:36.187Z [32minfo[39m: Cleaned up temporary files for job 98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02
+2024-12-28T04:55:36.188Z [31merror[39m: Error in code execution for job 98d8d8d6-16af-4f66-95fa-4ee0d2ac7b02: Error:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T05:02:14.361Z [32minfo[39m: Server running on port 5000
+2024-12-28T05:02:24.516Z [32minfo[39m: Server running on port 5000
+2024-12-28T05:02:28.414Z [32minfo[39m: Server running on port 5000
+2024-12-28T05:02:33.414Z [32minfo[39m: Job 225 added to the queue
+2024-12-28T05:02:33.415Z [32minfo[39m: Job directory created: D:\Projects\quiz-exam-portal\server\workers\temp\job-b4bb271c-b3d3-4273-aeca-dec7542731fc
+2024-12-28T05:02:33.417Z [32minfo[39m: Code file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b4bb271c-b3d3-4273-aeca-dec7542731fc\code.py
+2024-12-28T05:02:33.419Z [32minfo[39m: Input file created at: D:\Projects\quiz-exam-portal\server\workers\temp\job-b4bb271c-b3d3-4273-aeca-dec7542731fc\input.txt
+2024-12-28T05:02:33.419Z [32minfo[39m: Executing command: docker run --rm -v "D:/Projects/quiz-exam-portal/server/workers/temp/job-b4bb271c-b3d3-4273-aeca-dec7542731fc:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt
+2024-12-28T05:02:34.030Z [31merror[39m: Error executing job b4bb271c-b3d3-4273-aeca-dec7542731fc:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T05:02:34.030Z [31merror[39m: Job b4bb271c-b3d3-4273-aeca-dec7542731fc failed:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+2024-12-28T05:02:34.033Z [32minfo[39m: Cleaned up temporary files for job b4bb271c-b3d3-4273-aeca-dec7542731fc
+2024-12-28T05:02:34.036Z [31merror[39m: Error in code execution for job b4bb271c-b3d3-4273-aeca-dec7542731fc: Error:   File "/sandbox/code.py", line 1
+    // Parent class (Super class)
+    ^^
+SyntaxError: invalid syntax
+
+    at Queue.onFailed (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\job.js:518:18)
+    at Queue.emit (node:events:524:28)
+    at module.exports.emitSafe (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\utils.js:50:20)
+    at EventEmitter.messageHandler (D:\Projects\quiz-exam-portal\server\node_modules\bull\lib\queue.js:505:15)
+    at EventEmitter.emit (node:events:524:28)
+    at DataHandler.handleSubscriberReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:83:32)
+    at DataHandler.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:50:18)
+    at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
+    at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
+    at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
