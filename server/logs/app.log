@@ -2393,3 +2393,4 @@ SyntaxError: invalid syntax
     at JavascriptRedisParser.returnReply (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:21:22)
     at JavascriptRedisParser.execute (D:\Projects\quiz-exam-portal\server\node_modules\redis-parser\lib\parser.js:544:14)
     at Socket.<anonymous> (D:\Projects\quiz-exam-portal\server\node_modules\ioredis\built\DataHandler.js:26:20)
+2024-12-28T05:03:09.524Z [32minfo[39m: Server running on port 5000
