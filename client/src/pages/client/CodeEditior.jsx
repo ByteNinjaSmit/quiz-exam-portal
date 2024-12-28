@@ -5,7 +5,7 @@ import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-monokai";
-import { FaBookmark, FaCode, FaPlay, FaDownload, FaTimes, FaPlus } from "react-icons/fa";
+import { FaBookmark, FaCode, FaPlay, FaDownload, FaTimes, FaPlus, FaLandmark, FaSyncAlt } from "react-icons/fa";
 import { BiReset } from "react-icons/bi";
 import axios from 'axios';
 import { useAuth } from "../../store/auth";
@@ -24,7 +24,7 @@ import MonacoEditor from '@monaco-editor/react';
 
 const CodingPlatform = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("python");
-  const [editorTheme, setEditorTheme] = useState("github");
+  const [editorTheme, setEditorTheme] = useState("dark");
   const [code, setCode] = useState("");
   const [testCases, setTestCases] = useState([]);
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(true);
@@ -36,6 +36,10 @@ const CodingPlatform = () => {
     { id: "cpp", name: "C++", icon: "⚡" },
     { id: "java", name: "Java", icon: "☕" }
   ];
+
+  // For Error And Proper Execute State
+  const [isError, setIsError] = useState(false);
+  const [isExecuted, setIsExecuted] = useState(false);
 
   const problemData = {
     title: "Two Sum",
@@ -56,54 +60,101 @@ const CodingPlatform = () => {
     }
   };
 
+  function cleanErrorDetails(errorDetails, selectedLanguage) {
+    let cleanedErrorDetails = errorDetails;
+  
+    if (selectedLanguage === "python") {
+      // For Python, remove the file path and line number part
+      cleanedErrorDetails = cleanedErrorDetails.replace(/File "\/sandbox\/.*?", /g, '');
+    } else if (selectedLanguage === "cpp" || selectedLanguage === "java") {
+      // For C++ and Java, remove file path and line/column information
+    cleanedErrorDetails = cleanedErrorDetails.replace(/\/sandbox\/code\.(cpp|java):\d+(:\d+)?(: \w+)?/g, ''); // Remove C++ and Java file paths and line/column numbers
+    }
+  
+    return cleanedErrorDetails;
+  }
+  
+
   const handleAddTestCase = () => {
     setTestCases([...testCases, { input: "", expectedOutput: "", result: null }]);
   };
 
   const handleRunCode = async (e) => {
     e.preventDefault();
-
-
-    const input = " "; // Replace with dynamic input if needed
+    setIsExecuted(false);
+    setIsError(false);
 
     try {
       const response = await axios.post(`${API}/api/code/run-code`,
         {
-          language:selectedLanguage,
+          language: selectedLanguage,
           code: code,
-          input,
+          input:testCases[0].input || "",
         },
         {
           onUploadProgress: (progressEvent) => {
             const progress = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
-            console.log(`Upload Progress: ${progress}%`);
+           // console.log(`Upload Progress: ${progress}%`);
           },
         }
       );
-      
+
       // console.log('Response:', response.data.result);
       setOutput(response.data.result)
+      setIsExecuted(true);
       setErrorMessage(null);
     } catch (error) {
+      setIsError(true);
+    
       if (error.response && error.response.data) {
-        // console.error('Error:', error.response.data);
-        // setErrorMessage({
-        //   error: error.response.data.error,
-        //   details: error.response.data.details,
-        // });
-        setOutput(error.response.data.details);
-      } else {
-        setErrorMessage({ error: 'Unexpected Error', details: error.message });
+       // console.error('Error:', error.response.data);
+    
+        const errorDetails = error.response.data.details || 'Unknown error occurred.';
+        const errorSummary = error.response.data.error || 'Code execution failed';
+    
+        // Check for syntax errors and clean the error message
+        if (errorDetails.includes('SyntaxError')) {
+          // Use a regular expression to remove the unwanted file path information
+          const cleanedErrorDetails = cleanErrorDetails(errorDetails, selectedLanguage);
+
+            
+          setErrorMessage({
+            error: errorSummary,
+            details: cleanedErrorDetails,
+          });
+          setOutput(cleanedErrorDetails);
+        } 
+        // Handle infinite loop or timeout errors
+        else if (errorDetails.includes('Command failed')) {
+          setErrorMessage({
+            error: errorSummary,
+            details: 'The code execution may have gone into an infinite loop or timed out.',
+          });
+          setOutput('The code execution may have gone into an infinite loop or timed out.');
+        } 
+        // Default error handling
+        else {
+          setErrorMessage({
+            error: errorSummary,
+            details: errorDetails,
+          });
+          setOutput(errorDetails);
+        }
+      } 
+      // Generic fallback for unexpected errors
+      else {
+        setErrorMessage({
+          error: 'Unexpected Error',
+          details: error.message || 'Execution failed.',
+        });
+        setOutput('Execution failed.');
       }
     }
+    
+    
   };
-  console.log(selectedLanguage);
-  console.log(`Test Cases: ${testCases[0]?.input}`);
-  console.log(`Output: ${output}`);
-  
-
   return (
     <div className="min-h-screen bg-[#FAFAFB]">
       <div className="flex flex-col lg:flex-row h-screen overflow-y-auto">
@@ -236,8 +287,8 @@ const CodingPlatform = () => {
               extensions={[
                 selectedLanguage === 'javascript' ? javascript() :
                   selectedLanguage === 'python' ? python() :
-                    selectedLanguage === 'cpp' ? cpp() : 
-                    selectedLanguage === 'java' ? java() : javascript(), // Default fallback
+                    selectedLanguage === 'cpp' ? cpp() :
+                      selectedLanguage === 'java' ? java() : javascript(), // Default fallback
               ]}
               theme={editorTheme === 'dark' ? oneDark : undefined} // Default theme or dark theme
               onChange={(value) => setCode(value)} // Updates the state with the editor's content
@@ -247,7 +298,7 @@ const CodingPlatform = () => {
                 highlightActiveLine: true,
               }}
               className="border border-[#E0E0E0] rounded-sm text-sm"
-            />;
+            />
 
             <div className="flex gap-2 mt-4">
               <button className="flex items-center gap-2 px-4 py-2 bg-[#F72585] text-[#FFFFFF] rounded-sm hover:bg-opacity-90"
@@ -292,7 +343,7 @@ const CodingPlatform = () => {
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-[#3A0CA3] mb-1">Input</label>
+                      <label htmlFor="yourInput" className="block text-sm text-[#3A0CA3] mb-1">Input</label>
                       <textarea
                         className="w-full p-2 bg-[#F0F1F3] rounded-sm border border-[#E0E0E0] focus:ring-2 focus:ring-[#F72585]"
                         rows="3"
@@ -325,7 +376,29 @@ const CodingPlatform = () => {
           </div>
         </div>
       </div>
-
+      {isExecuted && (
+        <div className="p-8">
+          <lable className="text-[28px] font-semibold text-[#3A0CA3]">Output</lable>
+          <div className="p-2 bg-[#F7F8FA] rounded-sm border border-[#E0E0E0] flex justify-between items-start">
+            <div className="text-xl text-green-800 whitespace-pre-line">
+              {output || "No output available"}
+            </div>
+          </div>
+        </div>
+      )
+      }
+      {
+        isError && (
+          <div className="p-8">
+            <lable className="text-[28px] font-semibold text-[#3A0CA3]">Output</lable>
+            <div className="p-2 bg-[#F7F8FA] rounded-sm border border-[#E0E0E0] flex justify-between items-start">
+              <div className="text-xl text-red-800 whitespace-pre-line">
+                {output || "No output available"}
+              </div>
+            </div>
+          </div>
+        )
+      }
       {/* Mobile Toggle Button */}
       <button
         className="fixed bottom-4 right-4 lg:hidden p-4 bg-[#F72585] text-[#FFFFFF] rounded-full shadow-lg"

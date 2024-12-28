@@ -59,7 +59,7 @@ const getCodeFileName = (language) => {
 const getExecutionCommand = (language, jobDir) => {
   switch (language) {
     case 'python':
-      return `docker run --rm -v "${path.resolve(jobDir).replace(/\\/g, '/')}:/sandbox" python:3.10 python3 /sandbox/code.py /sandbox/input.txt`;
+      return `docker run --rm -v "${path.resolve(jobDir).replace(/\\/g, '/')}:/sandbox" python:3.10 bash -c "python3 /sandbox/code.py < /sandbox/input.txt"`;
     case 'cpp':
       return `docker run --rm -v "${path.resolve(jobDir)}:/sandbox" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"`;
     case 'java':

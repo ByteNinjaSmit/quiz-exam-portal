@@ -48,7 +48,7 @@ module.exports = {
       logger.error(`Error in code execution for job ${jobId}: ${error.stack || error.message}`);
 
       // Respond with an error message
-      return res.status(400).json({
+      return res.status(500).json({
         error: 'Code execution failed',
         details: error.message || 'An unexpected error occurred',
       });
