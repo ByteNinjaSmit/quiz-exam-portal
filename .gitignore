@@ -1,2 +1,3 @@
 .vscode/
 app.log
+server/logs/app.log

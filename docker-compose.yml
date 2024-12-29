@@ -10,7 +10,7 @@ services:
   server:
     build:
       context: .
-      dockerfile: /server/Dockerfile
+      dockerfile: server/Dockerfile
     volumes:
       - ./server:/usr/src/app
     container_name: server
@@ -24,7 +24,7 @@ services:
   python-runner:
     build:
       context: .
-      dockerfile: /server/Dockerfiles/Dockerfile.python
+      dockerfile: server/Dockerfiles/Dockerfile.python
     container_name: python-runner
     networks:
       - code-runner-network
@@ -32,7 +32,7 @@ services:
   cpp-runner:
     build:
       context: .
-      dockerfile: /server/Dockerfiles/Dockerfile.cpp
+      dockerfile: server/Dockerfiles/Dockerfile.cpp
     container_name: cpp-runner
     networks:
       - code-runner-network
@@ -40,7 +40,7 @@ services:
   java-runner:
     build:
       context: .
-      dockerfile: /server/Dockerfiles/Dockerfile.java
+      dockerfile: server/Dockerfiles/Dockerfile.java
     container_name: java-runner
     networks:
       - code-runner-network
