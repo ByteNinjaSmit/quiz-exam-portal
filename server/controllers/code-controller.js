@@ -1,3 +1,5 @@
+// code-controller.js
+
 const { codeQueue } = require('../queue');
 const logger = require('../utils/logger');
 const { v4: uuidv4 } = require('uuid');
@@ -15,7 +17,12 @@ module.exports = {
 
     try {
       // Add the job to the queue
-      const job = await codeQueue.add({ language, code, input, jobId });
+      const job = await codeQueue.add('code-execution', {
+        language,
+        code,
+        input,
+        jobId
+      });
       logger.info(`Job ${job.id} added to the queue`);
 
       // Wait for the job to complete (with a max wait time to prevent long hangs)

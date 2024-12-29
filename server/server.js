@@ -76,12 +76,14 @@ handleSocketConnection(io, loadQuestionPaper, checkAndStartExam);
 
 // For Handeling Code Queue
 
+const Concurrency = process.env.CONCURRENCY;    // for handeling process at a time
+console.log(Concurrency);
 
 connectToDatabase()
     .then(() => {
         console.log("Connected to MongoDB successfully");
         server.listen(PORT, () => {
-            initWorker();
+            initWorker(Concurrency);
             console.log(`Server running on port ${PORT}`);
             logger.info('Server running on port 5000');
         });

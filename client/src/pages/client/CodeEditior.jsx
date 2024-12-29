@@ -40,7 +40,7 @@ const CodingPlatform = () => {
   // For Error And Proper Execute State
   const [isError, setIsError] = useState(false);
   const [isExecuted, setIsExecuted] = useState(false);
-
+  const [isExecutionStart, setIsExecutionStart] = useState(false);
   // Loading State
   const [isLoading, setIsLoading] = useState(false);
 
@@ -87,6 +87,7 @@ const CodingPlatform = () => {
     setIsExecuted(false);
     setIsError(false);
     setIsLoading(true);
+    setIsExecutionStart(true);
     try {
       const response = await axios.post(`${API}/api/code/run-code`,
         {
@@ -157,6 +158,7 @@ const CodingPlatform = () => {
       }
     } finally {
       setIsLoading(false);
+      setIsExecutionStart(false);
     }
 
 
@@ -307,11 +309,15 @@ const CodingPlatform = () => {
             />
 
             <div className="flex gap-2 mt-4">
-              <button className="flex items-center gap-2 px-4 py-2 bg-[#F72585] text-[#FFFFFF] rounded-sm hover:bg-opacity-90"
+              <button
+                className={`flex items-center gap-2 px-4 py-2 bg-[#F72585] text-[#FFFFFF] rounded-sm hover:bg-opacity-90 
+    ${isExecutionStart ? 'bg-[#F72585]/50 cursor-not-allowed opacity-50' : ''}`}
                 onClick={(e) => handleRunCode(e)}
+                disabled={isExecutionStart}
               >
                 <FaPlay /> Run Code
               </button>
+
               <button className="flex items-center gap-2 px-4 py-2 bg-accent text-[#7209B7] rounded-sm hover:bg-opacity-90">
                 <FaCode /> Submit
               </button>
