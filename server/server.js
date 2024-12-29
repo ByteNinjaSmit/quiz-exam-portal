@@ -31,6 +31,7 @@ const {
     checkAndStartExam,
     handleSocketConnection
 } = require('./controllers/exam-controller');
+const logController = require('./controllers/log-controller');
 
 
 // Server
@@ -72,12 +73,13 @@ app.use("/api/code",codeRoute);
 // Pass the io instance and controller functions to handleSocketConnection
 handleSocketConnection(io, loadQuestionPaper, checkAndStartExam);
 
+// Log Broadcasting
+// logController(io);
 
 
 // For Handeling Code Queue
 
 const Concurrency = process.env.CONCURRENCY;    // for handeling process at a time
-console.log(Concurrency);
 
 connectToDatabase()
     .then(() => {
@@ -86,6 +88,7 @@ connectToDatabase()
             initWorker(Concurrency);
             console.log(`Server running on port ${PORT}`);
             logger.info('Server running on port 5000');
+            logController(io);
         });
     })
     .catch((error) => {

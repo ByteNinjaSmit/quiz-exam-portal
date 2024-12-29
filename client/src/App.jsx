@@ -23,6 +23,7 @@ import SeeAllAdmins from "./pages/dev/All-Admins";
 import UserResults from "./pages/client/Results";
 import CodingPlatform from "./pages/client/CodeEditior";
 import QuestionPaperResult from "./pages/client/Result";
+import LiveLogsViewer from "./pages/dev/Logs";
 
 
 
@@ -47,6 +48,7 @@ const App = () => {
               <Route exact path="dashboard" element={<DeveloperDashboard />} />
               <Route exact path="see-all-users" element={<SeeAllUsers />} />
               <Route exact path="see-all-admins" element={<SeeAllAdmins />} />
+              <Route exact path="logs" element={<LiveLogsViewer />} />
             </Route>
 
             {/* User Routes */}
