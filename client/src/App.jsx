@@ -9,7 +9,7 @@ import LoginPage from "./pages/Login";
 import Dashboard from "./pages/client/Dashboard";
 import AdminDashboard from "./pages/admin/Dashboard";
 import ExamDashboard from "./pages/admin/Exam-Overview";
-import CreateExam from "./pages/admin/Create-Exam,";
+import CreateExam from "./pages/admin/Create-Exam";
 import ExamInterface from "./pages/client/Question-Paper";
 import { AdminLayout } from "./components/layout/Admin-Layout";
 import { UserLayout } from "./components/layout/User-Layout";
