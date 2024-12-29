@@ -41,6 +41,9 @@ const CodingPlatform = () => {
   const [isError, setIsError] = useState(false);
   const [isExecuted, setIsExecuted] = useState(false);
 
+  // Loading State
+  const [isLoading, setIsLoading] = useState(false);
+
   const problemData = {
     title: "Two Sum",
     difficulty: "Easy",
@@ -62,18 +65,18 @@ const CodingPlatform = () => {
 
   function cleanErrorDetails(errorDetails, selectedLanguage) {
     let cleanedErrorDetails = errorDetails;
-  
+
     if (selectedLanguage === "python") {
       // For Python, remove the file path and line number part
       cleanedErrorDetails = cleanedErrorDetails.replace(/File "\/sandbox\/.*?", /g, '');
     } else if (selectedLanguage === "cpp" || selectedLanguage === "java") {
       // For C++ and Java, remove file path and line/column information
-    cleanedErrorDetails = cleanedErrorDetails.replace(/\/sandbox\/code\.(cpp|java):\d+(:\d+)?(: \w+)?/g, ''); // Remove C++ and Java file paths and line/column numbers
+      cleanedErrorDetails = cleanedErrorDetails.replace(/\/sandbox\/code\.(cpp|java):\d+(:\d+)?(: \w+)?/g, ''); // Remove C++ and Java file paths and line/column numbers
     }
-  
+
     return cleanedErrorDetails;
   }
-  
+
 
   const handleAddTestCase = () => {
     setTestCases([...testCases, { input: "", expectedOutput: "", result: null }]);
@@ -83,20 +86,20 @@ const CodingPlatform = () => {
     e.preventDefault();
     setIsExecuted(false);
     setIsError(false);
-
+    setIsLoading(true);
     try {
       const response = await axios.post(`${API}/api/code/run-code`,
         {
           language: selectedLanguage,
           code: code,
-          input:testCases[0].input || "",
+          input: testCases[0]?.input || " ",
         },
         {
           onUploadProgress: (progressEvent) => {
             const progress = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
-           // console.log(`Upload Progress: ${progress}%`);
+            // console.log(`Upload Progress: ${progress}%`);
           },
         }
       );
@@ -107,25 +110,26 @@ const CodingPlatform = () => {
       setErrorMessage(null);
     } catch (error) {
       setIsError(true);
-    
+      // console.log(error);
+
       if (error.response && error.response.data) {
-       // console.error('Error:', error.response.data);
-    
+        // console.error('Error:', error.response.data);
+
         const errorDetails = error.response.data.details || 'Unknown error occurred.';
         const errorSummary = error.response.data.error || 'Code execution failed';
-    
+
         // Check for syntax errors and clean the error message
         if (errorDetails.includes('SyntaxError')) {
           // Use a regular expression to remove the unwanted file path information
           const cleanedErrorDetails = cleanErrorDetails(errorDetails, selectedLanguage);
 
-            
+
           setErrorMessage({
             error: errorSummary,
             details: cleanedErrorDetails,
           });
           setOutput(cleanedErrorDetails);
-        } 
+        }
         // Handle infinite loop or timeout errors
         else if (errorDetails.includes('Command failed')) {
           setErrorMessage({
@@ -133,7 +137,7 @@ const CodingPlatform = () => {
             details: 'The code execution may have gone into an infinite loop or timed out.',
           });
           setOutput('The code execution may have gone into an infinite loop or timed out.');
-        } 
+        }
         // Default error handling
         else {
           setErrorMessage({
@@ -142,7 +146,7 @@ const CodingPlatform = () => {
           });
           setOutput(errorDetails);
         }
-      } 
+      }
       // Generic fallback for unexpected errors
       else {
         setErrorMessage({
@@ -151,13 +155,15 @@ const CodingPlatform = () => {
         });
         setOutput('Execution failed.');
       }
+    } finally {
+      setIsLoading(false);
     }
-    
-    
+
+
   };
   return (
     <div className="min-h-screen bg-[#FAFAFB]">
-      <div className="flex flex-col lg:flex-row h-screen overflow-y-auto">
+      <div className="flex flex-col lg:flex-row  overflow-y-auto">
         {/* Left Panel */}
         <div className={`${isDescriptionVisible ? "block" : "hidden"} lg:block lg:w-2/5 bg-card p-6 border-r border-[#E0E0E0]`}>
           <div className="flex justify-between items-center mb-6">
@@ -376,9 +382,35 @@ const CodingPlatform = () => {
           </div>
         </div>
       </div>
-      {isExecuted && (
+
+      {isLoading && (
+        <div className="flex flex-col items-center justify-center p-8">
+          <svg
+            className="animate-spin h-12 w-12 text-blue-500"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+          </svg>
+          <p className="text-lg text-blue-500 mt-4">Loading, please wait...</p>
+        </div>
+      )}
+      {isExecuted && !isLoading && (
         <div className="p-8">
-          <lable className="text-[28px] font-semibold text-[#3A0CA3]">Output</lable>
+          <h1 className="text-[28px] font-semibold text-[#3A0CA3]">Output</h1>
           <div className="p-2 bg-[#F7F8FA] rounded-sm border border-[#E0E0E0] flex justify-between items-start">
             <div className="text-xl text-green-800 whitespace-pre-line">
               {output || "No output available"}
@@ -388,9 +420,9 @@ const CodingPlatform = () => {
       )
       }
       {
-        isError && (
+        isError && !isLoading && (
           <div className="p-8">
-            <lable className="text-[28px] font-semibold text-[#3A0CA3]">Output</lable>
+            <h1 className="text-[28px] font-semibold text-[#3A0CA3]">Output</h1>
             <div className="p-2 bg-[#F7F8FA] rounded-sm border border-[#E0E0E0] flex justify-between items-start">
               <div className="text-xl text-red-800 whitespace-pre-line">
                 {output || "No output available"}
