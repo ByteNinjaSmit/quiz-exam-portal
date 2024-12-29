@@ -565,22 +565,27 @@ const GetResultOfSinglePaper = async (req, res, next) => {
 
 
         // Calculate total points
-        const totalPoints = paperResults.reduce((sum, result) => sum + result.points, 0);
 
 
         const questionPaper = await QuestionPaper.findOne({ paperKey });
         if (!questionPaper) {
             return res.status(404).json({ success: false, message: `Question paper with paperKey ${paperKey} not found.` });
         }
+        const totalPoints = questionPaper.questions.reduce((sum, question) => sum + question.maxPoint, 0);
+
         // Prepare response data
         const responseData = {
             title: questionPaper.title,
             paperKey,
             totalPoints,
-            results: paperResults.map(result => ({
+            startTime: questionPaper.startTime,
+            endTime:questionPaper.endTime,
+            questions: paperResults.map(result => ({
                 question: result.question,
-                answer: result.answer,
+                userAnswer: result.answer,
                 points: result.points,
+                timing: result.createdAt,
+                isCorrect: result.points > 0,
             })),
         };
 
