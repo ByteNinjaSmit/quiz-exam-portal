@@ -170,10 +170,11 @@ const CreateExam = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
+      const isPublished = true;
       // Append non-file fields
       formData.append("isQuiz", isQuiz);
       formData.append("isFastQuiz", isFastQuiz);
-      formData.append("isPublished", isPublished=true);
+      formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classYear);
       formData.append(
         "startTime",
@@ -236,10 +237,11 @@ const CreateExam = () => {
     e.preventDefault();
     try {
       const formData = new FormData();
+      const isPublished = false;
       // Append non-file fields
       formData.append("isQuiz", isQuiz);
       formData.append("isFastQuiz", isFastQuiz);
-      formData.append("isPublished", isPublished=false);
+      formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classYear);
       formData.append(
         "startTime",

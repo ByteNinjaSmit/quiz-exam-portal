@@ -165,7 +165,7 @@ const CodingPlatform = () => {
   };
   return (
     <div className="min-h-screen bg-[#FAFAFB]">
-      <div className="flex flex-col lg:flex-row  overflow-y-auto">
+      <div className="flex flex-col lg:flex-row overflow-y-auto">
         {/* Left Panel */}
         <div className={`${isDescriptionVisible ? "block" : "hidden"} lg:block lg:w-2/5 bg-card p-6 border-r border-[#E0E0E0]`}>
           <div className="flex justify-between items-center mb-6">
@@ -321,7 +321,9 @@ const CodingPlatform = () => {
               <button className="flex items-center gap-2 px-4 py-2 bg-accent text-[#7209B7] rounded-sm hover:bg-opacity-90">
                 <FaCode /> Submit
               </button>
-              <button className="flex items-center gap-2 px-4 py-2 bg-[#F0F1F3] text-[#3A0CA3] rounded-sm hover:bg-opacity-90">
+              <button className="flex items-center gap-2 px-4 py-2 bg-[#F0F1F3] text-[#3A0CA3] rounded-sm hover:bg-opacity-90"
+              onClick={(e)=> setCode("")}
+              >
                 <BiReset /> Clear
               </button>
               {/* <button className="flex items-center gap-2 px-4 py-2 bg-[#F0F1F3] text-[#3A0CA3] rounded-sm hover:bg-opacity-90">

@@ -3,7 +3,7 @@ import { FaExpandAlt, FaCompress } from "react-icons/fa";
 import { IoWarningOutline } from "react-icons/io5";
 import { BiTimer } from "react-icons/bi";
 import { motion, AnimatePresence } from "framer-motion";
-import { useParams, Navigate,useNavigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import io from "socket.io-client";
 import axios from "axios";
@@ -230,7 +230,7 @@ const ExamInterface = () => {
       // Assuming `user._id` and `paperKey` are available from your app state or context
       const userId = user._id;
       const PaperKey = paperKey;
-  
+
       // Make GET request to check cheat status
       const response = await axios.get(
         `${API}/api/exam/cheat-status/${userId}/${PaperKey}`,
@@ -243,11 +243,11 @@ const ExamInterface = () => {
 
         }
       );
-  
+
       // Handle success response
       if (response.status === 200) {
         const { isCheat } = response.data;
-  
+
         // If isCheat is true, update state and navigate to dashboard
         if (isCheat) {
           setIsCheated(true);
@@ -496,6 +496,7 @@ const ExamInterface = () => {
   if (currentQuestion === null) {
     return <p>exam sheduled</p>;
   }
+  console.log(currentQuestion?.questionText);
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -560,10 +561,19 @@ const ExamInterface = () => {
             <h2 className="text-xl font-semibold mb-4">
               {/* Question {currentQuestion + 1} of {examQuestions.length} */}
             </h2>
-
-            <p className="text-gray-700 text-lg mb-4">
+            {/* <div className="p-8"> */}
+            {/* <div className="p-2 bg-[#F7F8FA] rounded-sm border border-[#E0E0E0] flex justify-between items-start"> */}
+            <div className="text-xl text-gray-700 whitespace-pre font-mono font-semibold">
               {currentQuestion?.questionText}
-            </p>
+            </div>
+            {/* </div> */}
+            {/* </div> */}
+
+
+
+            {/* <p className="text-gray-700 text-lg mb-4">
+              
+            </p> */}
 
             {currentQuestion.image !== null && (
               <div className="my-4">
