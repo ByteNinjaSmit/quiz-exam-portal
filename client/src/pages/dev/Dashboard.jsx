@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MdEngineering, MdAdminPanelSettings, MdFeedback, MdDashboard, MdSort,MdLogout , MdMonitor } from "react-icons/md";
+import { MdEngineering, MdAdminPanelSettings, MdFeedback, MdDashboard, MdSort,MdLogout , MdMonitor,MdManageHistory  } from "react-icons/md";
 import { FaUserCircle, FaCommentDots, FaToolbox, FaServer } from "react-icons/fa";
 import { BiHistory, BiCodeBlock } from "react-icons/bi";
 import { FiBarChart, FiFilter } from "react-icons/fi";
@@ -89,6 +89,13 @@ const DeveloperDashboard = () => {
           >
             <MdFeedback size={24} />
             <span className={`${!isSidebarOpen && "hidden"} ml-3`}>Complaints</span>
+          </button>
+          <button
+            className="w-full flex items-center p-3 rounded-lg hover:bg-purple-600 transition-colors"
+            onClick={()=> navigate("/developer/dev/logs") }
+          >
+            <MdManageHistory  size={24} />
+            <span className={`${!isSidebarOpen && "hidden"} ml-3`}>Logs</span>
           </button>
 
           <div className="pt-4 border-t border-gray-700">

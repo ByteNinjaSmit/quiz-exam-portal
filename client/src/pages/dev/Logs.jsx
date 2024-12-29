@@ -4,6 +4,7 @@ import { Line, Pie } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import io from 'socket.io-client';
 import { useAuth } from "../../store/auth";
+import { Link } from "react-router-dom";
 
 const LiveLogsViewer = () => {
     const [isPaused, setIsPaused] = useState(false);
@@ -128,9 +129,12 @@ const LiveLogsViewer = () => {
                     <button className="bg-[#FF4C4C] hover:bg-opacity-80 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
                         <MdClear /> Clear
                     </button>
+                    <Link to={`/developer/dev/dashboard`}>
                     <button className="bg-[#F0F1F3] text-[#3A0CA3] px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
                         <MdArrowBack /> Back
                     </button>
+                    </Link>
+                    
                 </div>
             </div>
 
