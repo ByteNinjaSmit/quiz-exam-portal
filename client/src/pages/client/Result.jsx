@@ -44,7 +44,7 @@ ChartJS.register(
 import { useAuth } from "../../store/auth";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const QuestionPaperResult = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -52,7 +52,7 @@ const QuestionPaperResult = () => {
   const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
   const [loading, setLoading] = useState(true);
   const params = useParams();
-  const [resultData,setResultData] = useState(null);
+  const [resultData, setResultData] = useState(null);
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -69,9 +69,9 @@ const QuestionPaperResult = () => {
           }
         );
         if (response.status === 200) {
-        //   setData(response.data);
-        console.log(response.data);
-        setResultData(response.data);
+          //   setData(response.data);
+          console.log(response.data);
+          setResultData(response.data);
         }
       } catch (error) {
         console.error(error);
@@ -120,12 +120,12 @@ const QuestionPaperResult = () => {
     return date.toLocaleDateString("en-US", options);
   };
 
-    // Function to format the time
-    const formatTime = (dateString) => {
-        const date = new Date(dateString);
-        const options = { hour: "2-digit", minute: "2-digit", hour12: true };
-        return date.toLocaleTimeString("en-US", options);
-      }
+  // Function to format the time
+  const formatTime = (dateString) => {
+    const date = new Date(dateString);
+    const options = { hour: "2-digit", minute: "2-digit", second:"2-digit",hour12: true };
+    return date.toLocaleTimeString("en-US", options);
+  }
 
   if (loading) {
     return (
@@ -134,14 +134,14 @@ const QuestionPaperResult = () => {
       </div>
     );
   }
-    if (!filteredQuestions.length) {
-      return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-          <MdInbox className="text-6xl text-muted-foreground mb-4" />
-          <p className="text-xl text-muted-foreground">No result found</p>
-        </div>
-      );
-    }
+  if (!filteredQuestions.length) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+        <MdInbox className="text-6xl text-muted-foreground mb-4" />
+        <p className="text-xl text-muted-foreground">No result found</p>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen bg-[#FAFAFB] p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -155,11 +155,11 @@ const QuestionPaperResult = () => {
               <MdShare /> Share
             </button>
             <Link to={`/user/dashboard`}>
-            <button className="flex items-center gap-2 px-4 py-2 border border-[#E0E0E0] rounded hover:bg-[#F0F1F3] transition-colors">
-              <MdArrowBack /> Back
-            </button>
+              <button className="flex items-center gap-2 px-4 py-2 border border-[#E0E0E0] rounded hover:bg-[#F0F1F3] transition-colors">
+                <MdArrowBack /> Back
+              </button>
             </Link>
-            
+
           </div>
         </div>
 
@@ -236,16 +236,15 @@ const QuestionPaperResult = () => {
                     key={index}
                     className={index % 2 === 0 ? "bg-white" : "bg-[#F0F1F3]"}
                   >
-                    <td className="p-4">{index+1}</td>
+                    <td className="p-4">{index + 1}</td>
                     <td className="p-4">{question.question}</td>
                     <td className="p-4">{question.userAnswer}</td>
                     <td className="p-4">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-1 rounded ${
-                          question.isCorrect
+                        className={`inline-flex items-center gap-1 px-2 py-1 rounded ${question.isCorrect
                             ? "bg-green-100 text-green-800"
                             : "bg-red-100 text-red-800"
-                        }`}
+                          }`}
                       >
                         {question.isCorrect ? (
                           <MdCheckCircle className="text-green-600" />
@@ -266,7 +265,7 @@ const QuestionPaperResult = () => {
           </div>
 
           <div className="md:hidden space-y-4">
-            {filteredQuestions?.map((question,index) => (
+            {filteredQuestions?.map((question, index) => (
               <div key={index} className="bg-[#FFFFFF] p-4 rounded shadow-sm">
                 <div className="flex justify-between items-start mb-2">
                   <div>
@@ -274,11 +273,10 @@ const QuestionPaperResult = () => {
                     <p className="text-sm mt-1">{question?.question}</p>
                   </div>
                   <span
-                    className={`inline-flex items-center gap-1 px-2 py-1 rounded ${
-                      question?.isCorrect
+                    className={`inline-flex items-center gap-1 px-2 py-1 rounded ${question?.isCorrect
                         ? "bg-green-100 text-green-800"
                         : "bg-red-100 text-red-800"
-                    }`}
+                      }`}
                   >
                     {question?.isCorrect ? (
                       <MdCheckCircle className="text-green-600" />
@@ -315,11 +313,10 @@ const QuestionPaperResult = () => {
                 </span>
               </div>
               <div
-                className={`flex items-center gap-1 px-3 py-1 rounded ${
-                  totalPoints >= passingThreshold
+                className={`flex items-center gap-1 px-3 py-1 rounded ${totalPoints >= passingThreshold
                     ? "bg-green-100 text-green-800"
                     : "bg-red-100 text-red-800"
-                }`}
+                  }`}
               >
                 {totalPoints >= passingThreshold ? (
                   <MdThumbUp className="text-green-600" />
@@ -347,12 +344,12 @@ const QuestionPaperResult = () => {
           <div className="bg-[#FFFFFF] p-6 rounded shadow-sm">
             <h2 className="text-lg font-semibold mb-4">Time Statistics</h2>
             <div className="space-y-4">
-              {resultData?.questions.map((question,index) => (
+              {resultData?.questions.map((question, index) => (
                 <div
                   key={index}
                   className="flex justify-between items-center p-3 bg-[#F0F1F3] rounded"
                 >
-                  <span>Question {index +1}</span>
+                  <span>Question {index + 1}</span>
                   <span className="font-semibold">{question?.timing && formatTime(question.timing)}</span>
                 </div>
               ))}
