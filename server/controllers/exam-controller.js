@@ -537,7 +537,7 @@ const GetResultsOfUser = async (req, res, next) => {
                 title: questionPaper.title,
                 paperKey,
                 totalPoints,
-                time:questionPaper.startTime,
+                time: questionPaper.startTime,
             });
         }
 
@@ -579,7 +579,7 @@ const GetResultOfSinglePaper = async (req, res, next) => {
             paperKey,
             totalPoints,
             startTime: questionPaper.startTime,
-            endTime:questionPaper.endTime,
+            endTime: questionPaper.endTime,
             questions: paperResults.map(result => ({
                 question: result.question,
                 userAnswer: result.answer,
@@ -590,7 +590,7 @@ const GetResultOfSinglePaper = async (req, res, next) => {
         };
 
         // Return the grouped results with calculated points
-        return res.status(200).json( responseData );
+        return res.status(200).json(responseData);
     } catch (error) {
         next(error);
     }
@@ -627,6 +627,32 @@ const deleteExam = async (req, res, next) => {
     }
 };
 
+//------------------------------------
+// GET Exam Question Paper All Data
+// ------------------------------------
+const getExamQuestionPaperData = async (req, res, next) => {
+    try {
+        const { examId, title, paperkey } = req.params;
+        if (!examId || !title || !paperkey) {
+            return res.status(400).json({ message: "Exam ID, Title and Paper Key are Required" });
+
+        }
+
+        // find in Questionpaper Model
+        const examData = await QuestionPaper.findOne({ _id: examId, title, paperKey: paperkey });
+        if (!examData) {
+            return res.status(404).json({ message: "Exam Data Not Found" });
+        }
+        // Return a success response with the exam data
+        res.status(200).json({
+            message: "Exam Data Retrieved Successfully",
+            data: examData
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
 
 module.exports = {
     loadQuestionPaper,
@@ -642,4 +668,5 @@ module.exports = {
     GetResultsOfUser,
     GetResultOfSinglePaper,
     deleteExam,
+    getExamQuestionPaperData,
 };

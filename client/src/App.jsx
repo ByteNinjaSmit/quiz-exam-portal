@@ -26,6 +26,7 @@ import QuestionPaperResult from "./pages/client/Result";
 import LiveLogsViewer from "./pages/dev/Logs";
 import CreateUser from "./pages/dev/New-User";
 import CreateFacultyAdmin from "./pages/dev/New-Admin";
+import ViewQuestionPaper from "./pages/admin/View-Exam";
 
 
 
@@ -73,6 +74,7 @@ const App = () => {
               <Route exact path="dashboard" element={<AdminDashboard />} />
               <Route exact path="dashboard/exam" element={<ExamDashboard />} />
               <Route exact path="create-exam" element={<CreateExam />} />
+              <Route exact path="view-exam/question_paper/:examId/:title/:paperkey" element={<ViewQuestionPaper />} />
             </Route>
 
             <Route path="*" element={<Error />} />

@@ -46,7 +46,7 @@ const ExamDashboard = () => {
     }
     useEffect(() => {
         fetchExams();
-    },[API])
+    }, [API])
 
 
 
@@ -324,9 +324,11 @@ const ExamDashboard = () => {
                                                 <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam?._id)}>
                                                     <FiTrash2 />
                                                 </button>
-                                                <button className="text-gray-600 hover:text-gray-800">
-                                                    <FiEye />
-                                                </button>
+                                                <Link to={`/admin/view-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`}>
+                                                    <button className="text-gray-600 hover:text-gray-800">
+                                                        <FiEye />
+                                                    </button>
+                                                </Link>
                                                 {/* <button className="text-yellow-600 hover:text-yellow-800">
                                                     <FiBell />
                                                 </button> */}
