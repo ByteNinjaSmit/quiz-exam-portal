@@ -4,13 +4,15 @@ import AdminSidebar from "../../components/sidebar";
 import { useAuth } from "../../store/auth";
 import { Link } from "react-router-dom";
 
+import axios from 'axios';
+import { toast } from "react-toastify";
 
 const ExamDashboard = () => {
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [department, setDepartment] = useState("");
-    const [status, setStatus] = useState("");
+    const [department, setDepartment] = useState("All");
+    const [status, setStatus] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -18,31 +20,34 @@ const ExamDashboard = () => {
     const [exams, setExams] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+
     // Getting All Exams 
-    useEffect(() => {
-        const fetchExams = async () => {
-            setIsLoading(true);
-            try {
-                const response = await fetch(`${API}/api/exam/all/exams`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: authorizationToken,
-                    },
-                });
-                if (!response.ok) {
-                    toast.error(`Error Fetching Exams: ${response.status}`);
-                }
-                const data = await response.json();
-                setExams(data);
-            } catch (error) {
-                console.error(error);
-                toast.error(error.messsage);
-            } finally {
-                setIsLoading(false);
+
+    const fetchExams = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(`${API}/api/exam/all/exams`, {
+                method: "GET",
+                headers: {
+                    Authorization: authorizationToken,
+                },
+            });
+            if (!response.ok) {
+                toast.error(`Error Fetching Exams: ${response.status}`);
             }
+            const data = await response.json();
+            setExams(data);
+        } catch (error) {
+            console.error(error);
+            toast.error(error.messsage);
+        } finally {
+            setIsLoading(false);
         }
+    }
+    useEffect(() => {
         fetchExams();
-    }, [])
+    },[API])
+
 
 
 
@@ -70,11 +75,44 @@ const ExamDashboard = () => {
         },
     ];
 
-    const handleDelete = (id) => {
+
+    const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this exam?")) {
-            console.log("Deleting exam:", id);
+            try {
+                // Send DELETE request to the backend
+                const response = await axios.delete(`${API}/api/exam/delete/exam/${id}`, {
+                    headers: {
+                        Authorization: authorizationToken, // Replace with the actual token
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true, // Ensures cookies are sent with the request (if needed)
+                    credentials: "include",
+                });
+
+                // Handle the response
+                if (response.status === 200) {
+                    toast.success("Exam deleted successfully");
+                    fetchExams();
+                    // Optionally, you can refresh the exam list or remove the deleted exam from the UI
+                }
+            } catch (error) {
+                // Handle different error statuses
+                if (error.response) {
+                    // Check if the error is a 400 Bad Request
+                    if (error.response.status === 400) {
+                        toast.error(error.response.data.message || "Exam ID is required or invalid.");
+                    } else if (error.response.status === 404) {
+                        toast.error(error.response.data.message || "Exam not found.");
+                    } else {
+                        toast.error(error.response.data.message || "An error occurred while deleting the exam.");
+                    }
+                } else {
+                    toast.error("Network error, please try again later.");
+                }
+            }
         }
     };
+
 
     const getStatusColor = (status) => {
         switch (status) {
@@ -108,7 +146,7 @@ const ExamDashboard = () => {
     // To Define Status base on time
     const getExamStatus = (startTime, endTime) => {
         const now = new Date();
-        
+
         if (now < new Date(startTime)) {
             return 'Scheduled'; // Exam is scheduled for the future
         } else if (now >= new Date(startTime) && now <= new Date(endTime)) {
@@ -117,7 +155,41 @@ const ExamDashboard = () => {
             return 'Completed'; // Exam has already ended
         }
     };
-    
+
+    // sort data
+    //   const sortedData = React.useMemo(() => {
+    //     if (!sortConfig.key) return data;
+
+    //     return [...data].sort((a, b) => {
+    //       if (a[sortConfig.key] < b[sortConfig.key]) {
+    //         return sortConfig.direction === "ascending" ? -1 : 1;
+    //       }
+    //       if (a[sortConfig.key] > b[sortConfig.key]) {
+    //         return sortConfig.direction === "ascending" ? 1 : -1;
+    //       }
+    //       return 0;
+    //     });
+    //   }, [data, sortConfig]);
+
+    // Pagignation Logic
+
+    const itemsPerPage = 10;
+    // Applying filters
+    const filteredData = exams.filter(
+        (item) =>
+            (status === "All" || getExamStatus(item?.startTime, item?.endTime).toLowerCase() === status.toLowerCase()) &&
+            (department === "All" || item?.classyear?.toLowerCase() === department.toLowerCase()) &&
+            (item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                item.paperKey.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+
+
+    const paginatedData = filteredData.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
+
+    const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
     return (
         <div className="flex min-h-screen bg-gray-100">
@@ -135,10 +207,10 @@ const ExamDashboard = () => {
                 <div className="flex justify-between items-center mb-1 p-6">
                     <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Management</h1>
                     <Link to={`/admin/create-exam`}>
-                    <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">
-                        <FiPlus className="mr-2" />
-                        Add New Exam
-                    </button>
+                        <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">
+                            <FiPlus className="mr-2" />
+                            Add New Exam
+                        </button>
                     </Link>
                 </div>
 
@@ -150,8 +222,8 @@ const ExamDashboard = () => {
                             type="text"
                             placeholder="Search exams by name or code..."
                             className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
 
@@ -179,16 +251,18 @@ const ExamDashboard = () => {
                             value={department}
                             onChange={(e) => setDepartment(e.target.value)}
                         >
-                            <option value="">All Departments</option>
-                            <option value="computer">Computer Engineering</option>
-                            <option value="mechanical">Mechanical Engineering</option>
+                            <option value="All">All Classes</option>
+                            <option value="FY">FY</option>
+                            <option value="SY">SY</option>
+                            <option value="TY">TY</option>
+                            <option value="B.Tech">B.Tech</option>
                         </select>
                         <select
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                         >
-                            <option value="">All Status</option>
+                            <option value="All">All Status</option>
                             <option value="scheduled">Scheduled</option>
                             <option value="ongoing">Ongoing</option>
                             <option value="completed">Completed</option>
@@ -204,14 +278,15 @@ const ExamDashboard = () => {
                             <thead className="bg-gray-300">
                                 <tr>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exam Name</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
+                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Publish</th>
+                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {exams.map((exam, index) => (
+                                {paginatedData.map((exam, index) => (
                                     <tr key={index} className="hover:bg-gray-50">
                                         <td className="px-4 py-4">
                                             <div className="text-sm font-medium text-gray-900">{exam?.title}</div>
@@ -226,8 +301,19 @@ const ExamDashboard = () => {
                                             </div>
                                         </td>
                                         <td className="px-4 py-4">
+                                            <div
+                                                className={`px-2 py-1 text-xs font-semibold rounded-full text-center items-center ${exam?.isPublished
+                                                    ? "bg-green-100 text-green-800"
+                                                    : "bg-yellow-100 text-yellow-800"
+                                                    }`}
+                                            >
+                                                {exam?.isPublished ? "Published" : "Draft"}
+                                            </div>
+                                        </td>
+
+                                        <td className="px-4 py-4">
                                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(getExamStatus(exam?.startTime, exam?.endTime))}`}>
-                                            {getExamStatus(exam?.startTime, exam?.endTime)}
+                                                {getExamStatus(exam?.startTime, exam?.endTime)}
                                             </span>
                                         </td>
                                         <td className="px-4 py-4">
@@ -241,9 +327,9 @@ const ExamDashboard = () => {
                                                 <button className="text-gray-600 hover:text-gray-800">
                                                     <FiEye />
                                                 </button>
-                                                <button className="text-yellow-600 hover:text-yellow-800">
+                                                {/* <button className="text-yellow-600 hover:text-yellow-800">
                                                     <FiBell />
-                                                </button>
+                                                </button> */}
                                             </div>
                                         </td>
                                     </tr>
@@ -257,14 +343,16 @@ const ExamDashboard = () => {
                 <div className="flex justify-between items-center p-4">
                     <button
                         className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        disabled={currentPage === 1}
                     >
                         Previous
                     </button>
-                    <span className="text-sm text-gray-700">Page {currentPage}</span>
+                    <span className="text-sm text-gray-700">Page {currentPage} / {totalPages}</span>
                     <button
                         className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                        onClick={() => setCurrentPage((prev) => prev + 1)}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                        disabled={currentPage === totalPages}
                     >
                         Next
                     </button>

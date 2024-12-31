@@ -596,6 +596,36 @@ const GetResultOfSinglePaper = async (req, res, next) => {
     }
 }
 
+// -------------------------
+// Logic For Delete Quesion paper /  exam
+// ------------------
+const deleteExam = async (req, res, next) => {
+    try {
+        // Extract examId from request parameters
+        const { examId } = req.params;
+
+        // Check if the examId is provided
+        if (!examId) {
+            return res.status(400).json({ message: "Exam ID is required" });
+        }
+
+        // Find and delete the exam
+        const deletedExam = await QuestionPaper.findByIdAndDelete(examId);
+
+        // If no exam is found, return a 404 error
+        if (!deletedExam) {
+            return res.status(404).json({ message: "Exam not found" });
+        }
+
+        // Return a success response
+        res.status(200).json({
+            message: "Exam deleted successfully",
+        });
+    } catch (error) {
+        // Pass the error to the error-handling middleware
+        next(error);
+    }
+};
 
 
 module.exports = {
@@ -611,4 +641,5 @@ module.exports = {
     GetResultsOfUserRecent,
     GetResultsOfUser,
     GetResultOfSinglePaper,
+    deleteExam,
 };

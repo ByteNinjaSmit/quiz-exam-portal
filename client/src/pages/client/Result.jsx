@@ -237,7 +237,7 @@ const QuestionPaperResult = () => {
                     className={index % 2 === 0 ? "bg-white" : "bg-[#F0F1F3]"}
                   >
                     <td className="p-4">{index + 1}</td>
-                    <td className="p-4">{question.question}</td>
+                    <td className="p-4 whitespace-pre text-sm">{question.question}</td>
                     <td className="p-4">{question.userAnswer}</td>
                     <td className="p-4">
                       <span

@@ -101,7 +101,7 @@ const getAdmins = async (req, res, next) => {
 // *--------------------------
 // User Registration Logic
 // *--------------------------
-const userRegister = async (req, res) => {
+const userRegister = async (req, res,next) => {
     try {
         // const reqBody = await request.json();
         const { name, username, classy, division,rollNo, password } = req.body;
@@ -138,12 +138,12 @@ const userRegister = async (req, res) => {
 // Faculty Registration Logic
 // *--------------------------
 
-const facultyRegister = async (req, res) => {
+const facultyRegister = async (req, res,next) => {
     try {
         // const reqBody = await request.json();
         const {name, username, email,isTeacher,isHod,subject,isTnp, phone, password } = req.body;
         // Validate that all fields are provided
-        if (!username || !email || !phone || !password || !name ||!isTeacher ||!isHod ||!subject ||!isTnp) {
+        if (!username || !email || !phone || !password || !name  ||!subject) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -154,7 +154,7 @@ const facultyRegister = async (req, res) => {
         }
 
         // Creating Account
-        const userCreated = await User.create({
+        const userCreated = await Faculty.create({
             name,
             username,
             email,
@@ -173,4 +173,4 @@ const facultyRegister = async (req, res) => {
 }
 
 
-module.exports = {developerRegister,developerLogin,getUsers,getAdmins,facultyRegister };
+module.exports = {developerRegister,developerLogin,getUsers,getAdmins,facultyRegister,userRegister };

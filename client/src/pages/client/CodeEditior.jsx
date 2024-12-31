@@ -21,11 +21,38 @@ import { oneDark } from '@codemirror/theme-one-dark';
 // Monaco Editor
 import MonacoEditor from '@monaco-editor/react';
 
+const boilerplate = {
+  python: `# Python boilerplate
+def main():
+  print("Hello, Python!")
+  
+if __name__ == "__main__":
+  main()
+`,
+  cpp: `// C++ boilerplate
+#include <iostream>
+using namespace std;
 
+int main() {
+  cout << "Hello, C++!" << endl;
+  return 0;
+}
+`,
+  java: `// Java boilerplate You Don't Have to Change Class name instead of code becuase our file name is code.java
+public class code {
+  public static void main(String[] args) {
+      System.out.println("Hello, Java!");
+  }
+}
+`,
+  javascript: `// JavaScript boilerplate
+console.log("Hello, JavaScript!");
+`,
+};
 const CodingPlatform = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("python");
   const [editorTheme, setEditorTheme] = useState("dark");
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState(boilerplate.python);
   const [testCases, setTestCases] = useState([]);
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(true);
   const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
@@ -62,6 +89,13 @@ const CodingPlatform = () => {
       runtime: "85ms"
     }
   };
+  const handleLanguageChange = (e) => {
+    const lang = e.target.value;
+    setSelectedLanguage(lang);
+    setCode(boilerplate[lang]);
+  };
+
+
 
   function cleanErrorDetails(errorDetails, selectedLanguage) {
     let cleanedErrorDetails = errorDetails;
@@ -163,6 +197,7 @@ const CodingPlatform = () => {
 
 
   };
+
   return (
     <div className="min-h-screen bg-[#FAFAFB]">
       <div className="flex flex-col lg:flex-row overflow-y-auto">
@@ -233,7 +268,7 @@ const CodingPlatform = () => {
             <div className="flex items-center gap-4 mb-4">
               <select
                 value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value)}
+                onChange={handleLanguageChange}
                 className="px-4 py-2 bg-[#F0F1F3] rounded-sm text-[#3A0CA3] border border-[#E0E0E0] focus:ring-2 focus:ring-[#F72585]"
               >
                 {languages.map((lang) => (
@@ -322,7 +357,7 @@ const CodingPlatform = () => {
                 <FaCode /> Submit
               </button>
               <button className="flex items-center gap-2 px-4 py-2 bg-[#F0F1F3] text-[#3A0CA3] rounded-sm hover:bg-opacity-90"
-              onClick={(e)=> setCode("")}
+                onClick={(e) => setCode("")}
               >
                 <BiReset /> Clear
               </button>

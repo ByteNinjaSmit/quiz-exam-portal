@@ -62,6 +62,7 @@ const UserResults = () => {
     setSortConfig({ key, direction });
   };
 
+  // sort data
   const sortedData = React.useMemo(() => {
     if (!sortConfig.key) return data;
 

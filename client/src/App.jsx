@@ -24,6 +24,8 @@ import UserResults from "./pages/client/Results";
 import CodingPlatform from "./pages/client/CodeEditior";
 import QuestionPaperResult from "./pages/client/Result";
 import LiveLogsViewer from "./pages/dev/Logs";
+import CreateUser from "./pages/dev/New-User";
+import CreateFacultyAdmin from "./pages/dev/New-Admin";
 
 
 
@@ -49,7 +51,11 @@ const App = () => {
               <Route exact path="see-all-users" element={<SeeAllUsers />} />
               <Route exact path="see-all-admins" element={<SeeAllAdmins />} />
               <Route exact path="logs" element={<LiveLogsViewer />} />
+              <Route exact path="new-user" element={<CreateUser />} />
+              <Route exact path="new-faculty" element={<CreateFacultyAdmin />} />
             </Route>
+            
+            
 
             {/* User Routes */}
             <Route exact path="/user" element={<UserLayout />} >

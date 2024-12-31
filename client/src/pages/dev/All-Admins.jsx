@@ -124,12 +124,13 @@ const SeeAllAdmins = () => {
 
       {/* Create User Form */}
       <div className="flex mb-8 max-w-7xl mx-auto max-md:justify-center max-md:items-center">
+        <Link to={`/developer/dev/new-faculty`}>
         <button
-          // onClick={() => setShowCreateForm(!showCreateForm)}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center hover:bg-blue-700 transition duration-200"
         >
           <MdAdd className="mr-2" /> Create New Admin
         </button>
+        </Link>
       </div>
 
 

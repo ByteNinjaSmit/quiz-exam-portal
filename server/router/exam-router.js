@@ -39,6 +39,9 @@ router.route("/get/all/results/:userId").get(authMiddleware,examController.GetRe
 // GET Result Of Single Question Paper
 router.route("/get/result/:userId/:key").get(examController.GetResultOfSinglePaper);
 
+// Make For Delete Exam
+router.route("/delete/exam/:examId").delete(authMiddleware,examController.deleteExam);
+
 
 
 module.exports = router;
