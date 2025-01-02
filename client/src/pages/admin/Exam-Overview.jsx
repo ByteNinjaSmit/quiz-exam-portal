@@ -317,7 +317,7 @@ const ExamDashboard = () => {
                                             </span>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <div className="flex space-x-3">
+                                            <div className="flex space-x-3 items-center">
                                                 <button className="text-blue-600 hover:text-blue-800">
                                                     <FiEdit2 />
                                                 </button>

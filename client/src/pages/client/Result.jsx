@@ -81,7 +81,7 @@ const QuestionPaperResult = () => {
       }
     };
     fetchResults();
-  }, []);
+  }, [API]);
 
 
 
@@ -108,7 +108,7 @@ const QuestionPaperResult = () => {
 
   const filteredQuestions = resultData?.questions?.filter(
     (question) =>
-      question?.question?.toLowerCase().includes(searchQuery?.toLowerCase()) &&
+      question?.question?.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (filterType === "all" ||
         (filterType === "correct" && question.isCorrect) ||
         (filterType === "incorrect" && !question.isCorrect))
@@ -123,25 +123,25 @@ const QuestionPaperResult = () => {
   // Function to format the time
   const formatTime = (dateString) => {
     const date = new Date(dateString);
-    const options = { hour: "2-digit", minute: "2-digit", second:"2-digit",hour12: true };
+    const options = { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true };
     return date.toLocaleTimeString("en-US", options);
   }
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen bg-[#FAFAFB]">
         <MdAutorenew className="animate-spin text-6xl text-primary" />
       </div>
     );
   }
-  if (!filteredQuestions.length) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-        <MdInbox className="text-6xl text-muted-foreground mb-4" />
-        <p className="text-xl text-muted-foreground">No result found</p>
-      </div>
-    );
-  }
+  // if (!filteredQuestions.length) {
+  //   return (
+  //     <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+  //       <MdInbox className="text-6xl text-muted-foreground mb-4" />
+  //       <p className="text-xl text-muted-foreground">No result found</p>
+  //     </div>
+  //   );
+  // }
   return (
     <div className="min-h-screen bg-[#FAFAFB] p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -231,7 +231,7 @@ const QuestionPaperResult = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredQuestions?.map((question, index) => (
+                {(filteredQuestions.length > 0) ? (filteredQuestions?.map((question, index) => (
                   <tr
                     key={index}
                     className={index % 2 === 0 ? "bg-white" : "bg-[#F0F1F3]"}
@@ -242,8 +242,8 @@ const QuestionPaperResult = () => {
                     <td className="p-4">
                       <span
                         className={`inline-flex items-center gap-1 px-2 py-1 rounded ${question.isCorrect
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
                           }`}
                       >
                         {question.isCorrect ? (
@@ -259,7 +259,12 @@ const QuestionPaperResult = () => {
                       <MdStar className="text-chart-4" />
                     </td>
                   </tr>
-                ))}
+                ))) : (
+                  <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+                    <MdInbox className="text-6xl text-muted-foreground mb-4" />
+                    <p className="text-xl text-muted-foreground">No result found</p>
+                  </div>
+                )}
               </tbody>
             </table>
           </div>
@@ -274,8 +279,8 @@ const QuestionPaperResult = () => {
                   </div>
                   <span
                     className={`inline-flex items-center gap-1 px-2 py-1 rounded ${question?.isCorrect
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
+                      ? "bg-green-100 text-green-800"
+                      : "bg-red-100 text-red-800"
                       }`}
                   >
                     {question?.isCorrect ? (
@@ -314,8 +319,8 @@ const QuestionPaperResult = () => {
               </div>
               <div
                 className={`flex items-center gap-1 px-3 py-1 rounded ${totalPoints >= passingThreshold
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
                   }`}
               >
                 {totalPoints >= passingThreshold ? (
