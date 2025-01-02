@@ -2,7 +2,9 @@
 const QuestionPaper = require("../database/models/question-paper-model");
 const Result = require("../database/models/result-model");
 const Cheat = require("../database/models/cheat-model");
-
+const User = require("../database/models/user-model");
+const fs = require('fs');
+const path = require('path');
 // Variables For Question Paper Broadcasting Logic
 
 let examStartTime;
@@ -609,6 +611,32 @@ const deleteExam = async (req, res, next) => {
             return res.status(400).json({ message: "Exam ID is required" });
         }
 
+        // Find the exam to ensure it's available for file deletion
+        const exam = await QuestionPaper.findById(examId);
+
+        // If no exam is found, return a 404 error
+        if (!exam) {
+            return res.status(404).json({ message: "Exam not found" });
+        }
+
+        // Loop through questions to delete associated files
+        exam.questions.forEach((question) => {
+            if (question.image) {
+                const filePath = path.join(__dirname, '..', question.image);
+                fs.access(filePath, fs.constants.F_OK, (err) => {
+                    if (!err) {
+                        fs.unlink(filePath, (err) => {
+                            if (err) {
+                                console.error(`Error deleting file ${filePath}:`, err.message);
+                            } else {
+                                console.log(`Deleted file: ${filePath}`);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
         // Find and delete the exam
         const deletedExam = await QuestionPaper.findByIdAndDelete(examId);
 
@@ -616,10 +644,16 @@ const deleteExam = async (req, res, next) => {
         if (!deletedExam) {
             return res.status(404).json({ message: "Exam not found" });
         }
+        const deleteResults = await Result.deleteMany({ paperKey: deletedExam.paperKey });
+
+        // Delete The Images Also
+
 
         // Return a success response
         res.status(200).json({
-            message: "Exam deleted successfully",
+            message: "Exam, related results, and associated files deleted successfully",
+            deletedExam: deletedExam,
+            deleteResults: deleteResults
         });
     } catch (error) {
         // Pass the error to the error-handling middleware
@@ -654,6 +688,49 @@ const getExamQuestionPaperData = async (req, res, next) => {
 }
 
 
+//-----------------------
+// Getting TOP 3 Leader Board
+//-----------------------
+const getLeaderBoard = async (req, res, next) => {
+    try {
+        // Fetch all users
+        const users = await User.find();
+
+        // Map over users to calculate total points
+        const userPoints = await Promise.all(users.map(async (user) => {
+            // Fetch results for the user
+            const results = await Result.find({ user: user._id });
+
+            // Calculate total points
+            const totalPoints = results.reduce((sum, result) => sum + result.points, 0);
+
+            // Return user with total points
+            return {
+                userId: user._id,
+                name: user.name,
+                username: user.username,
+                totalPoints,
+            };
+        }));
+
+        // Sort users by total points in descending order
+        const sortedUsers = userPoints.sort((a, b) => b.totalPoints - a.totalPoints);
+
+        // Get top 3 users
+        const top3Users = sortedUsers.slice(0, 4);
+
+        // Respond with the top 4 users
+        return res.status(200).json({
+            message: "Data Retrived Successfully",
+            success: true,
+            data: top3Users,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 module.exports = {
     loadQuestionPaper,
     checkAndStartExam,
@@ -668,5 +745,6 @@ module.exports = {
     GetResultsOfUser,
     GetResultOfSinglePaper,
     deleteExam,
+    getLeaderBoard,
     getExamQuestionPaperData,
 };

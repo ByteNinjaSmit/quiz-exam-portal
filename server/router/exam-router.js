@@ -45,6 +45,9 @@ router.route("/delete/exam/:examId").delete(authMiddleware,examController.delete
 // view question paper GET
 router.route("/view/exam/:examId/:title/:paperkey").get(examController.getExamQuestionPaperData);
 
+// GET Leaderboard
+router.route("/get/leaderboard").get(examController.getLeaderBoard);
+
 
 
 module.exports = router;

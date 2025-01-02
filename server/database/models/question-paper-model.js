@@ -42,6 +42,10 @@ const questionPaperSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdBy:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'Faculty',
+  },
   questions: [questionSchema], // Array of questions
   isQuiz:{
     type:Boolean,

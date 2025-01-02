@@ -15,7 +15,7 @@ import { IoMdTimer } from "react-icons/io";
 import { useAuth } from "../../store/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import axios from "axios";
 const Dashboard = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
@@ -23,7 +23,7 @@ const Dashboard = () => {
   const [exams, setExams] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
-
+  const [leaderboardData, setLeaderboardData] = useState([]);
   useEffect(() => {
     if (!isLoggedIn) {
       return navigate("/");
@@ -31,52 +31,38 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    const fetchExams = async () => {
+    const fetchData = async () => {
       setIsLoading(true);
+
       try {
-        const response = await fetch(`${API}/api/exam/all/exams`, {
-          method: "GET",
-          headers: {
-            Authorization: authorizationToken,
-          },
+        // Fetch exams
+        const examResponse = await axios.get(`${API}/api/exam/all/exams`, {
+          headers: { Authorization: authorizationToken },
         });
-        if (!response.ok) {
-          toast.error(`Error Fetching Exams: ${response.status}`);
-        }
-        const data = await response.json();
-        setExams(data);
+        setExams(examResponse.data);
+
+        // Fetch results
+        const resultsResponse = await axios.get(`${API}/api/exam/get/results/${user._id}`, {
+          headers: { Authorization: authorizationToken },
+        });
+        setResults(resultsResponse.data);
+
+        // Fetch leaderboard
+        const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`, {
+          headers: { Authorization: authorizationToken },
+        });
+        setLeaderboardData(leaderboardResponse.data.data);
+
       } catch (error) {
         console.error(error);
-        toast.error(error.messsage);
+        toast.error(error.message || 'An error occurred');
       } finally {
         setIsLoading(false);
       }
     };
 
-    const fetchResults = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`${API}/api/exam/get/results/${user._id}`, {
-          method: "GET",
-          headers: {
-            Authorization: authorizationToken,
-          },
-          // include credential
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setResults(data);
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error(error.messsage);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchExams();
-    fetchResults();
-  }, []);
+    fetchData();
+  }, [API]);
 
   const dummyData = {
     profile: {
@@ -337,22 +323,27 @@ const Dashboard = () => {
               </h2>
               <FaTrophy className="text-yellow-500" />
             </div>
-            {dummyData.leaderboard.map((item) => (
+            {(leaderboardData.length > 0) ? (leaderboardData.map((item, index) => (
               <div
-                key={item.rank}
+                key={index}
                 className="flex items-center justify-between mb-3 p-2 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
               >
                 <div className="flex items-center">
                   <span className="w-8 h-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full flex items-center justify-center">
-                    {item.rank}
+                    {index + 1}
                   </span>
                   <span className="ml-3 text-gray-800">{item.name}</span>
                 </div>
                 <span className="font-semibold text-purple-600">
-                  {item.score}
+                  {item.totalPoints}
                 </span>
               </div>
-            ))}
+            ))) : (
+              <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
+                <h3 className="font-semibold text-red-600">No Leaderboard found</h3>
+                <p className="text-gray-600">Please check back later or try searching for something else.</p>
+              </div>
+            )}
             <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
               View All
             </button>
