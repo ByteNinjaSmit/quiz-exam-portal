@@ -38,7 +38,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ sidebarOpen, toggleSidebar 
             icon: <FaChartBar className="w-5 h-5" />,
             text: "Results & Analytics",
             description: "View performance metrics",
-            to:`/admin/results`,
+            to:`/admin/result-management`,
         },
         {
             icon: <FaTrophy className="w-5 h-5" />,

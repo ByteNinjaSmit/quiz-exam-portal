@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { MdEdit, MdDelete, MdAutorenew, MdSearch, MdNavigateNext, MdNavigateBefore, MdPerson, MdDashboard, MdAdd } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link,useNavigate} from "react-router-dom";
 import { useAuth } from "../../store/auth";
 
 import axios from "axios";
@@ -17,7 +17,7 @@ const UserManagement = () => {
     const [selectedDivision, setSelectedDivision] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [entriesPerPage, setEntriesPerPage] = useState(20);
-
+    const navigate = useNavigate();
     useEffect(() => {
         setLoading(true)
         const fetchUsers = async () => {
@@ -56,8 +56,10 @@ const UserManagement = () => {
 
     const totalPages = Math.ceil(filteredData.length / entriesPerPage);
 
-    const handleEdit = (id) => {
-        console.log("Edit user:", id);
+    const handleEdit = (e,id) => {
+        e.preventDefault();
+        // console.log("Edit user:", id);
+        navigate(`/admin/edit-user/${id}`);
     };
 
     const handleDelete = (id) => {
@@ -186,7 +188,7 @@ const UserManagement = () => {
                                 <tbody className="bg-white divide-y divide-border">
                                     {currentEntries.map((user, index) => (
                                         <tr
-                                            key={user.id}
+                                            key={index}
                                             className={`${index % 2 === 0 ? "bg-white" : "bg-[#F0F1F3]"} hover:bg-[#F0F1F3] transition-colors duration-200 hover:shadow-md`}
                                         >
                                             <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
@@ -197,7 +199,7 @@ const UserManagement = () => {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex space-x-2">
                                                     <button
-                                                        onClick={() => handleEdit(user.id)}
+                                                        onClick={(e) => handleEdit(e,user._id)}
                                                         className="text-accent hover:text-[#F72585] transition-colors duration-200"
                                                         title="Edit user"
                                                     >

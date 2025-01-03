@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import { FaUsers, FaClipboardList, FaCheckCircle, FaClock } from "react-icons/fa";
 import { Line, Pie, Bar } from "react-chartjs-2";
 import {
@@ -14,6 +14,8 @@ import {
     BarElement
 } from "chart.js";
 import AdminSidebar from "../../components/sidebar";
+import axios from "axios";
+import { useAuth } from "../../store/auth";
 
 ChartJS.register(
     CategoryScale,
@@ -30,6 +32,30 @@ ChartJS.register(
 const AdminDashboard = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+    const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
+
+    const [totalUsers, setTotalUsers] = useState(0);
+
+    useEffect(()=>{
+        const getUserCount = async()=>{
+            try {
+                const response  = await axios.get(`${API}/api/faculty/get-users-count`,{
+                    headers: {
+                        Authorization:authorizationToken,
+                    },
+                    withCredentials:true,
+                })
+                if(response.status===200){
+                    setTotalUsers(response.data.data)
+                    // console.log(response.data.data);
+                    
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getUserCount();
+    },[API])
 
     const metrics = {
         totalStudents: 1250,
@@ -100,7 +126,7 @@ const AdminDashboard = () => {
                             <div className="flex justify-between items-center">
                                 <FaUsers className="text-3xl text-blue-500" />
                                 <div className="text-right">
-                                    <p className="text-2xl font-bold text-gray-800">{metrics.totalStudents}</p>
+                                    <p className="text-2xl font-bold text-gray-800">{totalUsers}</p>
                                     <p className="text-sm text-gray-600">Total Students</p>
                                 </div>
                             </div>

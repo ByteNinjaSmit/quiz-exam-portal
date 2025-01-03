@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   FaPlus,
   FaTrash,
@@ -26,14 +26,16 @@ import axios from "axios";
 // Global State
 import { useAuth } from "../../store/auth";
 import { toast } from "react-toastify";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link,useParams} from "react-router-dom";
 
-const CreateExam = () => {
+const EditExam = () => {
+  const [loading, setLoading] =useState(false);
   const { API, authorizationToken } = useAuth();
   const navigate = useNavigate();
+  const params = useParams();
   const [examData, setExamData] = useState({
     title: "",
-    classYear: "",
+    classyear: "",
     startTime: "",
     endTime: "",
     paperKey: "",
@@ -66,7 +68,37 @@ const CreateExam = () => {
   });
   const [editQuestionIndex, setEditQuestionIndex] = useState(0);
 
-  // For Image Resizing States
+
+  // GET Data Of Question paper 
+  useEffect(() => {
+    const fetchPaper = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${API}/api/exam/view/exam/${params.examId}/${params.title}/${params.paperkey}`,
+          {
+            headers: {
+              Authorization: authorizationToken,
+            },
+            withCredentials: true,
+            credentials: "include",
+          }
+        );
+        if (response.status === 200) {
+          //   setData(response.data);
+          console.log("Data From Backend",response.data.data);
+          setExamData(response.data.data);
+          setIsQuiz(response.data.data.isQuiz)
+          setIsFastQuiz(response.data.data.isFastQuiz)
+        }
+      } catch (error) {
+        toast.error(error.response.data.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPaper();
+  }, [API]);
 
 
   const handleAddQuestion = () => {
@@ -175,7 +207,7 @@ const CreateExam = () => {
       formData.append("isQuiz", isQuiz);
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
-      formData.append("classyear", examData.classYear);
+      formData.append("classyear", examData.classyear);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -193,12 +225,12 @@ const CreateExam = () => {
       // Append file uploads (if any)
       examData.questions.forEach((question, index) => {
         if (question.image && question.image instanceof File) {
-            formData.append('files', question.image); // Append each file
+          formData.append('files', question.image); // Append each file
         }
-    });
+      });
 
       const response = await axios.post(
-        `${API}/api/exam/new-exam`,
+        `${API}/api/exam/update-exam`,
         formData,
         {
           headers: {
@@ -216,14 +248,14 @@ const CreateExam = () => {
         }
       );
       const data = await response.data;
-      if (response.status !== 201) {
+      if (response.status !== 200) {
         toast.error(data.message);
         setProgress(0);
       }
-      if (response.status === 201) {
+      if (response.status === 200) {
         toast.success(data.message);
         setProgress(0);
-        navigate("/admin/dashboard");
+        navigate("/admin/dashboard/exam");
       }
     } catch (error) {
       setProgress(0);
@@ -242,7 +274,7 @@ const CreateExam = () => {
       formData.append("isQuiz", isQuiz);
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
-      formData.append("classyear", examData.classYear);
+      formData.append("classyear", examData.classyear);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -260,12 +292,12 @@ const CreateExam = () => {
       // Append file uploads (if any)
       examData.questions.forEach((question, index) => {
         if (question.image && question.image instanceof File) {
-            formData.append('files', question.image); // Append each file
+          formData.append('files', question.image); // Append each file
         }
-    });
+      });
 
       const response = await axios.post(
-        `${API}/api/exam/new-exam`,
+        `${API}/api/exam/update-exam`,
         formData,
         {
           headers: {
@@ -313,7 +345,7 @@ const CreateExam = () => {
     }));
     toast.success(`Question ${questionIndex + 1} deleted successfully!`);
   };
-  console.log(convertToISTAndFormatForMongo(examData.startTime));
+  console.log("Frontend Data",examData);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 p-4 md:p-8">
@@ -348,9 +380,9 @@ const CreateExam = () => {
               </label>
               <select
                 className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                value={examData.classYear}
+                value={examData.classyear}
                 onChange={(e) =>
-                  setExamData({ ...examData, classYear: e.target.value })
+                  setExamData({ ...examData, classyear: e.target.value })
                 }
               >
                 <option value="">Select Class Year</option>
@@ -428,6 +460,7 @@ const CreateExam = () => {
               id="isQuiz"
               className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
               onChange={(e) => setIsQuiz(e.target.checked)}
+              checked={isQuiz}
             />
             <label
               htmlFor="isQuiz"
@@ -447,6 +480,7 @@ const CreateExam = () => {
               id="isFastQuiz"
               className="w-5 h-5 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
               onChange={(e) => setIsFastQuiz(e.target.checked)}
+              checked={isFastQuiz}
             />
             <label
               htmlFor="isFastQuiz"
@@ -500,7 +534,7 @@ const CreateExam = () => {
                 {question.image && (
                   <div className="my-4">
                     <img
-                      src={URL.createObjectURL(question.image)}
+                      src={`${API}${question.image}` || URL.createObjectURL(question.image)}
                       alt="Question Illustration"
                       className="w-full h-auto rounded-lg border p-6 border-gray-200 shadow-md"
                     />
@@ -791,7 +825,7 @@ const CreateExam = () => {
                     {editCurrentQuestion.image && (
                       <div>
                         <img
-                          src={URL.createObjectURL(editCurrentQuestion.image)} // Create preview from the stored image file
+                          src={`${API}${editCurrentQuestion.image}` || URL.createObjectURL(editCurrentQuestion.image)} // Create preview from the stored image file
                           alt="Uploaded preview"
                           className="w-32 h-32 object-cover mt-2"
                         />
@@ -931,4 +965,4 @@ const CreateExam = () => {
   );
 };
 
-export default CreateExam;
+export default EditExam;

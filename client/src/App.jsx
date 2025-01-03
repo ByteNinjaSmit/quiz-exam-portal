@@ -29,6 +29,11 @@ import CreateFacultyAdmin from "./pages/dev/New-Admin";
 import ViewQuestionPaper from "./pages/admin/View-Exam";
 import UserManagement from "./pages/admin/User-Overview";
 import CreateNewUser from "./pages/admin/New-User";
+import EditExam from "./pages/admin/Edit-Exam";
+import EditUser from "./pages/admin/Edit-User";
+import ResultOverview from "./pages/admin/Result-Overview";
+import StudentResultsPage from "./pages/admin/Results";
+import QuestionPaperResultView from "./pages/admin/Result";
 
 
 
@@ -76,9 +81,14 @@ const App = () => {
               <Route exact path="dashboard" element={<AdminDashboard />} />
               <Route exact path="dashboard/exam" element={<ExamDashboard />} />
               <Route exact path="user-management" element={<UserManagement />} />
+              <Route exact path="result-management" element={<ResultOverview />} />
               <Route exact path="new-user" element={<CreateNewUser />} />
+              <Route exact path="edit-user/:userId" element={<EditUser />} />
               <Route exact path="create-exam" element={<CreateExam />} />
+              <Route exact path="edit-exam/question_paper/:examId/:title/:paperkey" element={<EditExam />} />
               <Route exact path="view-exam/question_paper/:examId/:title/:paperkey" element={<ViewQuestionPaper />} />
+              <Route exact path="view-result/question_paper/:paperkey/:title" element={<StudentResultsPage />} />
+              <Route exact path="result/:userId/:paperkey/:name" element={<QuestionPaperResultView />} />
             </Route>
 
             <Route path="*" element={<Error />} />

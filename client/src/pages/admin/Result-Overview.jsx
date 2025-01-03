@@ -3,11 +3,10 @@ import { FiPlus, FiSearch, FiCalendar, FiEdit2, FiTrash2, FiEye, FiBell } from "
 import AdminSidebar from "../../components/sidebar";
 import { useAuth } from "../../store/auth";
 import { Link } from "react-router-dom";
-
 import axios from 'axios';
 import { toast } from "react-toastify";
 
-const ExamDashboard = () => {
+const ResultOverview = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
@@ -26,7 +25,7 @@ const ExamDashboard = () => {
     const fetchExams = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`${API}/api/exam/all/exams`, {
+            const response = await axios.get(`${API}/api/faculty/get-results`, {
                 headers: {
                     Authorization: authorizationToken,
                 },
@@ -36,7 +35,9 @@ const ExamDashboard = () => {
                 toast.error(`Error Fetching Exams: ${response.status}`);
             }
             const data = response.data;
-            setExams(data);
+            console.log(data.data);
+
+            setExams(data.data);
         } catch (error) {
             console.error(error);
             toast.error(error.messsage);
@@ -175,12 +176,11 @@ const ExamDashboard = () => {
 
     const itemsPerPage = 10;
     // Applying filters
-    const filteredData = exams.filter(
+    const filteredData = exams?.filter(
         (item) =>
-            (status === "All" || getExamStatus(item?.startTime, item?.endTime).toLowerCase() === status.toLowerCase()) &&
-            (department === "All" || item?.classyear?.toLowerCase() === department.toLowerCase()) &&
-            (item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                item.paperKey.toLowerCase().includes(searchQuery.toLowerCase()))
+            (status === "All" || getExamStatus(item?.questionPaper.startTime, item?.questionPaper.endTime).toLowerCase() === status.toLowerCase()) &&
+            (department === "All" || item?.questionPaper.classyear?.toLowerCase() === department.toLowerCase()) &&
+            (item.questionPaper.title.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
 
@@ -204,14 +204,8 @@ const ExamDashboard = () => {
                     </button>
 
                 </header>
-                <div className="flex justify-between items-center mb-1 p-6">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Management</h1>
-                    <Link to={`/admin/create-exam`}>
-                        <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">
-                            <FiPlus className="mr-2" />
-                            Add New Exam
-                        </button>
-                    </Link>
+                <div className="flex justify-start items-center mb-1 p-6">
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Results & Analytics</h1>
                 </div>
 
                 {/* Search and Filters Section */}
@@ -257,7 +251,7 @@ const ExamDashboard = () => {
                             <option value="TY">TY</option>
                             <option value="B.Tech">B.Tech</option>
                         </select>
-                        <select
+                        {/* <select
                             className="w-full px-3 py-2 border border-gray-300 rounded-lg"
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
@@ -267,7 +261,7 @@ const ExamDashboard = () => {
                             <option value="ongoing">Ongoing</option>
                             <option value="completed">Completed</option>
                             <option value="archived">Archived</option>
-                        </select>
+                        </select> */}
                     </div>
                 </div>
 
@@ -275,32 +269,32 @@ const ExamDashboard = () => {
                 <div className="rounded-lg shadow-md overflow-hidden ">
                     <div className="overflow-x-auto p-6">
                         <table className="min-w-full">
-                            <thead className="bg-gray-300">
+                            <thead className="bg-gray-200">
                                 <tr>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Exam Name</th>
-                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Class</th>
-                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Publish</th>
-                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Exam Name</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Class</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Date</th>
+                                    {/* <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publish</th> */}
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Attend</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
                                 {paginatedData.map((exam, index) => (
                                     <tr key={index} className="hover:bg-gray-50">
                                         <td className="px-4 py-4">
-                                            <div className="text-sm font-medium text-gray-900">{exam?.title}</div>
+                                            <div className="text-sm font-medium text-gray-900">{exam?.questionPaper?.title}</div>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <div className="text-sm text-gray-500">{exam?.classyear}</div>
+                                            <div className="text-sm text-gray-500">{exam?.questionPaper?.classyear}</div>
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="text-sm text-gray-500 flex items-center">
                                                 <FiCalendar className="mr-2" />
-                                                {exam?.startTime && formatDate(exam.startTime)} at {exam?.startTime && formatTime(exam.startTime)} to {exam?.endTime && formatTime(exam.endTime)}
+                                                {exam?.questionPaper?.startTime && formatDate(exam?.questionPaper?.startTime)} at {exam?.questionPaper.startTime && formatTime(exam?.questionPaper?.startTime)} to {exam?.questionPaper?.endTime && formatTime(exam?.questionPaper?.endTime)}
                                             </div>
                                         </td>
-                                        <td className="px-4 py-4">
+                                        {/* <td className="px-4 py-4">
                                             <div
                                                 className={`px-2 py-1 text-xs font-semibold rounded-full text-center items-center ${exam?.isPublished
                                                     ? "bg-green-100 text-green-800"
@@ -309,24 +303,19 @@ const ExamDashboard = () => {
                                             >
                                                 {exam?.isPublished ? "Published" : "Draft"}
                                             </div>
-                                        </td>
+                                        </td> */}
 
                                         <td className="px-4 py-4">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(getExamStatus(exam?.startTime, exam?.endTime))}`}>
-                                                {getExamStatus(exam?.startTime, exam?.endTime)}
-                                            </span>
+                                            <div className={`text-sm font-medium text-gray-900 items-center`}>
+                                                {exam.numberOfUniqueUsers}
+                                            </div>
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="flex space-x-3 items-center">
-                                                <Link to={`/admin/edit-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`} disabled={exam.isPublished}>
-                                                    <button className={`text-blue-600 hover:text-blue-800 ${exam.isPublished ? "hidden" : ""}`} disabled={exam.isPublished}>
-                                                        <FiEdit2 />
-                                                    </button>
-                                                </Link>
                                                 <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam?._id)}>
                                                     <FiTrash2 />
                                                 </button>
-                                                <Link to={`/admin/view-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`}>
+                                                <Link to={`/admin/view-result/question_paper/${exam.paperKey}/${exam.questionPaper.title}`}>
                                                     <button className="text-gray-600 hover:text-gray-800">
                                                         <FiEye />
                                                     </button>
@@ -366,4 +355,4 @@ const ExamDashboard = () => {
     );
 };
 
-export default ExamDashboard;
+export default ResultOverview;

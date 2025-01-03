@@ -33,6 +33,8 @@ const upload = multer({
 })
 // To upload file
 router.route("/new-exam").post(authMiddleware,facultyMiddleware,upload.array('files',20),examController.newExam);
+// update exam
+router.route("/update-exam").post(authMiddleware,facultyMiddleware,upload.array('files',20),examController.updateExam);
 
 // Get Recent Exam Result For home
 router.route("/get/results/:userId").get(authMiddleware,examController.GetResultsOfUserRecent);

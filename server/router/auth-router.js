@@ -17,6 +17,7 @@ router.route("/register/faculty").post(authMiddleware,devMiddleware,authControll
 router.route("/login").post(validate(logininSchema),authControllers.userLogin);
 router.route("/login/faculty").post(validate(logininSchema),authControllers.facultyLogin);
 router.route("/current/user").get(authMiddleware, authControllers.getCurrentUser);
-
+// Update User Details
+router.route("/update-user/:userId").put(authMiddleware, facultyMiddleware,authControllers.updateUser);
 
 module.exports = router;

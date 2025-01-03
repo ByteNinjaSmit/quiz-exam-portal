@@ -4,6 +4,8 @@ const Result = require("../database/models/result-model");
 const Cheat = require("../database/models/cheat-model");
 const User = require("../database/models/user-model");
 const fs = require('fs');
+const mongoose = require('mongoose');
+
 const path = require('path');
 // Variables For Question Paper Broadcasting Logic
 
@@ -349,6 +351,7 @@ const newExam = async (req, res, next) => {
         endTime,
         questions,
         paperKey,
+        userId,
         title,
     } = req.body;
 
@@ -431,6 +434,7 @@ const newExam = async (req, res, next) => {
             questions: updatedQuestions,
             paperKey,
             title,
+            createdBy: req.user._id,
         });
 
         await newQuestionPaper.save();
@@ -441,6 +445,116 @@ const newExam = async (req, res, next) => {
         next(error);
     }
 };
+
+//--------------------
+// Update QuestionPaper
+//----------------------
+const updateExam = async (req, res, next) => {
+    const {
+        isQuiz,
+        isFastQuiz,
+        isPublished,
+        classyear,
+        startTime,
+        endTime,
+        questions,
+        paperKey,
+        title,
+        userId,
+    } = req.body;
+    try {
+        // Check required fields
+        if (typeof isQuiz === "undefined") {
+            return res.status(400).json({ message: "isQuiz is required." });
+        }
+        if (typeof isFastQuiz === "undefined") {
+            return res.status(400).json({ message: "isFastQuiz is required." });
+        }
+        if (typeof isPublished === "undefined") {
+            return res.status(400).json({ message: "isPublished is required." });
+        }
+        if (!classyear) {
+            return res.status(400).json({ message: "Class year is required." });
+        }
+        if (!startTime || !endTime) {
+            return res.status(400).json({ message: "Start time and End time are required." });
+        }
+        if (!questions) {
+            return res.status(400).json({ message: "Questions are required." });
+        }
+
+        // Parse the questions if it's a string
+        let parsedQuestions = [];
+        try {
+            parsedQuestions = JSON.parse(questions); // Parse questions if it's a string
+        } catch (error) {
+            return res.status(400).json({ message: "Invalid questions format." });
+        }
+
+        // Ensure questions is an array
+        if (!Array.isArray(parsedQuestions)) {
+            return res.status(400).json({ message: "Questions must be an array." });
+        }
+
+        if (!paperKey) {
+            return res.status(400).json({ message: "Paper key is required." });
+        }
+        if (!title) {
+            return res.status(400).json({ message: "Title is required." });
+        }
+
+
+
+        // Log the parsed questions for debugging
+        // console.log('Parsed Questions:', parsedQuestions);
+        // Check if the exam already exists
+        const existingExam = await QuestionPaper.findOne({ paperKey: paperKey });
+        if (!existingExam) {
+            return res.status(400).json({ message: "Exam does not exist." });
+        }
+        // Map the questions to include the uploaded image
+        let i = 0
+        const uploadedFiles = req.files;
+        const updatedQuestions = parsedQuestions.map((question, index) => {
+
+            // If an image exists for the current question, set the image field
+            // image !== null || image != startwith(/database/uploads)
+            console.log(question.image);
+            // /database/uploads/files_1735160153032_665663958.jpeg
+            if (question.image !== null && (typeof question.image !== "string")) {
+                question.image = `/database/uploads/${uploadedFiles[i].filename}`;
+                i++;
+            }
+            return question;
+        });
+
+        // Update the exam
+        const updatedExam = await QuestionPaper.findOneAndUpdate(
+            { paperKey },
+            {
+                $set: {
+                    isQuiz,
+                    isFastQuiz,
+                    isPublished,
+                    classyear,
+                    startTime,
+                    endTime,
+                    questions: updatedQuestions,
+                    title,
+                    createdBy: req.user._id,
+                },
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedExam) {
+            return res.status(500).json({ message: "Failed to update exam." });
+        }
+        return res.status(200).json({ message: "Exam updated successfully.", exam: updatedExam });
+    } catch (error) {
+        next(error);
+    }
+}
 
 //  GET Result OF Student OF All Recent For Home Page
 const GetResultsOfUserRecent = async (req, res, next) => {
@@ -557,6 +671,9 @@ const GetResultOfSinglePaper = async (req, res, next) => {
         const paperKey = req.params.key;
         if (!userId || !paperKey) {
             return res.status(400).json({ message: "Invalid request parameters." });
+        }
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid User ID format" });
         }
 
         // Fetch all results for the user and paperKey
@@ -746,5 +863,6 @@ module.exports = {
     GetResultOfSinglePaper,
     deleteExam,
     getLeaderBoard,
+    updateExam,
     getExamQuestionPaperData,
 };

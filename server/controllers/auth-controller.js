@@ -3,6 +3,8 @@ const User = require("../database/models/user-model");
 const Developer = require("../database/models/developer-model");
 const Faculty = require("../database/models/faculty-model");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose"); // Ensure mongoose is required for ObjectId validation
+const bcrypt = require("bcryptjs");
 
 
 
@@ -26,6 +28,9 @@ const home = async (req, res) => {
 const userRegister = async (req, res) => {
     try {
         const { name, username, classy, division, rollNo, password } = req.body;
+        if (!name || !username || !classy || !division || !rollNo || !password) {
+            return res.status(400).json({ msg: "Please enter all fields" });
+        }
         const userExist = await User.findOne({ username });
         // For No Duplicate
         if (userExist) {
@@ -214,5 +219,48 @@ const getCurrentUser = async (req, res) => {
     }
 };
 
+// ------------------
+// Update User
+//-------------------
 
-module.exports = { home, userRegister, userLogin, facultyRegister, facultyLogin, getCurrentUser };
+const updateUser = async (req, res, next) => {
+    const { userId } = req.params;
+    const { name, username, classy, division, rollNo, password } = req.body;
+
+    try {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
+
+        // passeword exceptional
+        if (!name || !username || !classy || !division || !rollNo) {
+            return res.status(400).json({ message: "Please enter all fields" });
+        }
+        const updateData = {};
+        if (name) updateData.name = name;
+        if (username) updateData.username = username;
+        if (classy) updateData.classy = classy;
+        if (division) updateData.division = division;
+        if (rollNo) updateData.rollNo = rollNo;
+        // If the password is provided, hash it before updating
+        if (password) {
+            const saltRound = await bcrypt.genSalt(10);
+            const hash_password = await bcrypt.hash(password, saltRound);
+            updateData.password = hash_password;
+        }
+        const updatedUser = await User.findByIdAndUpdate({ _id: userId }, updateData, { new: true }).exec();
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" })
+        }
+        return res.status(200).json({ message: "User updated successfully" })
+
+
+    } catch (error) {
+        next(error)
+    }
+
+
+}
+
+
+module.exports = { home, userRegister, userLogin, facultyRegister, facultyLogin, getCurrentUser,updateUser };
