@@ -157,7 +157,7 @@ const getPaperDetails = async (req, res) => {
 
         // Step 4: Fetch user details for all unique users
         const userIds = Object.keys(userData);
-        const users = await User.find({ _id: { $in: userIds } }, { name: 1, username: 1,classy:1,division:1 }); // Fetch only necessary fields
+        const users = await User.find({ _id: { $in: userIds } }, { name: 1, username: 1, classy: 1, division: 1 }); // Fetch only necessary fields
 
         // Attach user details to userData
         users.forEach(user => {
@@ -167,21 +167,26 @@ const getPaperDetails = async (req, res) => {
             }
         });
 
+        // Prepare final data and sort by totalPoints
+        const sortedUsers = Object.keys(userData)
+            .map(userId => ({
+                userId,
+                totalPoints: userData[userId].totalPoints,
+                attemptedQuestions: userData[userId].attemptedQuestions,
+                userDetails: userData[userId].userDetails
+            }))
+            .sort((a, b) => b.totalPoints - a.totalPoints);
+
         // Prepare final data
         const finalData = {
             questionPaper: {
                 title: questionPaper.title,
                 startTime: questionPaper.startTime,
                 endTime: questionPaper.endTime,
-                isQuiz:questionPaper.isQuiz,
-                isFastQuiz:questionPaper.isFastQuiz,
+                isQuiz: questionPaper.isQuiz,
+                isFastQuiz: questionPaper.isFastQuiz,
             },
-            users: Object.keys(userData).map(userId => ({
-                userId,
-                totalPoints: userData[userId].totalPoints,
-                attemptedQuestions: userData[userId].attemptedQuestions,
-                userDetails: userData[userId].userDetails
-            }))
+            users: sortedUsers,// Sorted users with their details
         };
 
         // Return the response
@@ -246,6 +251,55 @@ const getLeaderboard = async (req, res) => {
 };
 
 
+// ---------------------------
+// Delete User Specefix Question Paper Result
+// --------------------------
+const deleteUserPaperResult = async (req, res) => {
+    try {
+        const { userId, paperKey } = req.params; // Extract userId and paperKey from request parameters
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
+        // Check if the user and paperKey exist
+        const userExists = await User.exists({ _id: userId });
+        if (!userExists) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+
+        const paperExists = await QuestionPaper.exists({ paperKey });
+        if (!paperExists) {
+            return res.status(404).json({
+                success: false,
+                message: "Question paper not found"
+            });
+        }
+
+        // Delete results for the given user and paperKey
+        const deletedResults = await Result.deleteMany({ user: userId, paperKey });
+
+        if (deletedResults.deletedCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No results found for the specified user and question paper"
+            });
+        }
+
+        // Return success response
+        return res.status(200).json({
+            success: true,
+            message: `${deletedResults.deletedCount} result(s) deleted successfully`
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
 
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails,getLeaderboard };
+
+
+
+module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard,deleteUserPaperResult };

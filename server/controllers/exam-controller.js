@@ -214,6 +214,9 @@ const storeResult = async (req, res, next) => {
     const { question, user, paperKey, points, answer } = req.body;
 
     try {
+        if (!mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
         // Check if all required data (question, user, paperKey) is provided
         if (!question || !user || !paperKey || !answer) {
             return res.status(400).json({ message: "Missing required data." });
@@ -259,6 +262,9 @@ const postCheat = async (req, res, next) => {
     const { user, paperKey } = req.body;
 
     try {
+        if (!mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
         // Validate required fields
         if (!user || !paperKey) {
             return res.status(400).json({ message: "Missing required data." });
@@ -309,6 +315,9 @@ const getCheatStatus = async (req, res, next) => {
     const { user, paperKey } = req.params;
 
     try {
+        if (!mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
         // Validate required parameters
         if (!user || !paperKey) {
             return res.status(400).json({ message: "Missing required parameters." });
@@ -560,7 +569,9 @@ const updateExam = async (req, res, next) => {
 const GetResultsOfUserRecent = async (req, res, next) => {
     try {
         const userId = req.params.userId; // Get the userId from request parameters
-
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
         // Fetch all results for the user
         const results = await Result.find({ user: userId });
 
@@ -615,7 +626,9 @@ const GetResultsOfUserRecent = async (req, res, next) => {
 const GetResultsOfUser = async (req, res, next) => {
     try {
         const userId = req.params.userId; // Get the userId from request parameters
-
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
         // Fetch all results for the user
         const results = await Result.find({ user: userId });
 
@@ -722,7 +735,9 @@ const deleteExam = async (req, res, next) => {
     try {
         // Extract examId from request parameters
         const { examId } = req.params;
-
+        if (!mongoose.Types.ObjectId.isValid(examId)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
         // Check if the examId is provided
         if (!examId) {
             return res.status(400).json({ message: "Exam ID is required" });
@@ -784,6 +799,9 @@ const deleteExam = async (req, res, next) => {
 const getExamQuestionPaperData = async (req, res, next) => {
     try {
         const { examId, title, paperkey } = req.params;
+        if (!mongoose.Types.ObjectId.isValid(examId)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
         if (!examId || !title || !paperkey) {
             return res.status(400).json({ message: "Exam ID, Title and Paper Key are Required" });
 

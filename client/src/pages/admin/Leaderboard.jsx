@@ -9,13 +9,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {
-  FiPlus,
-  FiSearch,
-  FiCalendar,
-  FiEdit2,
   FiTrash2,
-  FiEye,
-  FiBell,
 } from "react-icons/fi";
 
 const LeaderboardOverview = () => {

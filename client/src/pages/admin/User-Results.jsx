@@ -13,8 +13,10 @@ import {
 import { useAuth } from "../../store/auth";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Link,useParams } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
+import {
+  FiTrash2,
+} from "react-icons/fi";
 const SingleUserResults = () => {
   const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
   const params = useParams();
@@ -26,34 +28,57 @@ const SingleUserResults = () => {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
   const [filterType, setFilterType] = useState("latest");
 
-  useEffect(() => {
-    const fetchResults = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${API}/api/exam/get/all/results/${params.userId}`,
-          {
-            headers: {
-              Authorization: authorizationToken,
-            },
-            withCredentials: true,
-            credentials: "include",
-          }
-        );
-        if (response.status === 200) {
-          setData(response.data);
+
+  const fetchResults = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${API}/api/exam/get/all/results/${params.userId}`,
+        {
+          headers: {
+            Authorization: authorizationToken,
+          },
+          withCredentials: true,
+          credentials: "include",
         }
-      } catch (error) {
-        console.error(error);
-        toast.error("Error Occurred While Getting Results");
-      } finally {
-        setLoading(false);
+      );
+      if (response.status === 200) {
+        setData(response.data);
       }
-    };
+    } catch (error) {
+      console.error(error);
+      // toast.error("Error Occurred While Getting Results");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+
     fetchResults();
-  }, [user._id]);
+  }, [API]);
 
   const itemsPerPage = 10;
+
+  const handleDelete = async (e, id, paperkey) => {
+    e.preventDefault();
+    try {
+      const response = await axios.delete(`${API}/api/faculty/delete-user-result/${id}/${paperkey}`, {
+        headers: {
+          Authorization: authorizationToken,
+        },
+        withCredentials: true,
+      })
+      if (response.status === 200) {
+        toast.success(response.data.message || "Result Deleted Successfully");
+        fetchResults();
+      } else {
+        toast.error("Unexpected response from server"); // Handle unexpected responses
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message || "Failed to delete result";
+      toast.error(errorMessage);
+    }
+  }
 
   const handleSort = (key) => {
     let direction = "ascending";
@@ -117,7 +142,7 @@ const SingleUserResults = () => {
         <h1 className="text-center text-3xl font-bold text-indigo-800">
           Exam Results
         </h1>
-        <Link to={`/user/dashboard`}>
+        <Link to={`/admin/leaderboard`}>
           <button
             className="flex items-center gap-2 text-indigo-600 bg-indigo-100 px-4 py-2 rounded-lg shadow hover:bg-indigo-200 transition-all duration-300 max-md:mx-auto"
           >
@@ -218,6 +243,12 @@ const SingleUserResults = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
+                      <button
+                        className="p-2 text-red-600 rounded-full hover:text-red-800 transition-colors"
+                        onClick={(e) => handleDelete(e, params.userId, item.paperKey)}
+                      >
+                        <FiTrash2 className="text-xl" />
+                      </button>
                       <Link to={`/admin/result/${params.userId}/${item?.paperKey}/${params?.name}`}>
                         <button
                           className="p-2 rounded-full bg-gradient-to-r hover:from-indigo-700 hover:to-purple-700 hover:text-white transition-colors"
