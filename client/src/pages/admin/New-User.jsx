@@ -1,28 +1,47 @@
 import React, { useState } from "react";
-import { MdPersonAdd, MdPersonOutline, MdAccountCircle, MdClass, MdApps, MdFormatListNumbered, MdLockOutline, MdVisibility, MdVisibilityOff, MdCheckCircleOutline, MdRefresh, MdDoneAll, MdErrorOutline, MdDarkMode, MdLightMode, MdHome, MdGroup } from "react-icons/md";
+import {
+  MdPersonAdd,
+  MdPersonOutline,
+  MdAccountCircle,
+  MdClass,
+  MdApps,
+  MdFormatListNumbered,
+  MdLockOutline,
+  MdVisibility,
+  MdVisibilityOff,
+  MdCheckCircleOutline,
+  MdRefresh,
+  MdDoneAll,
+  MdErrorOutline,
+  MdDarkMode,
+  MdLightMode,
+  MdHome,
+  MdGroup,
+} from "react-icons/md";
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
 import { IoChevronBackCircle } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { useAuth } from "../../store/auth";
 
-const CreateUser = () => {
-    const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
-  
+const CreateNewUser = () => {
+  const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
+
   const [formData, setFormData] = useState({
     name: "",
     username: "",
     class: "",
     division: "",
     rollNo: "",
-    password: ""
+    password: "",
   });
-  const [showModal, setShowModal] = useState(false);  // for showing add more or exit
-  const [showPassword, setShowPassword] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);  // for showing add more or exit
+  const [isLoading, setIsLoading] = useState(false);
   const validateField = (name, value) => {
     switch (name) {
       case "name":
@@ -52,15 +71,16 @@ const CreateUser = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
-    Object.keys(formData).forEach(key => {
+    Object.keys(formData).forEach((key) => {
       const error = validateField(key, formData[key]);
       if (error) newErrors[key] = error;
     });
 
     if (Object.keys(newErrors).length === 0) {
+      setIsLoading(true);
       try {
         // const axios 
-        const response = await axios.post(`${API}/api/dev/register-user`, {
+        const response = await axios.post(`${API}/api/auth/register`, {
           name: formData.name,
           username: formData.username,
           classy: formData.class,
@@ -72,7 +92,7 @@ const CreateUser = () => {
             'Content-Type': 'application/json',
             Authorization: authorizationToken,
           },
-          withCredentials: true,
+          withCredentials:true,
         })
         // Check if the response status is 200
         if (response.status === 200) {
@@ -95,10 +115,14 @@ const CreateUser = () => {
         setIsLoading(false);
       }
 
+
+
+
+
     } else {
       setErrors(newErrors);
       toast.error("Please fix the errors in the form", {
-        icon: <MdErrorOutline className="text-red-500" />
+        icon: <MdErrorOutline className="text-red-500" />,
       });
     }
   };
@@ -110,15 +134,16 @@ const CreateUser = () => {
       class: "",
       division: "",
       rollNo: "",
-      password: ""
+      password: "",
     });
     setErrors({});
   };
 
-
-
   return (
-    <div className={`min-h-screen p-6 ${isDarkMode ? "dark bg-gray-900" : "bg-[#FAFAFB]"}`}>
+    <div
+      className={`min-h-screen p-6 ${isDarkMode ? "dark bg-gray-900" : "bg-[#FAFAFB]"
+        }`}
+    >
       <Toaster position="top-right" />
 
       <div className="max-w-6xl mx-auto">
@@ -138,19 +163,30 @@ const CreateUser = () => {
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-2">
               <MdPersonAdd className="text-3xl text-[#F72585]" />
-              <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Create New User</h1>
+              <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+                Create New User
+              </h1>
             </div>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              {isDarkMode ? <MdLightMode className="text-2xl" /> : <MdDarkMode className="text-2xl" />}
+              {isDarkMode ? (
+                <MdLightMode className="text-2xl" />
+              ) : (
+                <MdDarkMode className="text-2xl" />
+              )}
             </button>
           </div>
 
-          <p className="text-gray-600 dark:text-gray-300 mb-8">Fill in the required details to add a new user to the system.</p>
+          <p className="text-gray-600 dark:text-gray-300 mb-8">
+            Fill in the required details to add a new user to the system.
+          </p>
 
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <form
+            onSubmit={handleSubmit}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+          >
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                 <MdPersonOutline /> Name
@@ -158,12 +194,15 @@ const CreateUser = () => {
               <input
                 type="text"
                 name="name"
+                required
                 value={formData.name}
                 onChange={handleChange}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
                 placeholder="Enter Name"
               />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
+              {errors.name && (
+                <p className="text-red-500 text-sm">{errors.name}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -172,13 +211,16 @@ const CreateUser = () => {
               </label>
               <input
                 type="text"
+                required
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
                 placeholder="Enter Username"
               />
-              {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
+              {errors.username && (
+                <p className="text-red-500 text-sm">{errors.username}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -188,12 +230,15 @@ const CreateUser = () => {
               <input
                 type="text"
                 name="class"
+                required
                 value={formData.class}
                 onChange={handleChange}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
                 placeholder="Enter Class"
               />
-              {errors.class && <p className="text-red-500 text-sm">{errors.class}</p>}
+              {errors.class && (
+                <p className="text-red-500 text-sm">{errors.class}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -203,12 +248,15 @@ const CreateUser = () => {
               <input
                 type="text"
                 name="division"
+                required
                 value={formData.division}
                 onChange={handleChange}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
                 placeholder="Enter Division"
               />
-              {errors.division && <p className="text-red-500 text-sm">{errors.division}</p>}
+              {errors.division && (
+                <p className="text-red-500 text-sm">{errors.division}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -218,12 +266,15 @@ const CreateUser = () => {
               <input
                 type="text"
                 name="rollNo"
+                required
                 value={formData.rollNo}
                 onChange={handleChange}
                 className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
                 placeholder="Enter Roll No"
               />
-              {errors.rollNo && <p className="text-red-500 text-sm">{errors.rollNo}</p>}
+              {errors.rollNo && (
+                <p className="text-red-500 text-sm">{errors.rollNo}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -235,6 +286,7 @@ const CreateUser = () => {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   value={formData.password}
+                  required
                   onChange={handleChange}
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
                   placeholder="Enter Password"
@@ -247,11 +299,13 @@ const CreateUser = () => {
                   {showPassword ? <MdVisibilityOff /> : <MdVisibility />}
                 </button>
               </div>
-              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password}</p>
+              )}
             </div>
 
             <div className="md:col-span-2 flex flex-col md:flex-row justify-end gap-4 md:gap-x-4 mt-6">
-            <Link to={`/developer/dev/see-all-users`}>
+              <Link to={`/admin/user-management`}>
                 <button
                   type="button"
                   className="flex items-center w-full gap-2 px-6 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-blue-700 dark:hover:bg-blue-600 rounded-lg transition-colors"
@@ -267,10 +321,11 @@ const CreateUser = () => {
                 <MdRefresh /> Reset
               </button>
               <button
+                disabled={isLoading}
                 type="submit"
                 className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-lg hover:from-green-500 hover:to-green-700 transition-all"
               >
-                <MdCheckCircleOutline /> {isLoading ? "Loading" : "Create User"}
+                <MdCheckCircleOutline /> {isLoading ? "Loading" : "Create User" }
               </button>
             </div>
           </form>
@@ -294,7 +349,7 @@ const CreateUser = () => {
                 >
                   Add Another User
                 </button>
-                <Link to={`/developer/dev/see-all-users`}>
+                <Link to={`/admin/user-management`}>
                   <button
                     onClick={() => setShowModal(false) &&
                       setIsDarkMode(false)
@@ -313,4 +368,4 @@ const CreateUser = () => {
   );
 };
 
-export default CreateUser;
+export default CreateNewUser;

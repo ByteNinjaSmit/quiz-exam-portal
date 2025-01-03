@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { MdEdit, MdDelete, MdSearch, MdAutorenew, MdArrowDropDown, MdDashboard, MdPerson, MdAdd } from "react-icons/md";
 import { useAuth } from "../../store/auth";
 import { Link } from "react-router-dom";
+import axios from "axios";
+
 const SeeAllAdmins = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -11,17 +13,22 @@ const SeeAllAdmins = () => {
   const [subjectFilter, setSubjectFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
-  const { API } = useAuth(); // Custom hook from AuthContext
+  const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
 
   useEffect(() => {
     const getUsers = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${API}/api/dev/get-all-admins`);
-        if (!response.ok) {
+        const response = await axios.get(`${API}/api/dev/get-all-admins`,{
+          headers: {
+            Authorization: authorizationToken,
+          },
+          withCredentials:true,
+        });
+        if (response.status!==200) {
           throw new Error(response.statusText);
         }
-        const ResponseData = await response.json();
+        const ResponseData = response.data;
         setData(ResponseData);
         setFilteredData(ResponseData)
       } catch (error) {

@@ -26,7 +26,7 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ sidebarOpen, toggleSidebar 
             icon: <FaUsers className="w-5 h-5" />,
             text: "User Management",
             description: "Manage students, teachers, and HODs",
-            to:`/admin/users`,
+            to:`/admin/user-management`,
         },
         {
             icon: <FaClipboardList className="w-5 h-5" />,

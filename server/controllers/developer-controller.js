@@ -123,7 +123,7 @@ const userRegister = async (req, res, next) => {
         }
 
         // Creating Account
-        const userCreated = await User.create({
+        await User.create({
             name,
             username,
             classy,
@@ -203,8 +203,22 @@ const deleteUser = async (req, res, next) => {
             Result.deleteMany({ user: userData._id })
         ]);
 
+         // Check if any related data was deleted
+         let relatedDataMessage = "User and related data deleted successfully";
+
+         if (cheatData.deletedCount === 0 && resultsData.deletedCount === 0) {
+             relatedDataMessage = "User deleted, but no related cheat or result data found";
+         } else {
+             if (cheatData.deletedCount === 0) {
+                 relatedDataMessage = "User deleted, but no cheat data found";
+             }
+             if (resultsData.deletedCount === 0) {
+                 relatedDataMessage = "User deleted, but no result data found";
+             }
+         }
+
         return res.status(200).json({
-            message: "User and related data deleted successfully",
+            message: relatedDataMessage,
             deletedRelatedData: {
                 cheatsDeleted: cheatData.deletedCount,
                 resultsDeleted: resultsData.deletedCount,
@@ -288,4 +302,4 @@ const deleteFaculty = async (req, res, next) => {
 
 
 
-module.exports = { developerRegister, developerLogin, getUsers, getAdmins, facultyRegister, userRegister, deleteUser };
+module.exports = { developerRegister, developerLogin, getUsers, getAdmins, facultyRegister, userRegister, deleteUser,deleteFaculty };

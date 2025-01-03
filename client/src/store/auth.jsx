@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -60,15 +61,15 @@ export const AuthProvider = ({ children }) => {
         if (!token) return;
         try {
             setIsLoading(true);
-            const response = await fetch(`${API}/api/auth/current/user`, {
-                method: "GET",
-                credentials: "include",
+            const response = await axios.get(`${API}/api/auth/current/user`, {
                 headers: {
                     Authorization: authorizationToken,
                 },
+                credentials: "include",
+                withCredentials: true,
             });
-            if (response.ok) {
-                const data = await response.json();
+            if (response.status==200) {
+                const data = response.data;
                 setUser(data.userData);
                 // console.log(data.userData);
                 

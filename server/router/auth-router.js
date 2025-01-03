@@ -9,7 +9,7 @@ const validate = require("../middlewares/validate-middleware");
 router.route("/").get(authControllers.home);
 
 // Register
-router.route("/register").post(validate(signupSchema),authControllers.userRegister);
+router.route("/register").post(authControllers.userRegister);   // user register
 router.route("/register/faculty").post(authControllers.facultyRegister);
 // Login  Of Student
 router.route("/login").post(validate(logininSchema),authControllers.userLogin);

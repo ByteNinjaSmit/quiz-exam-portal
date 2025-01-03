@@ -33,7 +33,7 @@ const userRegister = async (req, res) => {
         }
 
         // Creating Account
-        const userCreated = await User.create({
+        await User.create({
             name,
             username,
             classy,
@@ -42,8 +42,8 @@ const userRegister = async (req, res) => {
             password,
         });
 
-        res.status(200).json({
-            msg: "Registration Successful",
+        return res.status(200).json({
+            message: "New User Registration Successful",
         });
     } catch (error) {
         next(error);

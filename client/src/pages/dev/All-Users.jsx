@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { MdEdit, MdDelete, MdAutorenew, MdSearch, MdNavigateNext, MdNavigateBefore, MdPerson, MdDashboard, MdAdd } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../store/auth";
+import axios from "axios";
+
 const SeeAllUsers = () => {
 
   const [loading, setLoading] = useState(true);
@@ -11,17 +13,22 @@ const SeeAllUsers = () => {
   const [selectedDivision, setSelectedDivision] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(20);
-  const { API } = useAuth(); // Custom hook from AuthContext
+  const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
 
   useEffect(() => {
     setLoading(true)
     const fetchUsers = async () => {
       try {
-        const response = await fetch(`${API}/api/dev/get-all-users`);
-        if (!response.ok) {
+        const response = await axios.get(`${API}/api/dev/get-all-users`,{
+          headers: {
+            Authorization:authorizationToken,
+          },
+          withCredentials:true,
+        });
+        if (response.status!==200) {
           throw new Error(response.statusText);
         }
-        const data = await response.json();
+        const data = response.data;
         setUserData(data);
       } catch (error) {
         console.error(error);
@@ -161,7 +168,7 @@ const SeeAllUsers = () => {
               <tbody className="bg-white divide-y divide-border">
                 {currentEntries.map((user, index) => (
                   <tr
-                    key={user.id}
+                    key={index}
                     className={`${index % 2 === 0 ? "bg-white" : "bg-[#F0F1F3]"} hover:bg-[#F0F1F3] transition-colors duration-200 hover:shadow-md`}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>

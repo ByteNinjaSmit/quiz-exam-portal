@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Developer = require("../database/models/developer-model");
 
-module.exports = async (req, res, next) => {
+const devMiddleware = async (req, res, next) => {
   try {
     const token = req.header("Authorization");
     if (!token) {
@@ -11,18 +11,21 @@ module.exports = async (req, res, next) => {
 
     try {
       const isVerified = jwt.verify(jwtToken, process.env.JWT_SECRET_KEY);
-      const { username, role } = isVerified; // Assuming `role` is part of token payload
+      const { userID,username, role } = isVerified; // Assuming `role` is part of token payload
 
       let userData;
 
       // Searching Based on Role
       if(role==='developer'){
-        userData = await Faculty.findOne({ username }).select({ password: 0 });
+        userData = await Developer.findOne({ _id:userID , username:username }).select({ password: 0 });
       }
       if (!userData) {
         return res.status(404).json({ message: "Developer not found" });
       }
-    
+
+      if(!userData.isDeveloper){
+        return res.status(401).json({ message: "Unauthorized. Developer not found" });
+      }
 
       req.user = userData;
       req.token = token;
@@ -37,3 +40,5 @@ module.exports = async (req, res, next) => {
     res.status(401).json({ message: 'Authentication failed.' });
   }
 };
+
+module.exports  =devMiddleware;
