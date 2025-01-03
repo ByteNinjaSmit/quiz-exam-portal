@@ -22,7 +22,7 @@ const UserManagement = () => {
         setLoading(true)
         const fetchUsers = async () => {
             try {
-                const response = await axios.get(`${API}/api/dev/get-all-users`,{
+                const response = await axios.get(`${API}/api/faculty/get-all-users`,{
                     headers: {
                         Authorization: authorizationToken,
                     },
