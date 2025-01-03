@@ -35,7 +35,7 @@ const ResultOverview = () => {
                 toast.error(`Error Fetching Exams: ${response.status}`);
             }
             const data = response.data;
-            console.log(data.data);
+            // console.log(data.data);
 
             setExams(data.data);
         } catch (error) {

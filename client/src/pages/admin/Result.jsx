@@ -70,7 +70,7 @@ const QuestionPaperResultView = () => {
         );
         if (response.status === 200) {
           //   setData(response.data);
-          console.log(response.data);
+          // console.log(response.data);
           setResultData(response.data);
         }
       } catch (error) {

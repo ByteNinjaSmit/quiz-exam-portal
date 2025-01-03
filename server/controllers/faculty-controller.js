@@ -198,5 +198,54 @@ const getPaperDetails = async (req, res) => {
     }
 };
 
+//------------------
+// LeaderBoard
+//------------------
+const getLeaderboard = async (req, res) => {
+    try {
+        // Step 1: Fetch all users
+        const users = await User.find({}, { name: 1, username: 1 }); // Fetch only necessary fields
+        if (users.length === 0) {
+            return res.status(404).json({ success: false, message: "No users found" });
+        }
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails };
+        // Step 2: Calculate total points for each user
+        const leaderboardData = await Promise.all(users.map(async (user) => {
+            const userResults = await Result.find({ user: user._id }); // Fetch results for this user
+            const totalPoints = userResults.reduce((sum, result) => sum + result.points, 0); // Sum up points
+
+            return {
+                userId: user._id,
+                name: user.name,
+                username: user.username,
+                totalPoints
+            };
+        }));
+
+        // Step 3: Rank users by their total points
+        leaderboardData.sort((a, b) => b.totalPoints - a.totalPoints); // Descending order
+
+        // Add rank to each user
+        leaderboardData.forEach((data, index) => {
+            data.rank = index + 1;
+        });
+
+        // Step 4: Return the response
+        return res.status(200).json({
+            success: true,
+            data: leaderboardData
+        });
+
+    } catch (error) {
+        console.error("Error fetching leaderboard:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error while fetching leaderboard"
+        });
+    }
+};
+
+
+
+
+module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails,getLeaderboard };

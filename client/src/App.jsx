@@ -34,6 +34,8 @@ import EditUser from "./pages/admin/Edit-User";
 import ResultOverview from "./pages/admin/Result-Overview";
 import StudentResultsPage from "./pages/admin/Results";
 import QuestionPaperResultView from "./pages/admin/Result";
+import LeaderboardOverview from "./pages/admin/Leaderboard";
+import SingleUserResults from "./pages/admin/User-Results";
 
 
 
@@ -89,6 +91,8 @@ const App = () => {
               <Route exact path="view-exam/question_paper/:examId/:title/:paperkey" element={<ViewQuestionPaper />} />
               <Route exact path="view-result/question_paper/:paperkey/:title" element={<StudentResultsPage />} />
               <Route exact path="result/:userId/:paperkey/:name" element={<QuestionPaperResultView />} />
+              <Route exact path="leaderboard" element={<LeaderboardOverview />} />
+              <Route exact path="results/:userId/:name" element={<SingleUserResults />} />
             </Route>
 
             <Route path="*" element={<Error />} />

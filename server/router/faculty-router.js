@@ -21,5 +21,7 @@ router.route("/get-results").get(facultyControllers.getAllResults);
 
 // get paper result
 router.route("/get-paper-result/:paperKey").get(facultyControllers.getPaperDetails);
+// get leaderboard
+router.route("/get-leaderboard").get(facultyControllers.getLeaderboard);
 
 module.exports = router;
