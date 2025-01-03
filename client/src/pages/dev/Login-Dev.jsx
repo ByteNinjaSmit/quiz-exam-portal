@@ -4,6 +4,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { Link, useNavigate, Navigate, NavLink } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const DeveloperLogin = () => {
   const [username, setUsername] = useState(""); // Stores the input username
@@ -22,30 +23,34 @@ const DeveloperLogin = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await fetch(`${API}/api/dev/login-developer`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      });
+      setIsLoading(true); // Start loading
+      const response = await axios.post(
+        `${API}/api/dev/login-developer`,
+        { username, password }, // Request body
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-      const res_data = await response.json();
-
-      if (response.ok) {
+      if (response.status === 200) {
+        // Handle successful login
+        const res_data = response.data; // Axios automatically parses JSON
         toast.success("Login Successful");
         storeTokenInCookies(res_data.token);
         navigate("/developer/dev/dashboard");
       } else {
-        // setError(res_data.error || "Login failed");
-        toast.error(
-          res_data.extraDetails ? res_data.extraDetails : res_data.message
-        );
+        // Handle non-successful responses
+        const res_data = response.data;
+        toast.error(res_data.extraDetails || res_data.message || "Login failed");
       }
     } catch (error) {
-      console.error("Error Occured In Login",error);
+      // Log and display error messages
+      console.error("Error Occurred In Login:", error);
+      toast.error(error.response?.data?.message || "An error occurred during login");
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Stop loading
     }
   };
 
@@ -79,9 +84,8 @@ const DeveloperLogin = () => {
                 name="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className={`w-full px-4 py-3 bg-white bg-opacity-20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                  errors.username ? "border-red-500 ring-red-500" : ""
-                }`}
+                className={`w-full px-4 py-3 bg-white bg-opacity-20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${errors.username ? "border-red-500 ring-red-500" : ""
+                  }`}
                 placeholder="Enter your username"
                 aria-label="Username"
               />
@@ -110,9 +114,8 @@ const DeveloperLogin = () => {
                 name="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-4 py-3 bg-white bg-opacity-20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${
-                  errors.password ? "border-red-500 ring-red-500" : ""
-                }`}
+                className={`w-full px-4 py-3 bg-white bg-opacity-20 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all ${errors.password ? "border-red-500 ring-red-500" : ""
+                  }`}
                 placeholder="Enter your password"
                 aria-label="Password"
               />

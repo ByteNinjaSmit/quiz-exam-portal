@@ -26,16 +26,16 @@ const ExamDashboard = () => {
     const fetchExams = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch(`${API}/api/exam/all/exams`, {
-                method: "GET",
+            const response = await axios.get(`${API}/api/exam/all/exams`, {
                 headers: {
                     Authorization: authorizationToken,
                 },
+                withCredentials:true,
             });
-            if (!response.ok) {
+            if (response.status!==200) {
                 toast.error(`Error Fetching Exams: ${response.status}`);
             }
-            const data = await response.json();
+            const data = response.data;
             setExams(data);
         } catch (error) {
             console.error(error);

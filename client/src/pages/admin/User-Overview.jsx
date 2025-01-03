@@ -22,11 +22,16 @@ const UserManagement = () => {
         setLoading(true)
         const fetchUsers = async () => {
             try {
-                const response = await fetch(`${API}/api/dev/get-all-users`);
-                if (!response.ok) {
+                const response = await axios.get(`${API}/api/dev/get-all-users`,{
+                    headers: {
+                        Authorization: authorizationToken,
+                    },
+                    withCredentials:true,
+                });
+                if (response.status!==200) {
                     throw new Error(response.statusText);
                 }
-                const data = await response.json();
+                const data = response.data;
                 setUserData(data);
             } catch (error) {
                 console.error(error);

@@ -124,10 +124,19 @@ const CodingPlatform = () => {
     setIsExecutionStart(true);
     try {
       const response = await axios.post(`${API}/api/code/run-code`,
+        // pass header
         {
           language: selectedLanguage,
           code: code,
           input: testCases[0]?.input || " ",
+        },
+        // pass header
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: authorizationToken,
+          },
+          withCredentials: true,
         },
         {
           onUploadProgress: (progressEvent) => {
@@ -136,7 +145,7 @@ const CodingPlatform = () => {
             );
             // console.log(`Upload Progress: ${progress}%`);
           },
-        }
+        },
       );
 
       // console.log('Response:', response.data.result);

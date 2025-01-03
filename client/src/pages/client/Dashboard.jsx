@@ -38,18 +38,21 @@ const Dashboard = () => {
         // Fetch exams
         const examResponse = await axios.get(`${API}/api/exam/all/exams`, {
           headers: { Authorization: authorizationToken },
+          withCredentials:true,
         });
         setExams(examResponse.data);
 
         // Fetch results
         const resultsResponse = await axios.get(`${API}/api/exam/get/results/${user._id}`, {
           headers: { Authorization: authorizationToken },
+          withCredentials:true,
         });
         setResults(resultsResponse.data);
 
         // Fetch leaderboard
         const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`, {
           headers: { Authorization: authorizationToken },
+          withCredentials:true,
         });
         setLeaderboardData(leaderboardResponse.data.data);
 
