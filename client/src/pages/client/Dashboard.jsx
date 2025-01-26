@@ -175,9 +175,11 @@ const Dashboard = () => {
                 </p>
               </div>
             </div>
+            <Link to={`/user/edit-profile`}>
             <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
               Edit Profile
             </button>
+            </Link>
           </div>
 
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">

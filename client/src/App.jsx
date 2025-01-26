@@ -38,6 +38,7 @@ import LeaderboardOverview from "./pages/admin/Leaderboard";
 import SingleUserResults from "./pages/admin/User-Results";
 import CodingProblemForm from "./pages/admin/Create-Problem";
 import ExamListPage from "./pages/client/All-exams";
+import UpdateProfile from "./pages/client/Edit-Profile";
 
 
 
@@ -74,6 +75,7 @@ const App = () => {
 
               <Route exact path="dashboard" element={<Dashboard />} />
               <Route exact path="exams" element={<ExamListPage />} />
+              <Route exact path="edit-profile" element={<UpdateProfile />} />
               <Route exact path="paper/:title/:paperKey/:id" element={<ExamInterface />} />
               <Route exact path="results" element={<UserResults />} />
               <Route exact path="editor" element={<CodingPlatform />} />

@@ -65,14 +65,14 @@ export default function ExamListPage() {
             window.removeEventListener('resize', handleResize);
         };
     }, []);
-    console.log(isMobileView);
+
 
 
     const filteredExams = exams.filter(
         (exam) =>
-            exam.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            exam.status.toLowerCase().includes(searchTerm.toLowerCase()),
+            exam?.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
+
 
     const getStatusColor = (status) => {
         switch (status) {
@@ -100,6 +100,7 @@ export default function ExamListPage() {
         }
     }
 
+    
     // Function to format the date
     const formatDate = (dateString) => {
         const date = new Date(dateString);

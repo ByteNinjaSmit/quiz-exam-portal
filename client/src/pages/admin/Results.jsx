@@ -73,7 +73,7 @@ const StudentResultsPage = () => {
         // console.log(response);
         if (response.status === 200) {
           const data = response.data.data;
-          console.log(data);
+          // console.log(data);
           setResultData(data);
         }
       } catch (error) {
@@ -112,9 +112,9 @@ const StudentResultsPage = () => {
 
   const uniqueClasses = [...new Set(resultData?.users?.map(user => user?.userDetails.classy))];
   const uniqueDivisions = [...new Set(resultData.users?.map(user => user?.userDetails.division))];
-  console.log("classes", uniqueClasses);
-  console.log("uniqueDivisions", uniqueDivisions);
-  console.log(currentEntries);
+  // console.log("classes", uniqueClasses);
+  // console.log("uniqueDivisions", uniqueDivisions);
+  // console.log(currentEntries);
 
   return (
     <div className="min-h-screen bg-[#FAFAFB] p-6">
