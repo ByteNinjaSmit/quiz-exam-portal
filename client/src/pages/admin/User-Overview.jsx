@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { MdEdit, MdDelete, MdAutorenew, MdSearch, MdNavigateNext, MdNavigateBefore, MdPerson, MdDashboard, MdAdd } from "react-icons/md";
-import { Link,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../store/auth";
+import { FaCloudUploadAlt, FaCloudDownloadAlt } from "react-icons/fa";
 
 import axios from "axios";
 import AdminSidebar from "../../components/sidebar";
+import { toast } from "react-toastify";
 const UserManagement = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -18,27 +20,32 @@ const UserManagement = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [entriesPerPage, setEntriesPerPage] = useState(20);
     const navigate = useNavigate();
-    useEffect(() => {
+
+    // Upload User Modal
+    const [isUploadModalOpen, setIsUploadModelOpen] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const fetchUsers = async () => {
         setLoading(true)
-        const fetchUsers = async () => {
-            try {
-                const response = await axios.get(`${API}/api/faculty/get-all-users`,{
-                    headers: {
-                        Authorization: authorizationToken,
-                    },
-                    withCredentials:true,
-                });
-                if (response.status!==200) {
-                    throw new Error(response.statusText);
-                }
-                const data = response.data;
-                setUserData(data);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false);
+        try {
+            const response = await axios.get(`${API}/api/faculty/get-all-users`, {
+                headers: {
+                    Authorization: authorizationToken,
+                },
+                withCredentials: true,
+            });
+            if (response.status !== 200) {
+                throw new Error(response.statusText);
             }
-        };
+            const data = response.data;
+            setUserData(data);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    useEffect(() => {
         fetchUsers();
     }, [])
 
@@ -56,19 +63,92 @@ const UserManagement = () => {
 
     const totalPages = Math.ceil(filteredData.length / entriesPerPage);
 
-    const handleEdit = (e,id) => {
+    const handleEdit = (e, id) => {
         e.preventDefault();
         // console.log("Edit user:", id);
         navigate(`/admin/edit-user/${id}`);
     };
 
-    const handleDelete = (id) => {
-        console.log("Delete user:", id);
+    const handleDelete = async(e,id) => {
+        // console.log(id);
+        
+        e.preventDefault();
+        try {
+            const response = await axios.delete(`${API}/api/faculty/delete-user/${id}`,{
+                headers: {
+                    Authorization: authorizationToken,
+                },
+                withCredentials: true,
+            })
+            if (response.status === 200) {
+                toast.success(response.data.message);
+                fetchUsers();
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(
+                error.response?.data?.message || "An error occurred during Delete User."
+            );
+            
+        }
     };
 
     const uniqueClasses = [...new Set(userData.map(user => user.classy))];
     const uniqueDivisions = [...new Set(userData.map(user => user.division))];
 
+    const downloadTemplate = async (e) => {
+        e.preventDefault();
+        try {
+            window.open(`${API}/api/auth/user-template`, "_blank");
+        } catch (error) {
+            console.log(console.error);
+        }
+    }
+
+    const handleFileChange = (e) => {
+        setSelectedFile(e.target.files[0]);
+    };
+
+    const handleUpload = async (e) => {
+        e.preventDefault();
+        if (!selectedFile) {
+            toast.error("Please select a file first.");
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append("csvFile", selectedFile);
+    
+        try {
+            const response = await axios.post(
+                `${API}/api/auth/upload-users`,
+                formData, // Pass formData directly
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: authorizationToken,
+                    },
+                    withCredentials: true,
+                }
+            );
+    
+            if (response.status === 200) {
+                toast.success(response.data.message + response.data.userCount);
+            } else {
+                toast.error(response.data.message || "File upload failed.");
+            }
+        } catch (error) {
+            toast.error(
+                error.response?.data?.message || "An error occurred during upload."
+            );
+            console.error(error);
+        }finally{
+            setIsUploadModelOpen(false);
+            setSelectedFile(null);
+            fetchUsers();
+        }
+    };
+    
 
     return (
         <div className="flex min-h-screen bg-gradient-to-br from-[#F0F1F3] to-[#F0F1F3]">
@@ -104,7 +184,7 @@ const UserManagement = () => {
 
 
                 {/* Create User Form */}
-                <div className="flex mb-1 w-full mx-auto max-md:justify-center max-md:items-center p-6 mt-1">
+                <div className="flex mb-1 w-full mx-auto max-md:justify-center max-md:items-center p-6">
                     <Link to={`/admin/new-user`}>
                         <button
                             // onClick={() => setShowCreateForm(!showCreateForm)}
@@ -112,11 +192,20 @@ const UserManagement = () => {
                         >
                             <MdAdd className="mr-2" /> Create New User
                         </button>
-
                     </Link>
                 </div>
 
                 <div className="w-full mx-auto max-md:max-w-7xl bg-[#FFFFFF] rounded-lg shadow-lg p-8">
+                    <div className="flex justify-end gap-2 mb-2">
+                        <FaCloudDownloadAlt className="text-blue-500 text-xl cursor-pointer"
+                            onClick={(e) => {
+                                downloadTemplate(e)
+                            }}
+                        />
+                        <FaCloudUploadAlt className="text-green-500 text-xl cursor-pointer"
+                            onClick={() => setIsUploadModelOpen(true)}
+                        />
+                    </div>
                     <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div className="relative flex-1">
                             <MdSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#3A0CA3]" />
@@ -199,14 +288,14 @@ const UserManagement = () => {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="flex space-x-2">
                                                     <button
-                                                        onClick={(e) => handleEdit(e,user._id)}
+                                                        onClick={(e) => handleEdit(e, user._id)}
                                                         className="text-accent hover:text-[#F72585] transition-colors duration-200"
                                                         title="Edit user"
                                                     >
                                                         <MdEdit size={20} />
                                                     </button>
                                                     <button
-                                                        onClick={() => handleDelete(user.id)}
+                                                        onClick={(e) => handleDelete(e,user._id)}
                                                         className="text-[#FF4C4C] hover:text-[#FF4C4C] transition-colors duration-200"
                                                         title="Delete user"
                                                     >
@@ -244,6 +333,36 @@ const UserManagement = () => {
                             </div>
                         </div>
                     </div>
+                    {isUploadModalOpen && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                                <h2 className="text-lg font-semibold mb-4">Upload CSV File</h2>
+                                <input
+                                    type="file"
+                                    accept=".csv"
+                                    id="file-upload"
+                                    onChange={handleFileChange}
+                                    className="block w-full mb-4 p-2 border rounded-lg"
+                                />
+                                <div className="flex justify-end gap-2">
+                                    <button
+                                        className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                                        onClick={(e) => {
+                                            handleUpload(e);
+                                        }}
+                                    >
+                                        Upload
+                                    </button>
+                                    <button
+                                        className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                                        onClick={() => setIsUploadModelOpen(false)}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

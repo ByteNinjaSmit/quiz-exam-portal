@@ -415,6 +415,58 @@ const exportPaperDetails = async (req, res, next) => {
 };
 
 
+//--------------------------------
+// DELETE USER
+//----------------------------------
+
+const deleteUser = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        // console.log("user ID : ",userId)
+        // Validate userId format
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "Invalid User ID format" });
+        }
+
+        // Find and delete the user
+        const userData = await User.findByIdAndDelete(userId);
+        if (!userData) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Delete related data concurrently
+        const [cheatData, resultsData] = await Promise.all([
+            Cheat.deleteMany({ user: userData._id }),
+            Result.deleteMany({ user: userData._id })
+        ]);
+
+         // Check if any related data was deleted
+         let relatedDataMessage = "User and related data deleted successfully";
+
+         if (cheatData.deletedCount === 0 && resultsData.deletedCount === 0) {
+             relatedDataMessage = "User deleted, but no related cheat or result data found";
+         } else {
+             if (cheatData.deletedCount === 0) {
+                 relatedDataMessage = "User deleted, but no cheat data found";
+             }
+             if (resultsData.deletedCount === 0) {
+                 relatedDataMessage = "User deleted, but no result data found";
+             }
+         }
+
+        return res.status(200).json({
+            message: relatedDataMessage,
+            deletedRelatedData: {
+                cheatsDeleted: cheatData.deletedCount,
+                resultsDeleted: resultsData.deletedCount,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult,exportPaperDetails};
+
+
+module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult,exportPaperDetails,deleteUser};

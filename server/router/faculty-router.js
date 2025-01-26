@@ -29,4 +29,7 @@ router.route("/delete-user-result/:userId/:paperKey").delete(authMiddleware,facu
 // Export result get
 router.route("/export-result/:paperKey").get(facultyControllers.exportPaperDetails)
 
+// Delete User
+router.route("/delete-user/:userId").delete(authMiddleware,facultyMiddleware,facultyControllers.deleteUser);
+
 module.exports = router;
