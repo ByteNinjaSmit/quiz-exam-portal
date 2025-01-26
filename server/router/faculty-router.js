@@ -26,4 +26,7 @@ router.route("/get-leaderboard").get(facultyControllers.getLeaderboard);
 // delete user result
 router.route("/delete-user-result/:userId/:paperKey").delete(authMiddleware,facultyMiddleware,facultyControllers.deleteUserPaperResult)
 
+// Export result get
+router.route("/export-result/:paperKey").get(facultyControllers.exportPaperDetails)
+
 module.exports = router;

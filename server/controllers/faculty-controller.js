@@ -1,6 +1,7 @@
 require("dotenv").config();
 const User = require("../database/models/user-model");
 const mongoose = require("mongoose");
+const { Parser } = require('json2csv'); // Import the json2csv library
 
 const QuestionPaper = require("../database/models/question-paper-model");
 const Result = require("../database/models/result-model");
@@ -299,7 +300,121 @@ const deleteUserPaperResult = async (req, res) => {
 };
 
 
+//-----------------------
+// Download Question Paper Result 
+// --------------------------
+const exportPaperDetails = async (req, res, next) => {
+    try {
+        const { paperKey } = req.params; // Step 1: Get the paperKey from request params
+
+        // Step 1: Fetch the question paper using paperKey
+        const questionPaper = await QuestionPaper.findOne({ paperKey }, { questions: 0 }); // Exclude questions for brevity
+        if (!questionPaper) {
+            return res.status(404).json({ success: false, message: "Question paper not found" });
+        }
+
+        // Step 2: Fetch results associated with the paperKey
+        const paperResults = await Result.find({ paperKey });
+        if (paperResults.length === 0) {
+            return res.status(404).json({ success: false, message: "No results found for this paperKey" });
+        }
+
+        // Step 3: Calculate total points and attempted questions for each user
+        const userData = {};
+        paperResults.forEach(result => {
+            const userId = result.user.toString();
+            if (!userData[userId]) {
+                userData[userId] = {
+                    totalPoints: 0,
+                    attemptedQuestions: 0,
+                    userDetails: null // Placeholder for user details
+                };
+            }
+            userData[userId].totalPoints += result.points;
+            userData[userId].attemptedQuestions += 1;
+        });
+
+        // Step 4: Fetch user details for all unique users
+        const userIds = Object.keys(userData);
+        const users = await User.find({ _id: { $in: userIds } }, { name: 1, username: 1, classy: 1, division: 1 }); // Fetch only necessary fields
+
+        // Attach user details to userData
+        users.forEach(user => {
+            const userId = user._id.toString();
+            if (userData[userId]) {
+                userData[userId].userDetails = user;
+            }
+        });
+
+        // Prepare final data and sort by totalPoints
+        const sortedUsers = Object.keys(userData)
+            .map(userId => ({
+                userId,
+                totalPoints: userData[userId].totalPoints,
+                attemptedQuestions: userData[userId].attemptedQuestions,
+                name: userData[userId].userDetails?.name || 'N/A',
+                username: userData[userId].userDetails?.username || 'N/A',
+                classy: userData[userId].userDetails?.classy || 'N/A',
+                division: userData[userId].userDetails?.division || 'N/A',
+            }))
+            .sort((a, b) => b.totalPoints - a.totalPoints);
+
+        // Prepare CSV data
+        const csvFields = [
+            // { label: 'User ID', value: 'userId' },
+            { label: 'Name', value: 'name' },
+            { label: 'Username', value: 'username' },
+            { label: 'Class', value: 'classy' },
+            { label: 'Division', value: 'division' },
+            { label: 'Total Points', value: 'totalPoints' },
+            { label: 'Attempted Questions', value: 'attemptedQuestions' }
+        ];
+
+        const csvHeader = `
+        Question Paper Details
+        Title: ${questionPaper.title}
+        Class: ${questionPaper.classyear}
+        Start Time: ${questionPaper.startTime}
+        End Time: ${questionPaper.endTime}
+        Is Quiz: ${questionPaper.isQuiz}
+        Is Fast Quiz: ${questionPaper.isFastQuiz}
+                `.trim();
+
+        const json2csvParser = new Parser({ fields: csvFields });
+        const csvBody = json2csvParser.parse(sortedUsers);
+        const csvData = `${csvHeader}\n\n${csvBody}`;
+
+        // Prepare final data
+        const finalData = {
+            questionPaper: {
+                title: questionPaper.title,
+                startTime: questionPaper.startTime,
+                endTime: questionPaper.endTime,
+                isQuiz: questionPaper.isQuiz,
+                isFastQuiz: questionPaper.isFastQuiz,
+            },
+            users: sortedUsers,// Sorted users with their details
+        };
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment(`${questionPaper.title.replace(/\s+/g, '_')}_Results.csv`);
+        return res.status(200).send(csvData);
+
+        // Return the response
+        // return res.status(200).json({
+        //     success: true,
+        //     data: finalData
+        // });
+    } catch (error) {
+        console.error('Error fetching paper details:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server error while fetching paper details'
+        });
+    }
+};
 
 
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard,deleteUserPaperResult };
+
+module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult,exportPaperDetails};

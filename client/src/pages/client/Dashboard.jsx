@@ -30,25 +30,33 @@ const Dashboard = () => {
     }
   }, []);
 
+  // console.log(user.classy);
+  
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
 
       try {
-        // Fetch exams
-        const examResponse = await axios.get(`${API}/api/exam/all/exams`, {
-          headers: { Authorization: authorizationToken },
-          withCredentials:true,
-        });
-        setExams(examResponse.data);
-
+        try {
+          // Fetch exams
+          const examResponse = await axios.get(`${API}/api/user/get-exam/${user.classy}`, {
+            headers: { Authorization: authorizationToken },
+            withCredentials:true,
+          });
+          setExams(examResponse.data.exams);
+        } catch (error) {
+          console.log(error);
+        }
         // Fetch results
-        const resultsResponse = await axios.get(`${API}/api/exam/get/results/${user._id}`, {
-          headers: { Authorization: authorizationToken },
-          withCredentials:true,
-        });
-        setResults(resultsResponse.data);
-
+        try {
+          const resultsResponse = await axios.get(`${API}/api/exam/get/results/${user._id}`, {
+            headers: { Authorization: authorizationToken },
+            withCredentials:true,
+          });
+          setResults(resultsResponse.data);
+        } catch (error) {
+          console.log(error)
+        }
         // Fetch leaderboard
         const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`, {
           headers: { Authorization: authorizationToken },
@@ -240,9 +248,11 @@ const Dashboard = () => {
                 </div>
               )
             }
+            <Link to={`/user/exams`}>
             <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
               View All Exams
             </button>
+            </Link>
           </div>
 
           {/* For Lab Exam */}

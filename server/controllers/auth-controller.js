@@ -5,6 +5,9 @@ const Faculty = require("../database/models/faculty-model");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose"); // Ensure mongoose is required for ObjectId validation
 const bcrypt = require("bcryptjs");
+const { stringify } = require("csv-stringify");
+const csvParser = require("csv-parser");
+const fs = require("fs");
 
 
 
@@ -54,6 +57,115 @@ const userRegister = async (req, res) => {
         next(error);
     }
 }
+
+// ----------------------
+// Download registration Template
+// ----------------------
+
+const downloadTemplate = async (req, res) => {
+    try {
+        // Define CSV headers
+        const headers = ["name", "username", "classy", "division", "rollNo", "password"];
+
+        // Example data (optional)
+        const exampleRows = [
+            { name: "John Doe", username: "johndoe10", classy: "10th", division: "A", rollNo: "101", password: "123456" },
+            { name: "Jane Smith", username: "janesmith11", classy: "11th", division: "B", rollNo: "102", password: "abcdef" },
+        ];
+
+        // Set response headers for file download
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader("Content-Disposition", "attachment; filename=user-template.csv");
+
+        // Create a stream to send the CSV
+        const csvStream = stringify({ header: true, columns: headers });
+        csvStream.pipe(res); // Pipe the stream to the response
+
+        // Write each row to the stream
+        exampleRows.forEach((row) => csvStream.write(row));
+
+        csvStream.end(); // End the stream
+    } catch (error) {
+        console.error("Error generating CSV template:", error);
+        res.status(500).json({ message: "An error occurred while generating the template." });
+    }
+};
+
+// -------------------
+// User Registration trhough Uploading 
+// -------------------
+
+// Upload Users
+const uploadUsers = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "No file uploaded. Please upload a CSV file." });
+        }
+
+        const users = [];
+        const filePath = req.file.path;
+        console.log("File uploaded successfully:", filePath);
+
+        // Read and parse the CSV file
+        fs.createReadStream(filePath)
+            .pipe(csvParser())
+            .on("data", (row) => {
+                users.push(row);
+            })
+            .on("end", async () => {
+                try {
+                    const processedUsers = [];
+
+                    for (const user of users) {
+                        // Validate required fields
+                        const { name, username, classy, division, rollNo, password } = user;
+                        if (!name || !username || !classy || !division || !rollNo || !password) {
+                            return res.status(400).json({ message: "Missing fields in the CSV file." });
+                        }
+
+                        // Check if the username already exists
+                        const userExists = await User.findOne({ username });
+                        if (userExists) {
+                            return res
+                                .status(400)
+                                .json({ message: `User with username ${username} already exists.` });
+                        }
+
+                        // Encrypt the password
+                        const saltRound = await bcrypt.genSalt(10);
+                        const hash_password = await bcrypt.hash(user.password, saltRound);
+
+                        // Create the user
+                        processedUsers.push({
+                            name,
+                            username,
+                            classy,
+                            division,
+                            rollNo,
+                            password:hash_password,
+                        });
+                    }
+
+                    // Insert users into the database
+                    await User.insertMany(processedUsers);
+
+                    // Cleanup: Remove the uploaded file
+                    fs.unlinkSync(filePath);
+
+                    return res.status(200).json({
+                        message: "Users successfully uploaded and registered.",
+                        userCount: processedUsers.length,
+                    });
+                } catch (error) {
+                    console.error("Error processing users:", error);
+                    return res.status(500).json({ message: "An error occurred while processing users." });
+                }
+            });
+    } catch (error) {
+        console.error("Error uploading users:", error);
+        return res.status(500).json({ message: "An error occurred while uploading the file." });
+    }
+};
 
 // *--------------------------
 // Faculty Registration Logic
@@ -263,4 +375,4 @@ const updateUser = async (req, res, next) => {
 }
 
 
-module.exports = { home, userRegister, userLogin, facultyRegister, facultyLogin, getCurrentUser,updateUser };
+module.exports = { home, userRegister, userLogin, facultyRegister, facultyLogin, getCurrentUser,updateUser,downloadTemplate,uploadUsers };

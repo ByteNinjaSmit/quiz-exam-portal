@@ -16,6 +16,7 @@ const examRoute = require('./router/exam-router');
 const devloperRoute = require('./router/developer-router');
 const codeRoute = require("./router/code-router");
 const facRoute = require("./router/faculty-router");
+const userRoute = require("./router/user-router");
 // Importing Middlewares
 const errorMiddleware = require("./middlewares/error-middleware");
 
@@ -69,6 +70,7 @@ app.use("/api/exam",examRoute);
 app.use("/api/dev",devloperRoute);
 app.use("/api/code",codeRoute);
 app.use("/api/faculty",facRoute);
+app.use("/api/user",userRoute);
 
 
 // Broadcasting Question Paper

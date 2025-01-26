@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FiPlus, FiSearch, FiCalendar, FiEdit2, FiTrash2, FiEye, FiBell } from "react-icons/fi";
+import { FaFileDownload } from "react-icons/fa";
 import AdminSidebar from "../../components/sidebar";
 import { useAuth } from "../../store/auth";
 import { Link } from "react-router-dom";
@@ -191,6 +192,40 @@ const ResultOverview = () => {
 
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
+    const downloadResult = async (e, paperKey,title) => {
+        e.preventDefault();
+        try {
+            // Make a GET request to fetch the CSV data
+            const response = await axios.get(`${API}/api/faculty/export-result/${paperKey}`, {
+                headers: {
+                    Authorization: authorizationToken, // Replace with the actual token
+                    "Content-Type": "application/json",
+                },
+                responseType: "blob", // Important to specify blob for downloading files
+                withCredentials: true,
+            });
+    
+            // Create a blob URL for the downloaded data
+            const blob = new Blob([response.data], { type: "text/csv" });
+            const downloadUrl = window.URL.createObjectURL(blob);
+    
+            // Create a temporary anchor element to trigger the download
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+    
+            // Set a default filename for the downloaded file
+            link.download = `${title}_results.csv`;
+    
+            // Append the link to the document, trigger click, and remove it
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Error downloading the file:", error);
+        }
+    };
+    
+
     return (
         <div className="flex min-h-screen bg-gray-100">
             {/* Admin Sidebar */}
@@ -320,9 +355,11 @@ const ResultOverview = () => {
                                                         <FiEye />
                                                     </button>
                                                 </Link>
-                                                {/* <button className="text-yellow-600 hover:text-yellow-800">
-                                                    <FiBell />
-                                                </button> */}
+                                                <button className="text-black hover:text-red-800"
+                                                onClick={(e)=>{downloadResult(e,exam.paperKey,exam.questionPaper.title)}}
+                                                >
+                                                    <FaFileDownload  />
+                                                </button>
                                             </div>
                                         </td>
                                     </tr>
