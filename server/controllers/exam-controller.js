@@ -852,7 +852,7 @@ const getLeaderBoard = async (req, res, next) => {
         const sortedUsers = userPoints.sort((a, b) => b.totalPoints - a.totalPoints);
 
         // Get top 3 users
-        const top3Users = sortedUsers.slice(0, 4);
+        const top3Users = sortedUsers.slice(0, 5);
 
         // Respond with the top 4 users
         return res.status(200).json({

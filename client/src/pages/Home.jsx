@@ -1,25 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowRight, FaUserFriends, FaClock, FaBrain, FaPlayCircle, FaTrophy, FaChartLine, FaUserGraduate, FaQuestionCircle } from "react-icons/fa";
 import { BsLightningCharge, BsBarChart } from "react-icons/bs";
 import { BsArrowRight } from "react-icons/bs";
 import { useAuth } from "../store/auth";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, useLocation,Link} from "react-router-dom";
+import axios from "axios";
 
 const HomePage = () => {
-    const { isLoading, isDeveloper } = useAuth();
+    const { isLoading, isDeveloper, API, isLoggedIn} = useAuth();
     const location = useLocation();
     const [currentTestimonial, setCurrentTestimonial] = useState(0);
-    if (isLoading) {
-      return (
-        <div className="flex justify-center items-center min-h-screen">
-          <h1>Loading ...........</h1>
-        </div>
-      );
-    }
-    if (isDeveloper && location.pathname === "/") {
-      return <Navigate to="/developer/dev/dashboard" />;
-    }
-   
+    const [leaderboardData, setLeaderboardData] = useState([]);
+
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`);
+                if(leaderboardResponse.status===200){
+                    setLeaderboardData(leaderboardResponse.data.data);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, [API]);
 
     const features = [
         {
@@ -107,6 +114,17 @@ const HomePage = () => {
         }
     ];
 
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen">
+                <h1>Loading ...........</h1>
+            </div>
+        );
+    }
+    if (isDeveloper && location.pathname === "/") {
+        return <Navigate to="/developer/dev/dashboard" />;
+    }
+
     return (
         <div className="min-h-screen">
             {/* Hero Section */}
@@ -121,9 +139,11 @@ const HomePage = () => {
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">Challenge Your Knowledge!</h1>
                     <p className="text-xl text-gray-200 mb-8 max-w-2xl">Join thousands of learners pushing their boundaries through interactive quizzes</p>
                     <div className="space-x-4">
+                        <Link to={ isLoggedIn ? '/user/dashboard' : '/login'}>
                         <button className="bg-yellow-500 hover:bg-yellow-600 text-black px-8 py-3 rounded-full font-semibold transform transition hover:scale-105">
                             Start Quiz Now
                         </button>
+                        </Link>
                         <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-purple-900 transform transition">
                             Learn More
                         </button>
@@ -194,29 +214,34 @@ const HomePage = () => {
             </div>
 
             {/* Leaderboard Section */}
-            <div className="py-20 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-4">
-                    <h2 className="text-4xl font-bold text-center mb-16">Top Performers</h2>
-                    <div className="max-w-3xl mx-auto">
-                        {leaderboard.map((user, index) => (
-                            <div key={index} className="flex items-center justify-between bg-white p-4 rounded-xl mb-4 shadow-sm">
-                                <div className="flex items-center space-x-4">
-                                    <div className="relative">
-                                        {/* <img
-                                            // src={user.avatar}
-                                            alt={user.name}
-                                            className="w-12 h-12 rounded-full object-cover"
-                                        /> */}
-                                        {index === 0 && <FaTrophy className="absolute -top-2 -right-2 text-yellow-500 text-xl" />}
+            {
+                leaderboardData && (
+                    <div className="py-20 bg-gray-50">
+                        <div className="max-w-7xl mx-auto px-4">
+                            <h2 className="text-4xl font-bold text-center mb-16">Top Performers</h2>
+                            <div className="max-w-3xl mx-auto">
+                                {leaderboardData.map((user, index) => (
+                                    <div key={index} className="flex items-center justify-between bg-white p-4 rounded-xl mb-4 shadow-sm">
+                                        <div className="flex items-center space-x-4">
+                                            <div className="relative">
+                                                {/* <img
+                                                // src={user.avatar}
+                                                alt={user.name}
+                                                className="w-12 h-12 rounded-full object-cover"
+                                            /> */}
+                                                {index === 0 && <FaTrophy className="absolute -top-2 -right-2 text-yellow-500 text-xl" />}
+                                            </div>
+                                            <span className="font-semibold">{user.name}</span>
+                                        </div>
+                                        <span className="text-purple-600 font-bold">{user.totalPoints} pts</span>
                                     </div>
-                                    <span className="font-semibold">{user.name}</span>
-                                </div>
-                                <span className="text-purple-600 font-bold">{user.score} pts</span>
+                                ))}
                             </div>
-                        ))}
+                        </div>
                     </div>
-                </div>
-            </div>
+                )
+            }
+
 
             {/* Testimonials Section */}
             {/* <div className="py-20 bg-white">
@@ -245,7 +270,7 @@ const HomePage = () => {
                 </div>
             </div> */}
             {/* Testimonials Section */}
-            <div className="py-20 bg-white">
+            {/* <div className="py-20 bg-white">
                 <div className="container mx-auto px-4">
                     <h2 className="text-4xl font-bold text-center mb-16 text-gray-800">What Our Users Say</h2>
                     <div className="max-w-4xl mx-auto">
@@ -269,7 +294,7 @@ const HomePage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             {/* Final CTA Section */}
             <div className="py-20 bg-gradient-to-r from-purple-900 via-purple-800 to-purple-900 text-white">
                 <div className="max-w-4xl mx-auto text-center px-4">

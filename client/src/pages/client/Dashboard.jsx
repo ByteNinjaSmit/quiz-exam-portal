@@ -161,7 +161,7 @@ const Dashboard = () => {
                 <p className="text-purple-600">{user?.rollNo}</p>
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-2 gap-4">
               <div className="bg-gradient-to-r from-indigo-50 to-purple-50 p-3 rounded-xl">
                 <p className="text-sm text-gray-600">GPA</p>
                 <p className="text-xl font-semibold text-indigo-600">
@@ -174,7 +174,7 @@ const Dashboard = () => {
                   {dummyData.profile.attendance}
                 </p>
               </div>
-            </div>
+            </div> */}
             <Link to={`/user/edit-profile`}>
             <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
               Edit Profile
@@ -258,7 +258,7 @@ const Dashboard = () => {
           </div>
 
           {/* For Lab Exam */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
+          {/* <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-indigo-800">
                 Lab Exams
@@ -308,14 +308,14 @@ const Dashboard = () => {
                           </button>
                         </Link>
                       )}
-                      {/* {!isExamOngoing && !isExamEnded && (
+                      {!isExamOngoing && !isExamEnded && (
                         <button
                           className="mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed"
                           disabled
                         >
                           Take Exam
                         </button>
-                      )} */}
+                      )}
                     </div>
                   );
                 })
@@ -329,12 +329,12 @@ const Dashboard = () => {
             <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
               View All Exams
             </button>
-          </div>
+          </div> */}
 
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-indigo-800">
-                Leaderboard
+                Global Leaderboard
               </h2>
               <FaTrophy className="text-yellow-500" />
             </div>
@@ -373,20 +373,10 @@ const Dashboard = () => {
               </h2>
               <FaCode className="text-purple-600" />
             </div>
-            {dummyData.projects.map((project, index) => (
-              <div
-                key={index}
-                className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
-              >
-                <h3 className="font-semibold text-indigo-700">
-                  {project.name}
-                </h3>
-                <p className="text-purple-600">{project.tech}</p>
+            <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
+                <h3 className="font-semibold text-red-600">No Projects found</h3>
+                <p className="text-gray-600">Please check back later or try searching for something else.</p>
               </div>
-            ))}
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-              View Projects
-            </button>
           </div>
 
           {/* Interviews Section */}
@@ -397,23 +387,10 @@ const Dashboard = () => {
               </h2>
               <FaBriefcase className="text-purple-600" />
             </div>
-            {dummyData.interviews.map((interview, index) => (
-              <div
-                key={index}
-                className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
-              >
-                <h3 className="font-semibold text-indigo-700">
-                  {interview.company}
-                </h3>
-                <p className="text-purple-600">{interview.date}</p>
-                <span className="inline-block mt-2 px-3 py-1 bg-gradient-to-r from-indigo-100 to-purple-100 text-indigo-800 rounded-full text-sm">
-                  {interview.status}
-                </span>
+            <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
+                <h3 className="font-semibold text-red-600">No Interviews found</h3>
+                <p className="text-gray-600">Please check back later or try searching for something else.</p>
               </div>
-            ))}
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-              View Interviews
-            </button>
           </div>
 
           {/* Exam Results Section */}

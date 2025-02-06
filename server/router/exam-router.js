@@ -50,7 +50,7 @@ router.route("/delete/exam/:examId").delete(authMiddleware,facultyMiddleware,exa
 router.route("/view/exam/:examId/:title/:paperkey").get(authMiddleware,facultyMiddleware,examController.getExamQuestionPaperData);
 
 // GET Leaderboard
-router.route("/get/leaderboard").get(authMiddleware,examController.getLeaderBoard);
+router.route("/get/leaderboard").get(examController.getLeaderBoard);
 
 
 
