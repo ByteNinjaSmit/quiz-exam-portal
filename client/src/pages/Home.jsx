@@ -220,7 +220,7 @@ const HomePage = () => {
                         <div className="max-w-7xl mx-auto px-4">
                             <h2 className="text-4xl font-bold text-center mb-16">Top Performers</h2>
                             <div className="max-w-3xl mx-auto">
-                                {leaderboardData.map((user, index) => (
+                                {leaderboardData?.map((user, index) => (
                                     <div key={index} className="flex items-center justify-between bg-white p-4 rounded-xl mb-4 shadow-sm">
                                         <div className="flex items-center space-x-4">
                                             <div className="relative">
