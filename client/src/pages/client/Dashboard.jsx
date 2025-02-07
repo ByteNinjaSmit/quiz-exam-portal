@@ -359,9 +359,11 @@ const Dashboard = () => {
                 <p className="text-gray-600">Please check back later or try searching for something else.</p>
               </div>
             )}
+            <Link to={`/user/global-leaderboard`}>
             <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
               View All
             </button>
+            </Link>
           </div>
 
           {/* Remaining sections with similar styling */}

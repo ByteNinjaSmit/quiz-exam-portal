@@ -44,7 +44,7 @@ const UserResults = () => {
         }
       } catch (error) {
         console.error(error);
-        toast.error("Error Occurred While Getting Results");
+        // toast.error("Error Occurred While Getting Results");
       } finally {
         setLoading(false);
       }
