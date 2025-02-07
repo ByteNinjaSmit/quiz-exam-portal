@@ -8,6 +8,12 @@ const { Server } = require('socket.io');
 const http = require("http");
 const cookieParser = require("cookie-parser");
 const path = require('path');
+const helmet = require("helmet");
+// Rate Limitter 
+const { rateLimit } = require("express-rate-limit");
+const { RedisStore } = require("rate-limit-redis");
+const { RateLimiterRedis } = require("rate-limiter-flexible");
+const Redis = require("ioredis");
 
 // Importing Router
 const authRoute = require("./router/auth-router");
@@ -39,6 +45,11 @@ const logController = require('./controllers/log-controller');
 // Server
 const app = express();
 const server = http.createServer(app);
+app.use(helmet());
+
+const redisClient = new Redis(process.env.REDIS_URL);
+
+
 app.use(cookieParser());
 // CORS Policy
 const io = new Server(server, {
@@ -47,6 +58,9 @@ const io = new Server(server, {
         methods: ["GET", "POST", "DELETE", "PATCH", "HEAD", "PUT"],
         credentials: true,
     },
+    pingInterval: 25000,
+    pingTimeout: 60000,
+    allowEIO3: true, // backward compatibility
 });
 const PORT = process.env.PORT || 5000;
 app.use(cors({ origin: process.env.CORS_SERVER, credentials: true }));
@@ -58,6 +72,53 @@ app.use(errorMiddleware);
 app.get('/', (req, res) => {
     res.send('Welcome to the API');
 });
+
+
+// DDos Protection 
+
+//DDos protection and rate limiting
+const rateLimiter = new RateLimiterRedis({
+    storeClient: redisClient,
+    keyPrefix: "middleware",
+    points: 100,
+    duration: 60,
+});
+
+app.use((req, res, next) => {
+    rateLimiter
+        .consume(req.ip)
+        .then(() => next())
+        .catch(() => {
+            logger.warn(`Rate limit exceeded for IP: ${req.ip}`);
+            res.status(429).json({ success: false, message: "Too many requests" });
+        });
+});
+
+
+
+//Ip based rate limiting for sensitive endpoints
+const sensitiveEndpointsLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
+    handler: (req, res) => {
+        
+        logger.warn(`Sensitive endpoint rate limit exceeded for IP: ${req.ip}`);
+        res.status(429).json({ success: false, message: "Too many requests" });
+    },
+    store: new RedisStore({
+        sendCommand: (...args) => redisClient.call(...args),
+        skipFailedRequests: true,
+    }),
+});
+
+//apply this sensitiveEndpointsLimiter to our routes
+app.use("/api/auth/login", sensitiveEndpointsLimiter);
+app.use("/api/auth/login/faculty", sensitiveEndpointsLimiter);
+app.use("/api/auth/register", sensitiveEndpointsLimiter);
+app.use("/api/auth/register/faculty", sensitiveEndpointsLimiter);
+
 
 // Make UploadFolder Static
 // Serve static files from the uploads folder
@@ -71,6 +132,7 @@ app.use("/api/dev",devloperRoute);
 app.use("/api/code",codeRoute);
 app.use("/api/faculty",facRoute);
 app.use("/api/user",userRoute);
+
 
 
 // Broadcasting Question Paper
