@@ -284,13 +284,13 @@ const userLogin = async (req, res, next) => {
 
 
 const getCurrentUser = async (req, res) => {
-    console.log("get current user hit");
+    // console.log("get current user hit");
     try {
         const jwtToken = req.token; // Retrieve token from cookies
         const token = jwtToken.replace("Bearer", "").trim();
-        if(token){
-            console.log("token got at current user: ",token);
-        }
+        // if(token){
+        //     console.log("token got at current user: ",token);
+        // }
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided" });
         }
