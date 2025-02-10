@@ -3,13 +3,22 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build": "npm run clean && babel src --out-dir dist --copy-files",
+    "clean": "rm -rf dist",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "jest --coverage",
+    "prestart": "npm run build",
+    "prod": "NODE_ENV=production pm2 start server.js --name quiz-exam-server",
+    "stop": "pm2 stop quiz-exam-server && pm2 delete quiz-exam-server",
+    "logs": "pm2 logs quiz-exam-server"
   },
   "keywords": [],
   "author": "Smitraj Bankar ByteNinjaSmit",
   "license": "MIT",
-  "description": "",
+  "description": "MERN server for quiz exam portal",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
