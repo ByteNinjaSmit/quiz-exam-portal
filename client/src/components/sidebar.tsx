@@ -1,10 +1,9 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 // import Link from "next/link"; // Import the Link component for navigation
-import { FaHome, FaUsers, FaClipboardList, FaChartBar, FaTrophy, FaCog, FaQuestionCircle, FaBars, FaTimes } from "react-icons/fa";
+import { FaHome, FaUsers, FaClipboardList, FaChartBar, FaTrophy, FaCog, FaQuestionCircle, FaTimes } from "react-icons/fa";
 
-import { PiUsersThreeFill } from "react-icons/pi";
 // import { useParams, useRouter } from "next/navigation";
 // import { useSession } from "@/app/store/session";
 // Define the prop types
