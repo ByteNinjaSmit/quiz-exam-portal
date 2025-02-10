@@ -284,6 +284,7 @@ const userLogin = async (req, res, next) => {
 
 
 const getCurrentUser = async (req, res) => {
+    console.log("get current user hit");
     try {
         const token = req.cookies.authToken; // Retrieve token from cookies
 
