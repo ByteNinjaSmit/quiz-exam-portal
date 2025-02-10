@@ -53,9 +53,11 @@ const redisClient = new Redis(process.env.REDIS_URL);
 app.use(cookieParser());
 
 const allowedOrigins = [
+    'http://localhost:4173',
+    'https://localhost:4173',
     'http://localhost:5173',
-    'http://147.93.106.184:5173',
-    'https://147.93.106.184:5173',
+    'http://147.93.106.184:4173',
+    'https://147.93.106.184:4173',
     'https://147.93.106.184:80',
     'http://147.93.106.184:80',
     'http://devquizapp.tech',
