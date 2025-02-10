@@ -51,10 +51,23 @@ const redisClient = new Redis(process.env.REDIS_URL);
 
 
 app.use(cookieParser());
+
+const allowedOrigins = [
+    'http://localhost:5173',
+    'http://147.93.106.184:5173',
+    'https://147.93.106.184:5173',
+    'https://147.93.106.184:80',
+    'http://147.93.106.184:80',
+    'http://devquizapp.tech',
+    'https://devquizapp.tech',
+    'http://www.devquizapp.tech',
+    'https://www.devquizapp.tech',
+];
+
 // CORS Policy
 const io = new Server(server, {
     cors: {
-        origin: process.env.CORS_SERVER,
+        origin: allowedOrigins,
         methods: ["GET", "POST", "DELETE", "PATCH", "HEAD", "PUT"],
         credentials: true,
     },
@@ -63,7 +76,7 @@ const io = new Server(server, {
     allowEIO3: true, // backward compatibility
 });
 const PORT = process.env.PORT || 5000;
-app.use(cors({ origin: process.env.CORS_SERVER, credentials: true }));
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 // Error Catch
