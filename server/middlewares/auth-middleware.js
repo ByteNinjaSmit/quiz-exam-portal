@@ -5,6 +5,10 @@ const Developer = require("../database/models/developer-model");
 
 const authMiddleware = async (req, res, next) => {
   const token = req.header("Authorization");
+  if(token){
+    console.log("Token Recived: ",token);
+
+  }
   if (!token) {
     return res.status(401).json({ message: "Unauthorized. Token not provided" });
   }

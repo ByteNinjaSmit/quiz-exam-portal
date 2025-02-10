@@ -290,7 +290,10 @@ const getCurrentUser = async (req, res) => {
         if (!token) {
             return res.status(401).json({ message: "Unauthorized: No token provided" });
         }
-
+        if(token){
+            console.log("token got at current user: ",token);
+            
+        }
         // Decode the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
         const { userID, role } = decoded;
