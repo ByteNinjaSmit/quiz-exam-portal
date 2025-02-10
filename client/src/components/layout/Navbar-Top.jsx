@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation,useNavigate } from 'react-router-dom';
 import {
   Navbar,
   NavbarBrand,
@@ -16,31 +16,34 @@ import { useAuth } from "../../store/auth.jsx";
 export default function MainNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { isLoggedIn, LogoutUser,isAdmin } = useAuth(); // Custom hook from AuthContext
-
+  const { isLoggedIn, LogoutUser, isAdmin } = useAuth(); // Custom hook from AuthContext
+  const navigate = useNavigate();
   const menuItems = [
     { name: "Home", to: "/" },
     ...(isLoggedIn
       ? [
-          // { name: "Profile", to: `/edit-profile` },
-          ...(!isAdmin
-            ? [{ name: "Dashboard", to: `/user/dashboard` }]
-            : []),
-          ...(isAdmin
-            ? [{ name: "Dashboard", to: `/admin/dashboard` }]
-            : []),
-          { name: "Help & Feedback", to: "/contact" },
-          { name: "FAQ", to: "/faq" },
-          { name: "Log Out", onClick: LogoutUser },
-        ]
+        // { name: "Profile", to: `/edit-profile` },
+        ...(!isAdmin
+          ? [{ name: "Dashboard", to: `/user/dashboard` }]
+          : []),
+        ...(isAdmin
+          ? [{ name: "Dashboard", to: `/admin/dashboard` }]
+          : []),
+        { name: "Help & Feedback", to: "/contact" },
+        { name: "FAQ", to: "/faq" },
+        { name: "Log Out", onClick: LogoutUser },
+      ]
       : []),
     !isLoggedIn && { name: "Help & Feedback", to: "/contact" },
     !isLoggedIn && { name: "FAQ", to: "/faq" },
     !isLoggedIn && { name: "Rules", to: "/rule-regulations" },
     ...(isLoggedIn ? [] : [{ name: "Log In", to: "/login" }]), // For when not logged in
   ].filter(Boolean); // filter to remove falsey values
-  
 
+  const LoginUser = ()=>{
+    // Navigate to ()
+    navigate("/login");
+  }
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen}>
@@ -79,9 +82,9 @@ export default function MainNavbar() {
             </Button>
           ) : (
             <Link to={`/login`}>
-            <Button  color="primary" variant="flat">
-              Login
-            </Button>
+              <Button color="primary" onClick={LoginUser} variant="flat">
+                Login
+              </Button>
             </Link>
           )}
         </NavbarItem>
