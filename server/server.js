@@ -60,10 +60,10 @@ const allowedOrigins = [
     'https://147.93.106.184:4173',
     'https://147.93.106.184:80',
     'http://147.93.106.184:80',
-    'http://devquizapp.tech',
-    'https://devquizapp.tech',
-    'http://www.devquizapp.tech',
-    'https://www.devquizapp.tech',
+    'http://bytequiz.tech',
+    'https://bytequiz.tech',
+    'http://www.bytequiz.tech',
+    'https://www.bytequiz.tech',
 ];
 
 // CORS Policy
