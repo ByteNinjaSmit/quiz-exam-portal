@@ -3,14 +3,11 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "dev": "nodemon server.js",
-    "build": "npm run clean && babel src --out-dir dist --copy-files",
-    "clean": "rm -rf dist",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "jest --coverage",
-    "prestart": "npm run build",
     "prod": "NODE_ENV=production pm2 start server.js --name quiz-exam-server",
     "stop": "pm2 stop quiz-exam-server && pm2 delete quiz-exam-server",
     "logs": "pm2 logs quiz-exam-server"
