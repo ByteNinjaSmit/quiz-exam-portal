@@ -265,7 +265,7 @@ const UpdateProfile = () => {
             </div>
 
             <div className="md:col-span-2 flex flex-col md:flex-row justify-end gap-4 md:gap-x-4 mt-6">
-              {/* <Link to={`/user/dashboard`}>
+              <Link to={`/user/dashboard`}>
                 <button
                   onClick={goBack}
                   type="button"
@@ -273,7 +273,7 @@ const UpdateProfile = () => {
                 >
                   <IoChevronBackCircle /> Back
                 </button>
-              </Link> */}
+              </Link>
               <button
                 type="button"
                 onClick={handleReset}
