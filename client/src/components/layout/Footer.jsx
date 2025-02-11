@@ -43,15 +43,15 @@ const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <FaMapMarkerAlt className="text-blue-500" />
-                <span>Sanjivani College Of Engineering, Kopargoan</span>
+                <span>Kopargoan, Maharashtra</span>
               </div>
               <div className="flex items-center space-x-3">
                 <FaPhone className="text-blue-500" />
-                <span>+91 91301 91301</span>
+                <span>+917057991669</span>
               </div>
               <div className="flex items-center space-x-3">
                 <FaEnvelope className="text-blue-500" />
-                <span>contact@sanjivani.org.in</span>
+                <span>smitrajbankar11@gmail.com</span>
               </div>
             </div>
           </div>

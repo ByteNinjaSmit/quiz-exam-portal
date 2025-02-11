@@ -39,6 +39,11 @@ const AdminSidebar = () => {
             description: "Create and schedule exams"
         },
         {
+            icon: <FaClipboardList className="w-5 h-5" />,
+            label: "Coding Problem Managment",
+            description: "Create and schedule exams"
+        },
+        {
             icon: <FaChartBar className="w-5 h-5" />,
             label: "Results & Analytics",
             description: "View performance metrics"

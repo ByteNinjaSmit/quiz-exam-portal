@@ -24,6 +24,7 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [leaderboardData, setLeaderboardData] = useState([]);
+  const [problemData, setProblemData] = useState([]);
   useEffect(() => {
     if (!isLoggedIn) {
       return navigate("/");
@@ -31,7 +32,7 @@ const Dashboard = () => {
   }, []);
 
   // console.log(user.classy);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -41,17 +42,26 @@ const Dashboard = () => {
           // Fetch exams
           const examResponse = await axios.get(`${API}/api/user/get-exam/${user.classy}`, {
             headers: { Authorization: authorizationToken },
-            withCredentials:true,
+            withCredentials: true,
           });
           setExams(examResponse.data.exams);
         } catch (error) {
           console.log(error);
         }
+        try {
+          const problemResponse = await axios.get(`${API}/api/problem/get-all-problems`,{
+            headers: { Authorization: authorizationToken },
+            withCredentials: true,
+          })
+          setProblemData(problemResponse.data.problems);
+        } catch (error) {
+          console.log("Error From Fetching Problems",error);
+        }
         // Fetch results
         try {
           const resultsResponse = await axios.get(`${API}/api/exam/get/results/${user._id}`, {
             headers: { Authorization: authorizationToken },
-            withCredentials:true,
+            withCredentials: true,
           });
           setResults(resultsResponse.data);
         } catch (error) {
@@ -60,7 +70,7 @@ const Dashboard = () => {
         // Fetch leaderboard
         const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`, {
           headers: { Authorization: authorizationToken },
-          withCredentials:true,
+          withCredentials: true,
         });
         setLeaderboardData(leaderboardResponse.data.data);
 
@@ -176,9 +186,9 @@ const Dashboard = () => {
               </div>
             </div> */}
             <Link to={`/user/edit-profile`}>
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-              Edit Profile
-            </button>
+              <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                Edit Profile
+              </button>
             </Link>
           </div>
 
@@ -251,9 +261,9 @@ const Dashboard = () => {
               )
             }
             <Link to={`/user/exams`}>
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-              View All Exams
-            </button>
+              <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                View All Exams
+              </button>
             </Link>
           </div>
 
@@ -331,6 +341,51 @@ const Dashboard = () => {
             </button>
           </div> */}
 
+          {/* Problem Solving Section */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-indigo-800">
+                Problem Solving
+              </h2>
+              <FaChartBar className="text-purple-600" />
+            </div>
+
+            {problemData.length > 0 ? (
+              problemData.slice(0,2).map((problem, index) => (
+                <div
+                  key={index}
+                  className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
+                >
+                  <h3 className="font-semibold text-indigo-700">{problem?.title}</h3>
+                  <div className="flex justify-between mt-2">
+                    <span className="text-purple-600">Difficulty: {problem?.difficulty}</span>
+                    {/* Properly Styled Button */}
+                    <Link to={`/user/problem-solving/${problem._id}`}>
+                      <button
+                        className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                      >
+                        Solve Problem
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
+                <h3 className="font-semibold text-red-600">No Problems found</h3>
+                <p className="text-gray-600">Please check back later or try searching for something else.</p>
+              </div>
+            )}
+            {
+              problemData.length > 0 && (
+                <Link to={`/user/problem-solving`}>
+                  <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                    View All Problems
+                  </button>
+                </Link>
+              )
+            }
+          </div>
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-indigo-800">
@@ -360,9 +415,9 @@ const Dashboard = () => {
               </div>
             )}
             <Link to={`/user/global-leaderboard`}>
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-              View All
-            </button>
+              <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                View All
+              </button>
             </Link>
           </div>
 
@@ -376,9 +431,9 @@ const Dashboard = () => {
               <FaCode className="text-purple-600" />
             </div>
             <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
-                <h3 className="font-semibold text-red-600">No Projects found</h3>
-                <p className="text-gray-600">Please check back later or try searching for something else.</p>
-              </div>
+              <h3 className="font-semibold text-red-600">No Projects found</h3>
+              <p className="text-gray-600">Please check back later or try searching for something else.</p>
+            </div>
           </div>
 
           {/* Interviews Section */}
@@ -390,9 +445,9 @@ const Dashboard = () => {
               <FaBriefcase className="text-purple-600" />
             </div>
             <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
-                <h3 className="font-semibold text-red-600">No Interviews found</h3>
-                <p className="text-gray-600">Please check back later or try searching for something else.</p>
-              </div>
+              <h3 className="font-semibold text-red-600">No Interviews found</h3>
+              <p className="text-gray-600">Please check back later or try searching for something else.</p>
+            </div>
           </div>
 
           {/* Exam Results Section */}
@@ -430,11 +485,15 @@ const Dashboard = () => {
                 <p className="text-gray-600">Please check back later or try searching for something else.</p>
               </div>
             )}
-            <Link to={`/user/results`}>
-              <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-                View All Results
-              </button>
-            </Link>
+            {
+              results.length > 0 && (
+                <Link to={`/user/results`}>
+                  <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                    View All Results
+                  </button>
+                </Link>
+              )
+            }
           </div>
         </div>
       </div>

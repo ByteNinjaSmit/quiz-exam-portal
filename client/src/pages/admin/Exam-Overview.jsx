@@ -205,11 +205,11 @@ const ExamDashboard = () => {
 
                 </header>
                 <div className="flex justify-between items-center mb-1 p-6">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Exam Management</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Quiz Management</h1>
                     <Link to={`/admin/create-exam`}>
                         <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">
                             <FiPlus className="mr-2" />
-                            Add New Exam
+                            Add New Quiz
                         </button>
                     </Link>
                 </div>
@@ -286,58 +286,66 @@ const ExamDashboard = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {paginatedData.map((exam, index) => (
-                                    <tr key={index} className="hover:bg-gray-50">
-                                        <td className="px-4 py-4">
-                                            <div className="text-sm font-medium text-gray-900">{exam?.title}</div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="text-sm text-gray-500">{exam?.classyear}</div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="text-sm text-gray-500 flex items-center">
-                                                <FiCalendar className="mr-2" />
-                                                {exam?.startTime && formatDate(exam.startTime)} at {exam?.startTime && formatTime(exam.startTime)} to {exam?.endTime && formatTime(exam.endTime)}
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div
-                                                className={`px-2 py-1 text-xs font-semibold rounded-full text-center items-center ${exam?.isPublished
-                                                    ? "bg-green-100 text-green-800"
-                                                    : "bg-yellow-100 text-yellow-800"
-                                                    }`}
-                                            >
-                                                {exam?.isPublished ? "Published" : "Draft"}
-                                            </div>
-                                        </td>
+                                {paginatedData && paginatedData.length > 0 ? (
+                                    paginatedData.map((exam, index) => (
+                                        <tr key={index} className="hover:bg-gray-50">
+                                            <td className="px-4 py-4">
+                                                <div className="text-sm font-medium text-gray-900">{exam?.title}</div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div className="text-sm text-gray-500">{exam?.classyear}</div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div className="text-sm text-gray-500 flex items-center">
+                                                    <FiCalendar className="mr-2" />
+                                                    {exam?.startTime && formatDate(exam.startTime)} at {exam?.startTime && formatTime(exam.startTime)} to {exam?.endTime && formatTime(exam.endTime)}
+                                                </div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div
+                                                    className={`px-2 py-1 text-xs font-semibold rounded-full text-center items-center ${exam?.isPublished
+                                                        ? "bg-green-100 text-green-800"
+                                                        : "bg-yellow-100 text-yellow-800"
+                                                        }`}
+                                                >
+                                                    {exam?.isPublished ? "Published" : "Draft"}
+                                                </div>
+                                            </td>
 
-                                        <td className="px-4 py-4">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(getExamStatus(exam?.startTime, exam?.endTime))}`}>
-                                                {getExamStatus(exam?.startTime, exam?.endTime)}
-                                            </span>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="flex space-x-3 items-center">
-                                                <Link to={`/admin/edit-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`} disabled={exam.isPublished}>
-                                                    <button className={`text-blue-600 hover:text-blue-800 ${exam.isPublished ? "hidden" : ""}`} disabled={exam.isPublished}>
-                                                        <FiEdit2 />
+                                            <td className="px-4 py-4">
+                                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(getExamStatus(exam?.startTime, exam?.endTime))}`}>
+                                                    {getExamStatus(exam?.startTime, exam?.endTime)}
+                                                </span>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div className="flex space-x-3 items-center">
+                                                    <Link to={`/admin/edit-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`} disabled={exam.isPublished}>
+                                                        <button className={`text-blue-600 hover:text-blue-800 ${exam.isPublished ? "hidden" : ""}`} disabled={exam.isPublished}>
+                                                            <FiEdit2 />
+                                                        </button>
+                                                    </Link>
+                                                    <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam?._id)}>
+                                                        <FiTrash2 />
                                                     </button>
-                                                </Link>
-                                                <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam?._id)}>
-                                                    <FiTrash2 />
-                                                </button>
-                                                <Link to={`/admin/view-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`}>
-                                                    <button className="text-gray-600 hover:text-gray-800">
-                                                        <FiEye />
-                                                    </button>
-                                                </Link>
-                                                {/* <button className="text-yellow-600 hover:text-yellow-800">
+                                                    <Link to={`/admin/view-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`}>
+                                                        <button className="text-gray-600 hover:text-gray-800">
+                                                            <FiEye />
+                                                        </button>
+                                                    </Link>
+                                                    {/* <button className="text-yellow-600 hover:text-yellow-800">
                                                     <FiBell />
                                                 </button> */}
-                                            </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={5} className="px-4 py-4 text-center text-gray-500">
+                                            No data available
                                         </td>
                                     </tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>

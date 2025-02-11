@@ -192,7 +192,7 @@ const ResultOverview = () => {
 
     const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
-    const downloadResult = async (e, paperKey,title) => {
+    const downloadResult = async (e, paperKey, title) => {
         e.preventDefault();
         try {
             // Make a GET request to fetch the CSV data
@@ -204,18 +204,18 @@ const ResultOverview = () => {
                 responseType: "blob", // Important to specify blob for downloading files
                 withCredentials: true,
             });
-    
+
             // Create a blob URL for the downloaded data
             const blob = new Blob([response.data], { type: "text/csv" });
             const downloadUrl = window.URL.createObjectURL(blob);
-    
+
             // Create a temporary anchor element to trigger the download
             const link = document.createElement("a");
             link.href = downloadUrl;
-    
+
             // Set a default filename for the downloaded file
             link.download = `${title}_results.csv`;
-    
+
             // Append the link to the document, trigger click, and remove it
             document.body.appendChild(link);
             link.click();
@@ -224,7 +224,7 @@ const ResultOverview = () => {
             console.error("Error downloading the file:", error);
         }
     };
-    
+
 
     return (
         <div className="flex min-h-screen bg-gray-100">
@@ -315,21 +315,22 @@ const ResultOverview = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {paginatedData.map((exam, index) => (
-                                    <tr key={index} className="hover:bg-gray-50">
-                                        <td className="px-4 py-4">
-                                            <div className="text-sm font-medium text-gray-900">{exam?.questionPaper?.title}</div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="text-sm text-gray-500">{exam?.questionPaper?.classyear}</div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="text-sm text-gray-500 flex items-center">
-                                                <FiCalendar className="mr-2" />
-                                                {exam?.questionPaper?.startTime && formatDate(exam?.questionPaper?.startTime)} at {exam?.questionPaper.startTime && formatTime(exam?.questionPaper?.startTime)} to {exam?.questionPaper?.endTime && formatTime(exam?.questionPaper?.endTime)}
-                                            </div>
-                                        </td>
-                                        {/* <td className="px-4 py-4">
+                                {paginatedData && paginatedData.length > 0 ? (
+                                    paginatedData.map((exam, index) => (
+                                        <tr key={index} className="hover:bg-gray-50">
+                                            <td className="px-4 py-4">
+                                                <div className="text-sm font-medium text-gray-900">{exam?.questionPaper?.title}</div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div className="text-sm text-gray-500">{exam?.questionPaper?.classyear}</div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div className="text-sm text-gray-500 flex items-center">
+                                                    <FiCalendar className="mr-2" />
+                                                    {exam?.questionPaper?.startTime && formatDate(exam?.questionPaper?.startTime)} at {exam?.questionPaper.startTime && formatTime(exam?.questionPaper?.startTime)} to {exam?.questionPaper?.endTime && formatTime(exam?.questionPaper?.endTime)}
+                                                </div>
+                                            </td>
+                                            {/* <td className="px-4 py-4">
                                             <div
                                                 className={`px-2 py-1 text-xs font-semibold rounded-full text-center items-center ${exam?.isPublished
                                                     ? "bg-green-100 text-green-800"
@@ -340,30 +341,37 @@ const ResultOverview = () => {
                                             </div>
                                         </td> */}
 
-                                        <td className="px-4 py-4">
-                                            <div className={`text-sm font-medium text-gray-900 items-center`}>
-                                                {exam.numberOfUniqueUsers}
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <div className="flex space-x-3 items-center">
-                                                <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam?._id)}>
-                                                    <FiTrash2 />
-                                                </button>
-                                                <Link to={`/admin/view-result/question_paper/${exam.paperKey}/${exam.questionPaper.title}`}>
-                                                    <button className="text-gray-600 hover:text-gray-800">
-                                                        <FiEye />
+                                            <td className="px-4 py-4">
+                                                <div className={`text-sm font-medium text-gray-900 items-center`}>
+                                                    {exam.numberOfUniqueUsers}
+                                                </div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div className="flex space-x-3 items-center">
+                                                    <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(exam?._id)}>
+                                                        <FiTrash2 />
                                                     </button>
-                                                </Link>
-                                                <button className="text-black hover:text-red-800"
-                                                onClick={(e)=>{downloadResult(e,exam.paperKey,exam.questionPaper.title)}}
-                                                >
-                                                    <FaFileDownload  />
-                                                </button>
-                                            </div>
+                                                    <Link to={`/admin/view-result/question_paper/${exam.paperKey}/${exam.questionPaper.title}`}>
+                                                        <button className="text-gray-600 hover:text-gray-800">
+                                                            <FiEye />
+                                                        </button>
+                                                    </Link>
+                                                    <button className="text-black hover:text-red-800"
+                                                        onClick={(e) => { downloadResult(e, exam.paperKey, exam.questionPaper.title) }}
+                                                    >
+                                                        <FaFileDownload />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan={5} className="px-4 py-4 text-center text-gray-500">
+                                            No data available
                                         </td>
                                     </tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>

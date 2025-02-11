@@ -67,11 +67,16 @@ export const AuthProvider = ({ children }) => {
                 },
                 withCredentials: true,
             });
-            if (response.status==200) {
+            if (response.status == 200) {
                 const data = response.data;
                 setUser(data.userData);
-                // console.log(data.userData);
-                
+                const { isTeacher, isHod, isTnp, isDeveloper } = data.userData || {}
+                setIsAdmin(isTeacher || isHod || isTnp);
+                setIsTeacher(isTeacher || false);
+                setIsHod(isHod || false);
+                setIsTnp(isTnp || false);
+                setIsDeveloper(isDeveloper || false);
+
             } else {
                 console.error("Error fetching user data");
             }
@@ -98,17 +103,17 @@ export const AuthProvider = ({ children }) => {
         setIsHod(false);
         setIsTnp(false);
         setIsDeveloper(false);
-        
+
         // Check and set roles based on the user object
         if (user) {
-            const { isTeacher, isHod, isTnp,isDeveloper  } = user;
+            const { isTeacher, isHod, isTnp, isDeveloper } = user;
 
             setIsAdmin(isTeacher || isHod || isTnp); // Admin if any of the roles is true
             setIsTeacher(isTeacher || false);
             setIsHod(isHod || false);
             setIsTnp(isTnp || false);
             setIsDeveloper(isDeveloper || false);
-            if(isDeveloper){
+            if (isDeveloper) {
                 console.log(`This is Developer`);
             }
         }

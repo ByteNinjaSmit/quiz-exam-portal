@@ -10,6 +10,15 @@ const codeProblemSchema = new mongoose.Schema({
         enum: ["Easy", "Medium", "Hard"], // Restricting values to predefined difficulties
         required: true,
     },
+    language:{
+        type: String,
+        enum: ["cpp", "java", "python"], // Restricting values to predefined difficulties
+        required: true,
+    },
+    code:{
+        type: String,
+        required:true,
+    },
     tags: {
         type: [String], // Array of strings
         default: [],
@@ -35,6 +44,15 @@ const codeProblemSchema = new mongoose.Schema({
         type: [String], // Array of categories
     },
     examples: {
+        type: [
+            {
+                input: { type: String, required: true }, // Example input
+                output: { type: String, required: true }, // Example output
+            }
+        ],
+        required: true, // At least one example is mandatory
+    },
+    testCases: {
         type: [
             {
                 input: { type: String, required: true }, // Example input

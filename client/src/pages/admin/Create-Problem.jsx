@@ -6,13 +6,50 @@ import { BiDetail } from "react-icons/bi";
 import { RiErrorWarningLine } from "react-icons/ri";
 import { FiAlertCircle } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
+import { useAuth } from "../../store/auth";
+import { toast } from "react-toastify";
+import MonacoEditor from '@monaco-editor/react';
+
+const boilerplate = {
+    python: `# Python boilerplate
+def main():
+    print("Hello, Python!")
+    
+if __name__ == "__main__":
+    main()
+  `,
+    cpp: `// C++ boilerplate
+#include <iostream>
+using namespace std;
+  
+int main() {
+    cout << "Hello, C++!" << endl;
+    return 0;
+}
+  `,
+    java: `// Java boilerplate You Don't Have to Change Class name instead of code becuase our file name is code.java
+public class code {
+    public static void main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}
+  `,
+    javascript: `// JavaScript boilerplate
+  console.log("Hello, JavaScript!");
+  `,
+};
 const CodingProblemForm = () => {
+    const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
+
     const [formData, setFormData] = useState({
         title: "",
         difficulty: "",
+        language: "cpp",
         tags: [],
         description: "",
+        code: "",
         constraints: "",
         examples: [{ input: "", output: "" }],
         timeComplexity: "",
@@ -26,6 +63,7 @@ const CodingProblemForm = () => {
     const [errors, setErrors] = useState({});
 
     const difficultyOptions = ["Easy", "Medium", "Hard"];
+    const languageOptions = ["cpp", "java", "python"];
     const tagOptions = ["Arrays", "Strings", "LinkedList", "Trees", "Graphs", "DP"];
     const categoryOptions = ["Array", "Dynamic-Programming", "Graph", "Tree", "String"];
 
@@ -36,6 +74,15 @@ const CodingProblemForm = () => {
             setErrors({ ...errors, [name]: "" });
         }
     };
+    const handleLanguageChange = (e) => {
+        const lang = e.target.value;
+        setFormData((prev) => ({
+            ...prev,
+            language: lang,
+            code: boilerplate[lang] || "", // Default to empty if no boilerplate for selected language
+        }));
+    };
+
 
     const handleTagChange = (tag) => {
         const updatedTags = formData.tags.includes(tag)
@@ -75,7 +122,7 @@ const CodingProblemForm = () => {
         setFormData({ ...formData, testCases: updatedTestCases });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
         if (!formData.title) newErrors.title = "Title is required";
@@ -87,15 +134,54 @@ const CodingProblemForm = () => {
             return;
         }
 
+        try {
+            const response = await axios.post(`${API}/api/problem/new-problem`, formData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: authorizationToken,
+                },
+                withCredentials: true,
+            });
+
+            if (response.status === 200) {
+                console.log("Problem created successfully:", response.data);
+                toast.success(response.data.message);
+                setFormData({
+                    title: "",
+                    difficulty: "",
+                    language: "cpp",
+                    tags: [],
+                    description: "",
+                    code: "",
+                    constraints: "",
+                    examples: [{ input: "", output: "" }],
+                    timeComplexity: "",
+                    spaceComplexity: "",
+                    solution: "",
+                    categories: [],
+                    difficultyExplanation: "",
+                    testCases: [{ input: "", output: "" }]
+                })
+                // Handle success, clear the form, or navigate to another page
+            }
+        } catch (error) {
+            console.error("Error submitting form:", error);
+            if (error.response) {
+                console.error("Server Error:", error.response.data.error);
+            }
+        }
+
         console.log("Form submitted:", formData);
     };
 
+    console.log("code: ",formData.code);
+    
     return (
         <div className="min-h-screen bg-[#FAFAFB] p-4 md:p-8">
             <form onSubmit={handleSubmit} className="max-w-4xl mx-auto bg-card rounded-lg shadow-lg p-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                     <h1 className="text-2xl font-semibold text-purple-800">Create Coding Problem</h1>
-                    <Link to={`/admin/dashboard`}>
+                    <Link to={`/admin/dashboard/code`}>
                         <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors">
                             <MdArrowBack /> Back
                         </button>
@@ -149,6 +235,27 @@ const CodingProblemForm = () => {
                         ))}
                     </select>
                 </div>
+                {/* Language Section */}
+                <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                        <MdStars className="text-[#F72585] text-xl" />
+                        <label className="text-[16px] font-semibold">Select Language</label>
+                    </div>
+                    <select
+                        name="difficulty"
+                        value={formData.language}
+                        onChange={handleLanguageChange}
+                        className="w-full p-3 border rounded-md focus:ring-2 focus:ring-[#F72585] focus:border-transparent"
+                        aria-label="Difficulty level"
+                    >
+                        <option value="">Select Language</option>
+                        {languageOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 {/* Tags Section */}
                 <div className="mb-6">
@@ -187,6 +294,29 @@ const CodingProblemForm = () => {
                         placeholder="Provide a clear problem statement"
                         className="w-full p-3 border rounded-md h-32 focus:ring-2 focus:ring-[#F72585] focus:border-transparent"
                         aria-label="Problem description"
+                    />
+                </div>
+                {/* Inital Code Section */}
+                <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                        <BiDetail className="text-[#F72585] text-xl" />
+                        <label className="text-[16px] font-semibold">Initial Code</label>
+                    </div>
+                    <MonacoEditor
+                        language={formData.language} // Example: 'javascript', 'python', 'cpp', etc.
+                        theme={'vs-dark'} // Monaco themes
+                        value={formData.code}
+                        onChange={(value) => setFormData({ ...formData, code: value })} // Use the value directly
+                        options={{
+                            automaticLayout: true, // Adjust layout automatically
+                            wordWrap: 'on', // Enable word wrapping
+                            minimap: { enabled: false }, // Disable the minimap
+                            fontSize: 14,
+                            scrollBeyondLastLine: false, // Prevent scrolling beyond content
+                        }}
+                        height="400px"
+                        className="border border-[#E0E0E0] rounded-sm text-sm"
+                        placeholder="Enter code"
                     />
                 </div>
 

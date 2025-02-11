@@ -23,6 +23,7 @@ const devloperRoute = require('./router/developer-router');
 const codeRoute = require("./router/code-router");
 const facRoute = require("./router/faculty-router");
 const userRoute = require("./router/user-router");
+const codeProblemRoute = require('./router/code-problem-router')
 // Importing Middlewares
 const errorMiddleware = require("./middlewares/error-middleware");
 
@@ -45,7 +46,10 @@ const logController = require('./controllers/log-controller');
 // Server
 const app = express();
 const server = http.createServer(app);
-app.use(helmet());
+app.use(helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+}));
+
 
 const redisClient = new Redis(process.env.REDIS_URL);
 
@@ -118,7 +122,7 @@ const sensitiveEndpointsLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res) => {
-        
+
         logger.warn(`Sensitive endpoint rate limit exceeded for IP: ${req.ip}`);
         res.status(429).json({ success: false, message: "Too many requests" });
     },
@@ -137,16 +141,32 @@ app.use("/api/auth/register/faculty", sensitiveEndpointsLimiter);
 
 // Make UploadFolder Static
 // Serve static files from the uploads folder
-app.use('/database/uploads', express.static(path.join(__dirname, '/database/uploads')));
+
+app.use('/database/uploads', express.static(path.join(__dirname, '/database/uploads'), {
+    setHeaders: (res) => {
+        res.set('Access-Control-Allow-Origin', '*');
+        res.set('Access-Control-Allow-Methods', 'GET');
+        res.set('Access-Control-Allow-Headers', 'Content-Type');
+    }
+}));
+
+app.use('/database/uploads', (req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+    res.setHeader('Content-Type', 'image/jpeg');
+    next();
+}, express.static(path.join(__dirname, '/database/uploads')));
+
 
 
 app.use("/api/auth", authRoute);
-app.use("/api/question",questionRoute(io));
-app.use("/api/exam",examRoute);
-app.use("/api/dev",devloperRoute);
-app.use("/api/code",codeRoute);
-app.use("/api/faculty",facRoute);
-app.use("/api/user",userRoute);
+app.use("/api/question", questionRoute(io));
+app.use("/api/exam", examRoute);
+app.use("/api/dev", devloperRoute);
+app.use("/api/code", codeRoute);
+app.use("/api/problem", codeProblemRoute);
+app.use("/api/faculty", facRoute);
+app.use("/api/user", userRoute);
 
 
 

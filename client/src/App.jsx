@@ -40,6 +40,8 @@ import CodingProblemForm from "./pages/admin/Create-Problem";
 import ExamListPage from "./pages/client/All-exams";
 import UpdateProfile from "./pages/client/Edit-Profile";
 import GlobalLeaderboardOverview from "./pages/client/Global-Leaderboard";
+import CodeProblemDashboard from "./pages/admin/Code-Exam-Overview";
+import CodingProblemPlatform from "./pages/client/Solve-Code";
 
 
 
@@ -81,6 +83,7 @@ const App = () => {
               <Route exact path="paper/:title/:paperKey/:id" element={<ExamInterface />} />
               <Route exact path="results" element={<UserResults />} />
               <Route exact path="editor" element={<CodingPlatform />} />
+              <Route exact path="problem-solving/:id" element={<CodingProblemPlatform />} />
               <Route exact path="result/:userid/:paperkey" element={<QuestionPaperResult />} />
             </Route>
 
@@ -89,6 +92,7 @@ const App = () => {
             <Route exact path="/admin" element={<AdminLayout />}>
               <Route exact path="dashboard" element={<AdminDashboard />} />
               <Route exact path="dashboard/exam" element={<ExamDashboard />} />
+              <Route exact path="dashboard/code" element={<CodeProblemDashboard />} />
               <Route exact path="user-management" element={<UserManagement />} />
               <Route exact path="result-management" element={<ResultOverview />} />
               <Route exact path="new-user" element={<CreateNewUser />} />

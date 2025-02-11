@@ -53,9 +53,9 @@ export default function MainNavbar() {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Link to="/" color="foreground" style={{ color: "inherit", textDecoration: "none" }}>
+          <Link to="/" className="justify-center items-center" color="foreground" style={{ color: "inherit", textDecoration: "none" }}>
             <AcmeLogo />
-            <p className="font-bold text-inherit">ACES</p>
+            <p className="font-bold text-inherit">ByteQuiz</p>
           </Link>
         </NavbarBrand>
       </NavbarContent>
