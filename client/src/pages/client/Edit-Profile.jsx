@@ -261,7 +261,7 @@ const UpdateProfile = () => {
             </div>
 
             <div className="md:col-span-2 flex flex-col md:flex-row justify-end gap-4 md:gap-x-4 mt-6">
-              <Link to={`/admin/user-management`}>
+              <Link to={`/user/dashboard`}>
                 <button
                   type="button"
                   className="flex items-center w-full gap-2 px-6 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-blue-700 dark:hover:bg-blue-600 rounded-lg transition-colors"

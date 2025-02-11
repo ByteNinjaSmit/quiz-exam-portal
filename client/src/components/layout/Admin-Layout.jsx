@@ -17,7 +17,7 @@ export const AdminLayout = () => {
     return <Navigate to="/" />;
   }
   // Redirect non-admin users to home, and "/admin" to "/admin/dashboard"
-  if (!isAdmin && !user) {
+  if (!isAdmin || !user) {
     return <Navigate to="/" />;
   } else if (location.pathname === '/admin') {
     return <Navigate to="/admin/dashboard" />;
