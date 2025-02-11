@@ -21,13 +21,14 @@ import {
 import { motion } from "framer-motion";
 import { Toaster, toast } from "react-hot-toast";
 import { IoChevronBackCircle } from "react-icons/io5";
-import { Link,useParams } from "react-router-dom";
+import { Link,useParams,useNavigate} from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../store/auth";
 
 const UpdateProfile = () => {
   const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
   const params = useParams();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [errors, setErrors] = useState({});
@@ -88,6 +89,9 @@ const UpdateProfile = () => {
     setPassword("");
   }  
 
+  const goBack=()=>{
+    navigate("/user/dashboard");
+  }
   return (
     <div
       className={`min-h-screen p-6 ${isDarkMode ? "dark bg-gray-900" : "bg-[#FAFAFB]"
@@ -261,14 +265,15 @@ const UpdateProfile = () => {
             </div>
 
             <div className="md:col-span-2 flex flex-col md:flex-row justify-end gap-4 md:gap-x-4 mt-6">
-              <Link to={`/user/dashboard`}>
+              {/* <Link to={`/user/dashboard`}>
                 <button
+                  onClick={goBack}
                   type="button"
                   className="flex items-center w-full gap-2 px-6 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-blue-700 dark:hover:bg-blue-600 rounded-lg transition-colors"
                 >
                   <IoChevronBackCircle /> Back
                 </button>
-              </Link>
+              </Link> */}
               <button
                 type="button"
                 onClick={handleReset}
