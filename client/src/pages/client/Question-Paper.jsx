@@ -14,7 +14,7 @@ const ExamInterface = () => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [isOptionLocked, setIsOptionLocked] = useState(false);
   const [timeLeft, setTimeLeft] = useState(3600); // 1 hour in seconds
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFullScreen, setIsFullScreen] = useState(true);
   const [showWarning, setShowWarning] = useState(false);
   const [isTabActive, setIsTabActive] = useState(true);
   const [timer, setTimer] = useState(30);
@@ -142,19 +142,7 @@ const ExamInterface = () => {
     };
   }, [isExamEnded, title, paperKey]);
 
-  // Handle tab visibility change
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        setShowWarning(true);
-      }
-    };
 
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
 
   // Main exam countdown timer
   useEffect(() => {
@@ -171,16 +159,7 @@ const ExamInterface = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Handle full screen toggle
-  const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      setIsFullScreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullScreen(false);
-    }
-  };
+
 
   // Handle CheatFunction
   const handleCheatFunction = async (e) => {
@@ -475,6 +454,136 @@ const ExamInterface = () => {
     return date.toLocaleTimeString("en-US", options);
   };
 
+  // -----------------------
+  // Cheating Logic
+  // --------------------------
+
+
+  // Detect Tab Switching
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setShowWarning(true);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+  // Block Right-click, Inspect Element, and Copying
+  useEffect(() => {
+    const disableRightClick = (event) => event.preventDefault();
+    const disableDevTools = (event) => {
+      if (
+        event.key === "F12" ||
+        (event.ctrlKey && event.shiftKey && event.key === "I") || // Ctrl + Shift + I
+        (event.ctrlKey && event.key === "u") // Ctrl + U (View Source)
+      ) {
+        event.preventDefault();
+        setShowWarning(true);
+      }
+    };
+
+    document.addEventListener("contextmenu", disableRightClick);
+    document.addEventListener("keydown", disableDevTools);
+
+    return () => {
+      document.removeEventListener("contextmenu", disableRightClick);
+      document.removeEventListener("keydown", disableDevTools);
+    };
+  }, []);
+
+  // Disable Clipboard & Input Pasting
+  useEffect(() => {
+    const disablePaste = (event) => {
+      event.preventDefault();
+      setShowWarning(true);
+    };
+
+    document.addEventListener("paste", disablePaste);
+    return () => {
+      document.removeEventListener("paste", disablePaste);
+    };
+  }, []);
+
+  // Disable All Keyboard Inputs (Detect Any Key Press)
+  useEffect(() => {
+    const blockAllKeys = (event) => {
+      event.preventDefault();
+      setShowWarning(true);
+    };
+
+    document.addEventListener("keydown", blockAllKeys);
+    return () => {
+      document.removeEventListener("keydown", blockAllKeys);
+    };
+  }, []);
+  // Force Fullscreen on Load
+  useEffect(() => {
+    const enterFullScreen = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch((err) => {
+          console.error("Fullscreen request failed", err);
+        });
+      }
+    };
+
+    enterFullScreen(); // Trigger fullscreen on component mount
+
+    // Detect Fullscreen Exit & Force Re-entry
+    const checkFullScreen = () => {
+      if (!document.fullscreenElement) {
+        setShowWarning(true);
+        // enterFullScreen(); // Re-enter fullscreen if exited
+      }
+    };
+
+    document.addEventListener("fullscreenchange", checkFullScreen);
+    return () => {
+      document.removeEventListener("fullscreenchange", checkFullScreen);
+    };
+  }, []);
+  // Handle Fullscreen Toggle
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullScreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    }
+  };
+  // Detect Browser Back/Forward Navigation
+  useEffect(() => {
+    const preventBackNavigation = () => {
+      setShowWarning(true);
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    window.history.pushState(null, "", window.location.href); // Prevent navigation
+    window.addEventListener("popstate", preventBackNavigation);
+
+    return () => {
+      window.removeEventListener("popstate", preventBackNavigation);
+    };
+  }, []);
+  // Detect and Prevent Page Refresh (F5, Ctrl+R, Swipe Down on Mobile)
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = ""; // Some browsers require this for confirmation
+      handleCheatFunction(e); 
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+
   if (isLoading) {
     return <p>Loading exam...</p>;
   }
@@ -496,8 +605,6 @@ const ExamInterface = () => {
   if (currentQuestion === null) {
     return <p>exam sheduled</p>;
   }
-  console.log(currentQuestion?.questionText);
-
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       {/* Warning Modal */}
@@ -508,7 +615,7 @@ const ExamInterface = () => {
               <IoWarningOutline size={48} />
             </div>
             <h3 className="text-xl font-bold text-center mb-4">
-              Tab Switching Detected!
+              Cheating is Detected!
             </h3>
             <p className="text-gray-600 text-center mb-6">
               Please refrain from switching tabs during the exam. This incident
@@ -534,7 +641,7 @@ const ExamInterface = () => {
           <div className="text-xl font-bold">Online Exam</div>
           <div className="flex items-center space-x-4">
             <div className="bg-blue-600 px-4 py-2 rounded-lg">
-              Time Left: {formatTime(timeLeft)}
+              {/* Time Left: {formatTime(timeLeft)} */}
             </div>
             <button
               onClick={toggleFullScreen}

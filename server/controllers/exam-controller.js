@@ -778,14 +778,13 @@ const deleteExam = async (req, res, next) => {
         }
         const deleteResults = await Result.deleteMany({ paperKey: deletedExam.paperKey });
 
-        // Delete The Images Also
+        // Delete The Also Cheats
+        await Cheat.deleteMany({paperKey:deletedExam.paperKey});
 
 
         // Return a success response
         res.status(200).json({
             message: "Exam, related results, and associated files deleted successfully",
-            deletedExam: deletedExam,
-            deleteResults: deleteResults
         });
     } catch (error) {
         // Pass the error to the error-handling middleware

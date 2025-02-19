@@ -6,6 +6,8 @@ const { Parser } = require('json2csv'); // Import the json2csv library
 const QuestionPaper = require("../database/models/question-paper-model");
 const Result = require("../database/models/result-model");
 const Cheat = require("../database/models/cheat-model");
+const CodeSubmission = require("../database/models/code-submission-model");
+
 // ---------------------------
 // GET ALL User
 // -----------------------
@@ -439,27 +441,23 @@ const deleteUser = async (req, res, next) => {
             Cheat.deleteMany({ user: userData._id }),
             Result.deleteMany({ user: userData._id })
         ]);
+        await CodeSubmission.deleteMany({userId: userId});
+        // Check if any related data was deleted
+        let relatedDataMessage = "User and related data deleted successfully";
 
-         // Check if any related data was deleted
-         let relatedDataMessage = "User and related data deleted successfully";
-
-         if (cheatData.deletedCount === 0 && resultsData.deletedCount === 0) {
-             relatedDataMessage = "User deleted, but no related cheat or result data found";
-         } else {
-             if (cheatData.deletedCount === 0) {
-                 relatedDataMessage = "User deleted, but no cheat data found";
-             }
-             if (resultsData.deletedCount === 0) {
-                 relatedDataMessage = "User deleted, but no result data found";
-             }
-         }
+        if (cheatData.deletedCount === 0 && resultsData.deletedCount === 0) {
+            relatedDataMessage = "User deleted, but no related cheat or result data found";
+        } else {
+            if (cheatData.deletedCount === 0) {
+                relatedDataMessage = "User deleted, but no cheat data found";
+            }
+            if (resultsData.deletedCount === 0) {
+                relatedDataMessage = "User deleted, but no result data found";
+            }
+        }
 
         return res.status(200).json({
             message: relatedDataMessage,
-            deletedRelatedData: {
-                cheatsDeleted: cheatData.deletedCount,
-                resultsDeleted: resultsData.deletedCount,
-            },
         });
     } catch (error) {
         next(error);
@@ -469,4 +467,4 @@ const deleteUser = async (req, res, next) => {
 
 
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult,exportPaperDetails,deleteUser};
+module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult, exportPaperDetails, deleteUser };

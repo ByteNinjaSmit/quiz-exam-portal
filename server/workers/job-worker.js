@@ -76,7 +76,7 @@ const getExecutionCommand = (language, jobDir,containerName) => {
 // Helper function to run the command and capture the output
 const runCommand = (command, jobId,containerName) => {
   return new Promise((resolve, reject) => {
-    const process = exec(command, { timeout: 30000 });
+    const process = exec(command, { timeout: 20000 });
 
     let output = '';
     let errorOutput = '';
@@ -112,7 +112,7 @@ const runCommand = (command, jobId,containerName) => {
       } catch (err) {
         logger.error(`Failed to stop container ${containerName}: ${err.message}`);
       }
-      reject(new Error(`Job ${jobId} timed out after 30 seconds`));
+      reject(new Error(`Job ${jobId} timed out after 20 seconds`));
     }, 30000);
     
   });

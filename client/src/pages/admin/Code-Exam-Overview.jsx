@@ -48,10 +48,10 @@ const CodeProblemDashboard = () => {
 
 
     const handleDelete = async (id) => {
-        if (window.confirm("Are you sure you want to delete this exam?")) {
+        if (window.confirm("Are you sure you want to delete this Codeing Problem?")) {
             try {
                 // Send DELETE request to the backend
-                const response = await axios.delete(`${API}/api/exam/delete/exam/${id}`, {
+                const response = await axios.delete(`${API}/api/problem/delete-problem/${id}`, {
                     headers: {
                         Authorization: authorizationToken, // Replace with the actual token
                         "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const CodeProblemDashboard = () => {
 
                 // Handle the response
                 if (response.status === 200) {
-                    toast.success("Exam deleted successfully");
+                    toast.success(response.data.message);
                     fetchProblems();
                     // Optionally, you can refresh the exam list or remove the deleted exam from the UI
                 }
@@ -71,11 +71,11 @@ const CodeProblemDashboard = () => {
                 if (error.response) {
                     // Check if the error is a 400 Bad Request
                     if (error.response.status === 400) {
-                        toast.error(error.response.data.message || "Exam ID is required or invalid.");
+                        toast.error(error.response.data.message || "problem ID is required or invalid.");
                     } else if (error.response.status === 404) {
-                        toast.error(error.response.data.message || "Exam not found.");
+                        toast.error(error.response.data.message || "problem not found.");
                     } else {
-                        toast.error(error.response.data.message || "An error occurred while deleting the exam.");
+                        toast.error(error.response.data.message || "An error occurred while deleting the problem.");
                     }
                 } else {
                     toast.error("Network error, please try again later.");
