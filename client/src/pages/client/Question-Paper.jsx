@@ -583,9 +583,21 @@ const ExamInterface = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isExamEnded) {
+      setTimeout(() => {
+        navigate("/user/dashboard");
+      }, 2000); // 2 seconds delay
+    }
+  }, [isExamEnded, navigate]);
 
   if (isLoading) {
-    return <p>Loading exam...</p>;
+    return (
+      <>
+      <p>Loading exam...</p>
+      <p>You will automatic redirect to Dashboard...</p>
+      </>
+    )
   }
 
   if (isStarting) {
