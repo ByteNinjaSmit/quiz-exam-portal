@@ -216,19 +216,15 @@ const CreateExam = () => {
         }
       );
       const data = await response.data;
-      if (response.status !== 201) {
-        toast.error(data.message);
-        setProgress(0);
-      }
       if (response.status === 201) {
         toast.success(data.message);
         setProgress(0);
-        navigate("/admin/dashboard");
+        navigate("/admin/dashboard/exam");
       }
     } catch (error) {
       setProgress(0);
       console.error(error);
-      toast.error("An error occurred during the exam creation.");
+      toast.error( error.response.data.message || "An error occurred during the exam creation.");
     }
   };
 
@@ -283,10 +279,6 @@ const CreateExam = () => {
         }
       );
       const data = await response.data;
-      if (response.status !== 201) {
-        toast.error(data.message);
-        setProgress(0);
-      }
       if (response.status === 201) {
         toast.success(data.message);
         setProgress(0);
@@ -295,7 +287,7 @@ const CreateExam = () => {
     } catch (error) {
       setProgress(0);
       console.error(error);
-      toast.error("An error occurred during the exam creation.");
+      toast.error( error.response.data.message ||"An error occurred during the exam creation.");
     }
   };
 
