@@ -25,6 +25,7 @@ const Dashboard = () => {
   const [results, setResults] = useState([]);
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [problemData, setProblemData] = useState([]);
+  const [contestData, setContestData] = useState([]);
   useEffect(() => {
     if (!isLoggedIn) {
       return navigate("/");
@@ -48,14 +49,26 @@ const Dashboard = () => {
         } catch (error) {
           console.log(error);
         }
+        // Get Problems Data
         try {
-          const problemResponse = await axios.get(`${API}/api/problem/get-all-problems`,{
+          const problemResponse = await axios.get(`${API}/api/problem/get-all-problems`, {
             headers: { Authorization: authorizationToken },
             withCredentials: true,
           })
           setProblemData(problemResponse.data.problems);
         } catch (error) {
-          console.log("Error From Fetching Problems",error);
+          console.log("Error From Fetching Problems", error);
+        }
+        // Get Contest Data
+        try {
+          const contestResponse = await axios.get(`${API}/api/problem/get-latest-contest`,
+            {
+              headers: { Authorization: authorizationToken },
+              withCredentials: true,
+            })
+          setContestData(contestResponse.data.contest);
+        } catch (error) {
+          console.log("Error From Fetching Contests", error);
         }
         // Fetch results
         try {
@@ -195,7 +208,7 @@ const Dashboard = () => {
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-indigo-800">
-                Upcoming Exams
+                Upcoming Quiz Exams
               </h2>
               <IoMdTimer className="text-purple-600" />
             </div>
@@ -255,92 +268,17 @@ const Dashboard = () => {
                 })
               ) : (
                 <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
-                  <h3 className="font-semibold text-red-600">No Exams found</h3>
+                  <h3 className="font-semibold text-red-600">No Quiz Exams found</h3>
                   <p className="text-gray-600">Please check back later or try searching for something else.</p>
                 </div>
               )
             }
             <Link to={`/user/exams`}>
               <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-                View All Exams
+                View All Quiz Exams
               </button>
             </Link>
           </div>
-
-          {/* For Lab Exam */}
-          {/* <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-indigo-800">
-                Lab Exams
-              </h2>
-              <IoMdTimer className="text-purple-600" />
-            </div>
-            {
-              exams.length > 0 ? (
-                exams?.slice(0, 2).map((exam, index) => {
-                  const currentTime = new Date();
-                  const examStartTime = new Date(exam.startTime);
-                  const examEndTime = new Date(exam.endTime);
-                  const isExamOngoing =
-                    currentTime >= examStartTime && currentTime <= examEndTime;
-                  const isExamScheduled = currentTime < examStartTime;
-                  const isExamEnded = currentTime > examEndTime;
-
-                  return (
-                    <div
-                      key={index}
-                      className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
-                    >
-                      <h3 className="font-semibold text-indigo-700">
-                        {exam?.title}
-                      </h3>
-                      <p className="text-purple-600">
-                        {exam?.startTime && formatDate(exam.startTime)} at{" "}
-                        {exam?.startTime && formatTime(exam.startTime)} to{" "}
-                        {exam?.endTime && formatTime(exam.endTime)}
-                      </p>
-                      {isExamScheduled && (
-                        <p className="text-yellow-600 font-medium mt-2">
-                          Exam is scheduled
-                        </p>
-                      )}
-                      {isExamEnded && (
-                        <p className="text-red-600 font-medium mt-2">
-                          Exam is ended
-                        </p>
-                      )}
-                      {isExamOngoing && (
-                        <Link
-                          to={`/user/paper/${exam?.title}/${exam?.paperKey}/${exam?._id}`}
-                        >
-                          <button className="mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
-                            Take Exam
-                          </button>
-                        </Link>
-                      )}
-                      {!isExamOngoing && !isExamEnded && (
-                        <button
-                          className="mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed"
-                          disabled
-                        >
-                          Take Exam
-                        </button>
-                      )}
-                    </div>
-                  );
-                })
-              ) : (
-                <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
-                  <h3 className="font-semibold text-red-600">No Exams found</h3>
-                  <p className="text-gray-600">Please check back later or try searching for something else.</p>
-                </div>
-              )
-            }
-            <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
-              View All Exams
-            </button>
-          </div> */}
-
           {/* Problem Solving Section */}
           <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
             <div className="flex items-center justify-between mb-4">
@@ -351,7 +289,7 @@ const Dashboard = () => {
             </div>
 
             {problemData.length > 0 ? (
-              problemData.slice(0,2).map((problem, index) => (
+              problemData.slice(0, 2).map((problem, index) => (
                 <div
                   key={index}
                   className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
@@ -377,10 +315,80 @@ const Dashboard = () => {
               </div>
             )}
             {
-              problemData.length > 0 && (
+              problemData.length > 2 && (
                 <Link to={`/user/problem-solving`}>
                   <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
                     View All Problems
+                  </button>
+                </Link>
+              )
+            }
+          </div>
+          {/* Coding Contest Section */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 relative pb-16 hover:shadow-xl transition-shadow duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold text-indigo-800">
+                Coding Contest
+              </h2>
+              <FaCode className="text-purple-600" />
+            </div>
+
+            {contestData.length > 0 ? (
+              contestData?.slice(0, 2).map((problem, index) => {
+                const currentTime = new Date();
+                const examStartTime = new Date(problem.startTime);
+                const examEndTime = new Date(problem.endTime);
+                const isExamOngoing =
+                  currentTime >= examStartTime && currentTime <= examEndTime;
+                const isExamScheduled = currentTime < examStartTime;
+                const isExamEnded = currentTime > examEndTime;
+
+                return (
+                  <div
+                    key={index}
+                    className="mb-4 p-4 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl"
+                  >
+                    <h3 className="font-semibold text-indigo-700">
+                      {problem?.name}
+                    </h3>
+                    <p className="text-purple-600">
+                      {problem?.startTime && formatDate(problem.startTime)} at{" "}
+                      {problem?.startTime && formatTime(problem.startTime)} to{" "}
+                      {problem?.endTime && formatTime(problem.endTime)}
+                    </p>
+                    {isExamScheduled && (
+                      <p className="text-yellow-600 font-medium mt-2">
+                        Contest is scheduled
+                      </p>
+                    )}
+                    {isExamEnded && (
+                      <p className="text-red-600 font-medium mt-2">
+                        Contest is ended
+                      </p>
+                    )}
+                    {isExamOngoing && (
+                      <Link
+                        to={`/user/coding-contest/${problem?._id}`}
+                      >
+                        <button className="mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+                          Take Contest
+                        </button>
+                      </Link>
+                    )}
+                  </div>
+                );
+              })
+            ) : (
+              <div className="p-6 text-center bg-gradient-to-r from-red-50 to-pink-50 rounded-xl shadow-md">
+                <h3 className="font-semibold text-red-600">No Contest found</h3>
+                <p className="text-gray-600">Please check back later or try searching for something else.</p>
+              </div>
+            )}
+            {
+              contestData.length > 2 && (
+                <Link to={`/user/coding-contest-all`}>
+                  <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
+                    View All Contest
                   </button>
                 </Link>
               )

@@ -178,7 +178,7 @@ const CreateExam = () => {
       formData.append("classyear", examData.classYear);
       formData.append(
         "startTime",
-        convertToISTAndFormatForMongo(examData.startTime)
+          
       );
       formData.append(
         "endTime",

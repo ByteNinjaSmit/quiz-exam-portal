@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import { toast } from "react-toastify";
 
-const CodeProblemDashboard = () => {
+const CodeContestDashboard = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [difficulty, setDifficulty] = useState("All");
     const [currentPage, setCurrentPage] = useState(1);
@@ -23,7 +23,7 @@ const CodeProblemDashboard = () => {
     const fetchProblems = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`${API}/api/problem/get-all-problems`, {
+            const response = await axios.get(`${API}/api/problem/get-all-contest`, {
                 headers: {
                     Authorization: authorizationToken,
                 },
@@ -33,7 +33,9 @@ const CodeProblemDashboard = () => {
                 toast.error(`Error Fetching Exams: ${response.status}`);
             }
             const data = response.data;
-            setProblems(data.problems);
+            console.log(data.contest);
+            
+            setProblems(data.contest);
         } catch (error) {
             console.error(error);
             toast.error(error.messsage);
@@ -51,7 +53,7 @@ const CodeProblemDashboard = () => {
         if (window.confirm("Are you sure you want to delete this Codeing Problem?")) {
             try {
                 // Send DELETE request to the backend
-                const response = await axios.delete(`${API}/api/problem/delete-problem/${id}`, {
+                const response = await axios.delete(`${API}/api/problem/delete-coding-contest/${id}`, {
                     headers: {
                         Authorization: authorizationToken, // Replace with the actual token
                         "Content-Type": "application/json",
@@ -105,7 +107,7 @@ const CodeProblemDashboard = () => {
     const filteredData = problems?.filter(
         (item) =>
             (difficulty === "All" || item?.difficulty?.toLowerCase() === difficulty.toLowerCase()) &&
-            (item?.title?.toLowerCase().includes(searchQuery.toLowerCase()))
+            (item?.name?.toLowerCase().includes(searchQuery.toLowerCase()))
     );
 
 
@@ -130,11 +132,11 @@ const CodeProblemDashboard = () => {
 
                 </header>
                 <div className="flex justify-between items-center mb-1 p-6">
-                    <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Code Problem Management</h1>
-                    <Link to={`/admin/create-problem`}>
+                    <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Coding Contest Management</h1>
+                    <Link to={`/admin/create-contest`}>
                         <button className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-md">
                             <FiPlus className="mr-2" />
-                            Add New Problem
+                            Create New Contest
                         </button>
                     </Link>
                 </div>
@@ -187,7 +189,7 @@ const CodeProblemDashboard = () => {
                                                 <div className="text-sm font-medium text-gray-900">{index + 1}</div>
                                             </td>
                                             <td className="px-4 py-4">
-                                                <div className="text-sm font-medium text-gray-900">{problem?.title}</div>
+                                                <div className="text-sm font-medium text-gray-900">{problem?.name}</div>
                                             </td>
                                             <td className="px-4 py-4">
                                                 <div className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(problem.difficulty)}`}>
@@ -242,4 +244,4 @@ const CodeProblemDashboard = () => {
     );
 };
 
-export default CodeProblemDashboard;
+export default CodeContestDashboard;

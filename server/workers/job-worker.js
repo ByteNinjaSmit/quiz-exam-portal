@@ -63,11 +63,11 @@ const getCodeFileName = (language) => {
 const getExecutionCommand = (language, jobDir,containerName) => {
   switch (language) {
     case 'python':
-      return `docker run --rm --name ${containerName} -v "${path.resolve(jobDir).replace(/\\/g, '/')}:/sandbox" --cpus="0.1" --memory="256m" python:3.10 bash -c "python3 /sandbox/code.py < /sandbox/input.txt"`;
+      return `docker run --rm --name ${containerName} -v "${path.resolve(jobDir).replace(/\\/g, '/')}:/sandbox" --cpus="0.1" --memory="512m" python:3.10 bash -c "python3 /sandbox/code.py < /sandbox/input.txt"`;
     case 'cpp':
-      return `docker run --rm --name ${containerName} -v "${path.resolve(jobDir)}:/sandbox" --cpus="0.1" --memory="256m" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"`;
+      return `docker run --rm --name ${containerName} -v "${path.resolve(jobDir)}:/sandbox" --cpus="0.1" --memory="512m" gcc:latest bash -c "g++ /sandbox/code.cpp -o /sandbox/code && /sandbox/code < /sandbox/input.txt"`;
     case 'java':
-      return `docker run --rm --name ${containerName} -v "${path.resolve(jobDir)}:/sandbox" --cpus="0.1" --memory="256m" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"`;
+      return `docker run --rm --name ${containerName} -v "${path.resolve(jobDir)}:/sandbox" --cpus="0.1" --memory="512m" openjdk:11 bash -c "javac /sandbox/code.java && java -cp /sandbox code < /sandbox/input.txt"`;
     default:
       throw new Error('Unsupported language');
   }

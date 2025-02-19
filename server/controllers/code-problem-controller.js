@@ -1,8 +1,9 @@
+const mongoose = require('mongoose');
 const CodeProblem = require("../database/models/code-problem-model");
 const CodeSubmission = require("../database/models/code-submission-model");
 const CodeContest = require("../database/models/code-contest-model");
 const CodeContestSubmission = require("../database/models/codeContest-submission-model");
-const mongoose = require('mongoose');
+const ContestCheat = require("../database/models/code-cheat-model");
 
 // Controller to create a new coding problem
 const createProblem = async (req, res, next) => {
@@ -214,6 +215,7 @@ const deleteProblemById = async (req, res, next) => {
 const createCodeContest = async (req, res, next) => {
     try {
         const {
+            name,
             title,
             difficulty,
             code,
@@ -236,7 +238,7 @@ const createCodeContest = async (req, res, next) => {
         } = req.body;
 
         // Validate mandatory fields
-        if (!title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language || !classyear || !score || !startTime || !endTime || !createdBy) {
+        if (!name || !title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language || !classyear || !score || !startTime || !endTime || !createdBy) {
             return res.status(400).json({
                 message: "Title, difficulty, description, constraints, examples, and test cases are required fields."
             });
@@ -261,6 +263,7 @@ const createCodeContest = async (req, res, next) => {
 
         // Create a new problem instance
         const newProblem = new CodeContest({
+            name,
             title,
             difficulty,
             code,
@@ -315,19 +318,36 @@ const getContestById = async (req, res, next) => {
 
 const getContests = async (req, res, next) => {
     try {
-        const problems = await CodeContest.find().select('title difficulty category');
-        return res.status(200).json({ problems });
+        const contest = await CodeContest.find()
+            .select('name difficulty category startTime endTime classyear score createdAt')
+            .sort({ createdAt: -1 });
+        return res.status(200).json({ contest });
     } catch (error) {
         next(error);
     }
 };
+
+const getTop2Contests = async (req, res, next) => {
+    try {
+        const contest = await CodeContest.find()
+            .select('name difficulty category startTime endTime classyear score createdAt')
+            .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+            .limit(2); // Get only top 2
+
+        return res.status(200).json({ contest });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 
 const submitContestSubmission = async (req, res, next) => {
     try {
         const { problemId,score, userId, code, accuracy, avgRuntime, testCasesPassed, output, isSuccessfullyRun } = req.body;
 
         // Validate required fields
-        if (!problemId || !score || !userId || !code || !output || accuracy === undefined || avgRuntime === undefined || testCasesPassed === undefined) {
+        if (!problemId || score===undefined || !userId || !code || !output || accuracy === undefined || avgRuntime === undefined || testCasesPassed === undefined) {
             return res.status(400).json({ success: false, message: "All fields are required." });
         }
 
@@ -348,8 +368,8 @@ const submitContestSubmission = async (req, res, next) => {
             accuracy,
             avgRuntime,
             testCasesPassed,
-            score,
             isSuccessfullyRun,
+            score,
         });
 
         // Save to the database
@@ -395,6 +415,132 @@ const getAllContestSubmissionByUserByProblem = async (req, res, next) => {
     }
 };
 
+const deleteCodingContestById = async (req, res, next) => {
+    try {
+        const { problemId } = req.params;
+        if (!problemId) {
+            return res.status(400).json({ success: false, message: "Invalid problemId." });
+        }
+        // Validate MongoDB ObjectIds
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
+            return res.status(400).json({ success: false, message: "Invalid problemId." });
+        }
+        // Find And Delte from CodeProblem _id: problemId
+        // Find and Delete All from CodeSubmission problemId:problemId
+        const deletedProblem = await CodeContest.findByIdAndDelete(problemId);
+        if (!deletedProblem) {
+            return res.status(404).json({ success: false, message: "Problem not found." });
+        }
+        // Delete all submissions related to the problem
+        await CodeContestSubmission.deleteMany({ problemId });
+        await ContestCheat.deleteMany({problemId})
+        console.log(`Contest ${problemId} and related submissions deleted successfully.`);
+        
+        return res.status(200).json({ success: true, message: "Contest and related submissions deleted successfully." });
+    } catch (error) {
+        console.error("Error in Delete Contest: ", error);
+
+        next(error);
+    }
+}
+
+// ----------------
+// POST TO STUDENT IS CHEATED IN CONTEST
+// -------------------
+
+const postContestCheat = async (req, res, next) => {
+    const { user, problemId } = req.body;
+
+    try {
+        // Validate required fields
+        if (!user || !problemId) {
+            return res.status(400).json({ message: "Missing required data." });
+        }
+        if (!mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
+            return res.status(400).json({ message: "Problem ID is required" })
+        }
+
+        // Check if a record for this user and paperKey already exists
+        let cheatRecord = await ContestCheat.findOne({ user, problemId });
+
+        if (cheatRecord) {
+            // If record exists, check if `isWarning` is true
+            if (cheatRecord.isWarning) {
+                // If `isWarning` is true, update `isCheat` to true
+                cheatRecord.isCheat = true;
+                await cheatRecord.save();
+                return res
+                    .status(200)
+                    .json({ message: "Cheat status updated successfully." });
+            } else {
+                // If `isWarning` is false, set `isWarning` to true
+                cheatRecord.isWarning = true;
+                await cheatRecord.save();
+                return res
+                    .status(200)
+                    .json({ message: "Warning status set successfully." });
+            }
+        } else {
+            // If no record exists, create a new record with `isWarning` true
+            const newCheatRecord = new ContestCheat({
+                user,
+                problemId,
+                isWarning: true, // Setting `isWarning` to true on creation
+            });
+
+            await newCheatRecord.save();
+            return res
+                .status(201)
+                .json({ message: "Cheat status recorded successfully." });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+// ----------------
+// GET CONTEST CHEAT STATUS BY USER AND PROBLEMID
+// -------------------
+
+const getContestCheatStatus = async (req, res, next) => {
+    const { user, problemId } = req.params;
+
+    try {
+        // Validate required parameters
+        if (!user || !problemId) {
+            return res.status(400).json({ message: "Missing required parameters." });
+        }
+        if (!mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
+            return res.status(400).json({ message: "problemId  is required" })
+        }
+
+        // Find the cheat record by user and paperKey
+        const cheatRecord = await ContestCheat.findOne({ user, problemId });
+
+        if (cheatRecord) {
+            // Return the cheat status if the record exists
+            return res.status(200).json({
+                message: "Cheat status found.",
+                isCheat: cheatRecord.isCheat,
+            });
+        } else {
+            // If no record is found, indicate that no cheating is recorded
+            return res
+                .status(404)
+                .json({ message: "No cheat record found for this user and contest." });
+        }
+    } catch (error) {
+        next(error);
+    }
+};
+
+
 
 
 module.exports = { 
@@ -409,4 +555,8 @@ module.exports = {
     getContestById,
     submitContestSubmission,
     getAllContestSubmissionByUserByProblem,
+    deleteCodingContestById,
+    getTop2Contests,
+    postContestCheat,
+    getContestCheatStatus,
 };

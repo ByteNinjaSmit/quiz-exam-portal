@@ -42,6 +42,9 @@ import UpdateProfile from "./pages/client/Edit-Profile";
 import GlobalLeaderboardOverview from "./pages/client/Global-Leaderboard";
 import CodeProblemDashboard from "./pages/admin/Code-Exam-Overview";
 import CodingProblemPlatform from "./pages/client/Solve-Code";
+import CodingContestEditor from "./pages/client/Code-Contest";
+import CodeContestDashboard from "./pages/admin/Coding-Contest-Overview";
+import CodingContestForm from "./pages/admin/Create-Contest";
 
 
 
@@ -84,6 +87,7 @@ const App = () => {
               <Route exact path="results" element={<UserResults />} />
               <Route exact path="editor" element={<CodingPlatform />} />
               <Route exact path="problem-solving/:id" element={<CodingProblemPlatform />} />
+              <Route exact path="coding-contest/:id" element={<CodingContestEditor />} />
               <Route exact path="result/:userid/:paperkey" element={<QuestionPaperResult />} />
             </Route>
 
@@ -93,12 +97,14 @@ const App = () => {
               <Route exact path="dashboard" element={<AdminDashboard />} />
               <Route exact path="dashboard/exam" element={<ExamDashboard />} />
               <Route exact path="dashboard/code" element={<CodeProblemDashboard />} />
+              <Route exact path="dashboard/contest" element={<CodeContestDashboard />} />
               <Route exact path="user-management" element={<UserManagement />} />
               <Route exact path="result-management" element={<ResultOverview />} />
               <Route exact path="new-user" element={<CreateNewUser />} />
               <Route exact path="edit-user/:userId" element={<EditUser />} />
               <Route exact path="create-exam" element={<CreateExam />} />
               <Route exact path="create-problem" element={<CodingProblemForm />} />
+              <Route exact path="create-contest" element={<CodingContestForm />} />
               <Route exact path="edit-exam/question_paper/:examId/:title/:paperkey" element={<EditExam />} />
               <Route exact path="view-exam/question_paper/:examId/:title/:paperkey" element={<ViewQuestionPaper />} />
               <Route exact path="view-result/question_paper/:paperkey/:title" element={<StudentResultsPage />} />

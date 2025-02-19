@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // import Link from "next/link"; // Import the Link component for navigation
-import { FaHome, FaUsers, FaClipboardList, FaChartBar, FaTrophy, FaCog, FaQuestionCircle, FaTimes,FaLaptopCode  } from "react-icons/fa";
+import { FaHome, FaUsers, FaClipboardList, FaChartBar, FaTrophy, FaCog, FaQuestionCircle, FaTimes,FaLaptopCode ,FaCode } from "react-icons/fa";
 
 // import { useParams, useRouter } from "next/navigation";
 // import { useSession } from "@/app/store/session";
@@ -34,10 +34,16 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ sidebarOpen, toggleSidebar 
             to:`/admin/dashboard/exam`,
         },
         {
-            icon: <FaLaptopCode  className="w-5 h-5" />,
+            icon: <FaCode  className="w-5 h-5" />,
             text: "Code Management",
-            description: "Create and schedule exams",
+            description: "Create and view Coding Problem",
             to:`/admin/dashboard/code`,
+        },
+        {
+            icon: <FaLaptopCode  className="w-5 h-5" />,
+            text: "Contest Management",
+            description: "Create and schedule Coding Contest",
+            to:`/admin/dashboard/contest`,
         },
         {
             icon: <FaChartBar className="w-5 h-5" />,

@@ -520,6 +520,7 @@ const ExamInterface = () => {
       document.removeEventListener("keydown", blockAllKeys);
     };
   }, []);
+  
   // Force Fullscreen on Load
   useEffect(() => {
     const enterFullScreen = () => {
@@ -536,7 +537,7 @@ const ExamInterface = () => {
     const checkFullScreen = () => {
       if (!document.fullscreenElement) {
         setShowWarning(true);
-        // enterFullScreen(); // Re-enter fullscreen if exited
+        enterFullScreen(); // Re-enter fullscreen if exited
       }
     };
 

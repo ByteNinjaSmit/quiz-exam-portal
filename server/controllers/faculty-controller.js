@@ -7,6 +7,8 @@ const QuestionPaper = require("../database/models/question-paper-model");
 const Result = require("../database/models/result-model");
 const Cheat = require("../database/models/cheat-model");
 const CodeSubmission = require("../database/models/code-submission-model");
+const ContestCheat = require("../database/models/code-cheat-model");
+const CodeContestSubmission = require("../database/models/codeContest-submission-model");
 
 // ---------------------------
 // GET ALL User
@@ -442,6 +444,8 @@ const deleteUser = async (req, res, next) => {
             Result.deleteMany({ user: userData._id })
         ]);
         await CodeSubmission.deleteMany({userId: userId});
+        await ContestCheat.deleteMany({user:userId})
+        await CodeContestSubmission.deleteMany({userId:userId});
         // Check if any related data was deleted
         let relatedDataMessage = "User and related data deleted successfully";
 

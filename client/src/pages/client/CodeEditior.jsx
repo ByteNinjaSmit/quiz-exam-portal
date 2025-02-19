@@ -211,7 +211,7 @@ const CodingPlatform = () => {
     <div className="min-h-screen bg-[#FAFAFB]">
       <div className="flex flex-col lg:flex-row overflow-y-auto">
         {/* Left Panel */}
-        <div className={`${isDescriptionVisible ? "block" : "hidden"} lg:block lg:w-2/5 bg-card p-6 border-r border-[#E0E0E0]`}>
+        <div className={`${isDescriptionVisible ? "block" : "hidden"} md:block md:w-2/5 bg-card p-6 border-r border-[#E0E0E0]`}>
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-[28px] font-semibold text-[#3A0CA3]">{problemData.title}</h1>
             <button className="p-2 hover:bg-[#F0F1F3] rounded-sm">
@@ -272,7 +272,7 @@ const CodingPlatform = () => {
         </div>
 
         {/* Right Panel */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col md:w-[50%]">
           <div className="p-4 border-b border-[#E0E0E0]">
             <div className="flex items-center gap-4 mb-4">
               <select
@@ -349,7 +349,7 @@ const CodingPlatform = () => {
                 autocompletion: true,
                 highlightActiveLine: true,
               }}
-              className="border border-[#E0E0E0] rounded-sm text-sm"
+              className="border border-[#E0E0E0] rounded-sm text-sm !overflow-x-auto !!whitespace-nowrap"
             />
 
             <div className="flex gap-2 mt-4">

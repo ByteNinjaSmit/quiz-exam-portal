@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const codeContestSchema = new mongoose.Schema({
+    name:{
+        type:String,
+        required:true,
+    },
     title: {
         type: String,
         required: true,

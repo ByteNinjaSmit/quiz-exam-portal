@@ -9,8 +9,8 @@ import { FaBookmark, FaCode, FaPlay, FaDownload, FaTimes, FaPlus, FaLandmark, Fa
 import { FiChevronDown, FiChevronUp } from "react-icons/fi"; // Icons for expand/collapse
 import {
     MdInbox,
-  } from "react-icons/md";
-import { BiReset } from "react-icons/bi";
+} from "react-icons/md";
+import { BiReset, BiTimer } from "react-icons/bi";
 import axios from 'axios';
 import { useAuth } from "../../store/auth";
 
@@ -24,8 +24,9 @@ import { oneDark } from '@codemirror/theme-one-dark';
 
 // Monaco Editor
 import MonacoEditor from '@monaco-editor/react';
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { IoWarningOutline } from "react-icons/io5";
 
 const boilerplate = {
     python: `# Python boilerplate
@@ -55,9 +56,11 @@ public class code {
 console.log("Hello, JavaScript!");
 `,
 };
-const CodingProblemPlatform = () => {
+const CodingContestEditor = () => {
     const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
     const params = useParams();
+    const navigate = useNavigate();
+
     const [problemModel, setProblemModel] = useState(true);
     const [submissionModel, setSubmissionModel] = useState(false);
     const [submissionData, setSubmissionData] = useState([]);
@@ -70,6 +73,13 @@ const CodingProblemPlatform = () => {
     const [output, setOutput] = useState(null);
     const [problem, setProblem] = useState(null);
     const [getLoading, setGetLoading] = useState(true);
+    const [isExamEnded, setIsExamEnded] = useState(false); // Track if the exam has ended
+    const [remainingTime, setRemainingTime] = useState(0);
+    const [isStarting, setIsStarting] = useState(true);
+    const [isCheated, setIsCheated] = useState(false);
+    const [isFullScreen, setIsFullScreen] = useState(true);
+    const [showWarning, setShowWarning] = useState(false);
+
     const languages = [
         { id: "python", name: "Python", icon: "🐍" },
         { id: "cpp", name: "C++", icon: "⚡" },
@@ -123,7 +133,7 @@ const CodingProblemPlatform = () => {
     const getProblem = async () => {
         setGetLoading(true);
         try {
-            const response = await axios.get(`${API}/api/problem/get-problem/${params.id}`, {
+            const response = await axios.get(`${API}/api/problem/get-contest/${params.id}`, {
                 headers: {
                     'Authorization': authorizationToken,
                 },
@@ -147,7 +157,7 @@ const CodingProblemPlatform = () => {
     }
     const getSubmissions = async () => {
         try {
-            const response = await axios.get(`${API}/api/problem/get-submission/${params.id}/${user._id}`, {
+            const response = await axios.get(`${API}/api/problem/get-contest-submission/${params.id}/${user._id}`, {
                 headers: {
                     'Authorization': authorizationToken,
                 },
@@ -182,7 +192,7 @@ const CodingProblemPlatform = () => {
         let accuracyPass = 0;
         let avgTime = 0;
         let isSuccessfullyRun = false;
-
+        let score = 0;
         try {
             const startSubmissionTime = performance.now(); // Start time of full submission
 
@@ -228,6 +238,7 @@ const CodingProblemPlatform = () => {
                     accuracyPass = ((passedCount / totalTestCases) * 100).toFixed(2);
                     avgTime = (totalExecutionTime / (i + 1)).toFixed(2);
                     isSuccessfullyRun = true;
+                    score = problem.score;
                     return;
                 }
 
@@ -248,7 +259,7 @@ const CodingProblemPlatform = () => {
             // If all test cases passed
             setTestCasesPassedNumber(passedCount)
             finalOutput = `All ${passedCount} test cases passed successfully.`;
-
+            score = problem.score;
             setOutput(finalOutput);
             setIsExecuted(true);
             setErrorMessage(null);
@@ -303,16 +314,17 @@ const CodingProblemPlatform = () => {
             setOutput(finalOutput);
         } finally {
             setIsLoading(false);
+            await codeSubmission(finalOutput, passedCount, accuracyPass, avgTime, isSuccessfullyRun, score);
             setIsExecutionStart(false);
-            await codeSubmission(finalOutput, passedCount, accuracyPass, avgTime, isSuccessfullyRun);
         }
     }
     // console.log(output);
-    const codeSubmission = async (output, passedCount, accuracyPass, avgTime, isSuccessfullyRun) => {
+    const codeSubmission = async (output, passedCount, accuracyPass, avgTime, isSuccessfullyRun, score) => {
         try {
-            const response = await axios.post(`${API}/api/problem/submit-problem`,
+            const response = await axios.post(`${API}/api/problem/submit-contest`,
                 {
                     problemId: problem._id,
+                    score: score,
                     userId: user._id,
                     code: code,
                     output: output,
@@ -333,9 +345,51 @@ const CodingProblemPlatform = () => {
             toast.success(response.data.message);
             getSubmissions();
         } catch (error) {
+            toast.error(error.response.data.message)
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        if (!problem?.startTime || !problem?.endTime) return;
+
+        const now = new Date();
+        const examStartTime = new Date(problem.startTime);
+        const examEndTime = new Date(problem.endTime);
+
+        if (now < examStartTime) {
+            setIsStarting(true);  // Exam hasn't started
+            setIsExamEnded(false);
+            setRemainingTime(0);  // No need to count yet
+        } else if (now > examEndTime) {
+            setIsStarting(false);
+            setIsExamEnded(true); // Exam is over
+            setRemainingTime(0);
+        } else {
+            setIsStarting(false);
+            setIsExamEnded(false);
+            setRemainingTime(Math.floor((examEndTime - now) / 1000)); // Convert milliseconds to seconds
+        }
+    }, [problem?.startTime, problem?.endTime]);
+
+
+    // Countdown for remaining time
+    useEffect(() => {
+        if (!isExamEnded && remainingTime > 0) {
+            const countdown = setInterval(() => {
+                setRemainingTime((prevTime) => {
+                    if (prevTime <= 1) {
+                        clearInterval(countdown);
+                        setIsExamEnded(true); // Mark as ended when time is up
+                        return 0;
+                    }
+                    return prevTime - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(countdown);
+        }
+    }, [isExamEnded, remainingTime]);
 
     const handleRunCode = async (e) => {
         e.preventDefault();
@@ -426,6 +480,273 @@ const CodingProblemPlatform = () => {
             setIsExecutionStart(false);
         }
     };
+
+    // Handle CheatFunction
+    const handleCheatFunction = async (e) => {
+        e.preventDefault();
+
+        const cheatData = {
+            user: user?._id, // Replace with the actual user ID from your application state
+            problemId: problem?._id, // Replace with the actual paper key from your application state
+        };
+
+        try {
+            const response = await axios.post(
+                `${API}/api/problem/set/cheat`, // Endpoint URL
+                cheatData,
+                {
+                    headers: {
+                        Authorization: authorizationToken, // Replace with the actual token
+                        "Content-Type": "application/json",
+                    },
+                    withCredentials: true, // Ensures cookies are sent with the request (if needed)
+                    credentials: "include",
+                }
+            );
+
+            // Handle success response
+            if (response.status === 200 || response.status === 201) {
+                GetIsCheated()
+            } else {
+                toast.error(response.data.message); // Display error message if not 200/201
+            }
+
+        } catch (error) {
+            // Handle errors
+            if (error.response) {
+                toast.error(error.response.data.message || "An error occurred while submitting.");
+            } else if (error.request) {
+                toast.error("No response received from the server.");
+            } else {
+                toast.error("An error occurred while setting up the request.");
+            }
+        }
+    };
+    const GetIsCheated = async () => {
+        try {
+            // Assuming `user._id` and `paperKey` are available from your app state or context
+            const userId = user._id;
+            const problemId = problem?._id;
+
+            // Make GET request to check cheat status
+            const response = await axios.get(
+                `${API}/api/problem/cheat-status/${userId}/${problemId}`,
+                {
+                    headers: {
+                        Authorization: authorizationToken, // Include the auth token
+                    },
+                    withCredentials: true, // Ensures cookies are sent with the request (if needed)
+                    credentials: "include",
+
+                }
+            );
+
+            // Handle success response
+            if (response.status === 200) {
+                const { isCheat } = response.data;
+
+                // If isCheat is true, update state and navigate to dashboard
+                if (isCheat) {
+                    setIsCheated(true);
+                    toast.warning("You Cheated Exam Go OUT");
+                    navigate("/user/dashboard"); // Navigate to dashboard
+                } else {
+                    setIsCheated(false); // Set false if not cheated
+                }
+            } else {
+                // Handle non-200 responses
+                console.log(response.data.message);
+            }
+        } catch (error) {
+            console.error(`Error occurred while getting cheat status: ${error}`);
+            // Handle error: You can show a toast or any other user feedback
+        }
+    };
+    useEffect(() => {
+        GetIsCheated();
+    }, []);
+
+
+    // console.log(testCases);
+
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const secs = (seconds % 60).toFixed(0);
+        return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
+    };
+
+    // Function to format the date
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        return date.toLocaleDateString("en-US", options);
+    };
+
+    // Function to format the time
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const options = { hour: "2-digit", minute: "2-digit", hour12: true };
+        return date.toLocaleTimeString("en-US", options);
+    };
+
+    useEffect(() => {
+        if (isExamEnded) {
+            setTimeout(() => {
+                navigate("/user/dashboard");
+            }, 2000); // 2 seconds delay
+        }
+    }, [isExamEnded, navigate]);
+
+    // Anti-Cheat
+    // Detect Tab Switching
+    useEffect(() => {
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                setShowWarning(true);
+            }
+        };
+
+        document.addEventListener("visibilitychange", handleVisibilityChange);
+        return () => {
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+        };
+    }, []);
+
+    // Block Right-click, Inspect Element, and Copying
+    useEffect(() => {
+        const disableRightClick = (event) => event.preventDefault();
+        const disableDevTools = (event) => {
+            if (
+                event.key === "F12" ||
+                (event.ctrlKey && event.shiftKey && event.key === "I") || // Ctrl + Shift + I
+                (event.ctrlKey && event.key === "u") // Ctrl + U (View Source)
+            ) {
+                event.preventDefault();
+                setShowWarning(true);
+            }
+        };
+
+        document.addEventListener("contextmenu", disableRightClick);
+        document.addEventListener("keydown", disableDevTools);
+
+        return () => {
+            document.removeEventListener("contextmenu", disableRightClick);
+            document.removeEventListener("keydown", disableDevTools);
+        };
+    }, []);
+    // Disable Clipboard & Input Pasting
+    useEffect(() => {
+        const disablePaste = (event) => {
+            event.preventDefault();
+            setShowWarning(true);
+        };
+
+        document.addEventListener("paste", disablePaste);
+        return () => {
+            document.removeEventListener("paste", disablePaste);
+        };
+    }, []);
+
+    // Force Fullscreen on Load
+    useEffect(() => {
+        const enterFullScreen = () => {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch((err) => {
+                    console.error("Fullscreen request failed", err);
+                });
+            }
+        };
+
+        enterFullScreen(); // Trigger fullscreen on component mount
+
+        // Detect Fullscreen Exit & Force Re-entry
+        const checkFullScreen = () => {
+            if (!document.fullscreenElement) {
+                setShowWarning(true);
+                enterFullScreen(); // Re-enter fullscreen if exited
+            }
+        };
+
+        document.addEventListener("fullscreenchange", checkFullScreen);
+        return () => {
+            document.removeEventListener("fullscreenchange", checkFullScreen);
+        };
+    }, []);
+
+    // Handle Fullscreen Toggle
+    const toggleFullScreen = () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen();
+            setIsFullScreen(true);
+        } else {
+            document.exitFullscreen();
+            setIsFullScreen(false);
+        }
+    };
+    // Detect Browser Back/Forward Navigation
+    useEffect(() => {
+        const preventBackNavigation = () => {
+            setShowWarning(true);
+            window.history.pushState(null, "", window.location.href);
+        };
+
+        window.history.pushState(null, "", window.location.href); // Prevent navigation
+        window.addEventListener("popstate", preventBackNavigation);
+
+        return () => {
+            window.removeEventListener("popstate", preventBackNavigation);
+        };
+    }, []);
+
+    //   Detect Alt+Tab & Win+Tab Attempts
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            // Detect Alt+Tab
+            if (event.altKey && event.key === "Tab") {
+                event.preventDefault(); // Prevent default tab switching behavior
+                setShowWarning(true); // Show warning
+            }
+
+            // Detect Win+Tab
+            if (event.metaKey && event.key === "Tab") {
+                event.preventDefault();
+                setShowWarning(true);
+            }
+
+            // Detect Windows key (metaKey) alone
+            if (event.metaKey) {
+                event.preventDefault();
+                setShowWarning(true);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
+    //   Detecting Window Blur (User Switching Tabs/Apps)
+
+    useEffect(() => {
+        const handleBlur = () => {
+            setShowWarning(true); // Show warning when the user switches windows
+        };
+
+        const handleFocus = () => {
+            setShowWarning(false); // Hide warning when they return
+        };
+
+        window.addEventListener("blur", handleBlur);
+        window.addEventListener("focus", handleFocus);
+
+        return () => {
+            window.removeEventListener("blur", handleBlur);
+            window.removeEventListener("focus", handleFocus);
+        };
+    }, []);
+
+
     if (getLoading) {
         return (
             <div className="loading-container">
@@ -435,14 +756,60 @@ const CodingProblemPlatform = () => {
         )
     }
 
-    // console.log(testCases);
+    
 
-    const formatDate = (isoString) => {
-        const date = new Date(isoString);
-        return date.toLocaleString(); // Converts to local time format
-      };
+    if (isStarting) {
+        return (
+            <p>
+                Contest is sheduled at{" "}
+                {formatDate(problem?.startTime) && formatDateTime(problem?.startTime)}
+                ...
+            </p>
+        );
+    }
+
+    if (isExamEnded) {
+        return (
+            <>
+                <p>Contest is ended</p>
+                <p>You will automatic redirect to Dashboard...in 2 Seconds</p>
+            </>
+        );
+    }
     return (
         <div className="min-h-screen bg-[#FAFAFB]">
+            {showWarning && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white p-8 rounded-lg shadow-xl max-w-md">
+                        <div className="flex items-center justify-center text-red-500 mb-4">
+                            <IoWarningOutline size={48} />
+                        </div>
+                        <h3 className="text-xl font-bold text-center mb-4">
+                            Cheating is Detected!
+                        </h3>
+                        <p className="text-gray-600 text-center mb-6">
+                            Please refrain from switching tabs during the exam. This incident
+                            has been recorded.
+                        </p>
+                        <button
+                            onClick={(e) => {
+                                setShowWarning(false);
+                                console.log("exam cheated");
+                                handleCheatFunction(e); // this is function
+                            }}
+                            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
+                        >
+                            Acknowledge
+                        </button>
+                    </div>
+                </div>
+            )}
+            <div className="flex items-center justify-center space-x-2 text-indigo-600">
+                <BiTimer className="text-2xl" />
+                <span className="text-xl font-semibold">
+                    Time Left: {formatTime(remainingTime)}s
+                </span>
+            </div>
             <div className="flex flex-col lg:flex-row overflow-y-auto">
                 {/* Left Panel */}
                 <div className={`${isDescriptionVisible ? "block" : "hidden"} lg:block lg:w-2/5 bg-card p-6 border-r border-[#E0E0E0]`}>
@@ -453,7 +820,7 @@ const CodingProblemPlatform = () => {
                             onClick={() => {
                                 setProblemModel(true);
                                 setSubmissionModel(false);
-                                
+
                             }}
                         >
                             Problem
@@ -574,9 +941,9 @@ const CodingProblemPlatform = () => {
                                 ))
                             ) : (
                                 <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-                                <MdInbox className="text-6xl text-muted-foreground mb-4" />
-                                <p className="text-xl text-muted-foreground">No Submission found</p>
-                              </div>
+                                    <MdInbox className="text-6xl text-muted-foreground mb-4" />
+                                    <p className="text-xl text-muted-foreground">No Submission found</p>
+                                </div>
                             )}
                         </>
                     )}
@@ -764,4 +1131,4 @@ const CodingProblemPlatform = () => {
     );
 };
 
-export default CodingProblemPlatform;
+export default CodingContestEditor;
