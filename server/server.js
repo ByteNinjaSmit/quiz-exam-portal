@@ -77,8 +77,8 @@ const io = new Server(server, {
         methods: ["GET", "POST", "DELETE", "PATCH", "HEAD", "PUT"],
         credentials: true,
     },
-    pingInterval: 25000,
-    pingTimeout: 60000,
+    pingInterval: 10000,
+    pingTimeout: 30000,
     allowEIO3: true, // backward compatibility
 });
 const PORT = process.env.PORT || 5000;
@@ -99,8 +99,9 @@ app.get('/', (req, res) => {
 const rateLimiter = new RateLimiterRedis({
     storeClient: redisClient,
     keyPrefix: "middleware",
-    points: 100,
-    duration: 60,
+    points: 500,
+    duration: 5,
+    blockDuration:5,
 });
 
 app.use((req, res, next) => {
@@ -117,12 +118,11 @@ app.use((req, res, next) => {
 
 //Ip based rate limiting for sensitive endpoints
 const sensitiveEndpointsLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 10,
+    windowMs: 10* 1000,
+    max: 500,
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res) => {
-
         logger.warn(`Sensitive endpoint rate limit exceeded for IP: ${req.ip}`);
         res.status(429).json({ success: false, message: "Too many requests" });
     },

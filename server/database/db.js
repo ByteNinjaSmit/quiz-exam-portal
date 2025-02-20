@@ -19,8 +19,9 @@ const connectToDatabase = async () => {
         cached.promise = mongoose.connect(URI, {
             dbName: 'Quiz',
             bufferCommands: false,
-            // useNewUrlParser: true,
-            // useUnifiedTopology: true,
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            maxPoolSize:100,
         }).then((mongoose) => mongoose.connection)
           .catch((error) => {
             console.error("Failed to connect to MongoDB:", error);
