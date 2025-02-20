@@ -49,6 +49,7 @@ const server = http.createServer(app);
 app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
 }));
+app.set('trust proxy', 1); // Trust first proxy (e.g., Nginx, Cloudflare)
 
 
 const redisClient = new Redis(process.env.REDIS_URL);
@@ -122,6 +123,7 @@ const sensitiveEndpointsLimiter = rateLimit({
     max: 500,
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: (req) => req.ip, // ✅ Use IP directly
     handler: (req, res) => {
         logger.warn(`Sensitive endpoint rate limit exceeded for IP: ${req.ip}`);
         res.status(429).json({ success: false, message: "Too many requests" });

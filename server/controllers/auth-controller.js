@@ -286,6 +286,7 @@ const userLogin = async (req, res, next) => {
 const getCurrentUser = async (req, res) => {
     // console.log("get current user hit");
     try {
+        
         const jwtToken = req.token; // Retrieve token from cookies
         const token = jwtToken.replace("Bearer", "").trim();
         // if(token){
