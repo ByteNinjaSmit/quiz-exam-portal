@@ -232,7 +232,7 @@ const facultyLogin = async (req, res, next) => {
                 userId: userExist._id.toString(),
             });
         } else {
-            return res.status(401).json({ message: "Invalid Email Or Password" });
+            return res.status(401).json({ message: "Invalid Username Or Password" });
         }
     } catch (error) {
         next(error);
@@ -274,7 +274,7 @@ const userLogin = async (req, res, next) => {
                 userId: userExist._id.toString(),
             });
         } else {
-            return res.status(401).json({ message: "Invalid Email Or Password" });
+            return res.status(401).json({ message: "Invalid Username Or Password" });
         }
     } catch (error) {
         next(error);
