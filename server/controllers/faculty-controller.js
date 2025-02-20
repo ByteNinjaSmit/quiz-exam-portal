@@ -152,12 +152,19 @@ const getPaperDetails = async (req, res) => {
             if (!userData[userId]) {
                 userData[userId] = {
                     totalPoints: 0,
+                    correctAnswers: 0,
                     attemptedQuestions: 0,
                     userDetails: null // Placeholder for user details
                 };
             }
             userData[userId].totalPoints += result.points;
             userData[userId].attemptedQuestions += 1;
+            // If result.point >0 then increase by 1 correct answer
+
+            // Increase correctAnswers only if points > 0
+            if (result.points > 0) {
+                userData[userId].correctAnswers += 1;
+            }
         });
 
         // Step 4: Fetch user details for all unique users
@@ -178,7 +185,8 @@ const getPaperDetails = async (req, res) => {
                 userId,
                 totalPoints: userData[userId].totalPoints,
                 attemptedQuestions: userData[userId].attemptedQuestions,
-                userDetails: userData[userId].userDetails
+                userDetails: userData[userId].userDetails,
+                correctAnswers:userData[userId].correctAnswers,
             }))
             .sort((a, b) => b.totalPoints - a.totalPoints);
 
@@ -331,11 +339,15 @@ const exportPaperDetails = async (req, res, next) => {
                 userData[userId] = {
                     totalPoints: 0,
                     attemptedQuestions: 0,
-                    userDetails: null // Placeholder for user details
+                    userDetails: null ,// Placeholder for user details
+                    correctAnswers: 0,
                 };
             }
             userData[userId].totalPoints += result.points;
             userData[userId].attemptedQuestions += 1;
+            if (result.points > 0) {
+                userData[userId].correctAnswers += 1;
+            }
         });
 
         // Step 4: Fetch user details for all unique users
@@ -356,6 +368,7 @@ const exportPaperDetails = async (req, res, next) => {
                 userId,
                 totalPoints: userData[userId].totalPoints,
                 attemptedQuestions: userData[userId].attemptedQuestions,
+                correctAnswers:userData[userId].correctAnswers,
                 name: userData[userId].userDetails?.name || 'N/A',
                 username: userData[userId].userDetails?.username || 'N/A',
                 classy: userData[userId].userDetails?.classy || 'N/A',
@@ -371,7 +384,8 @@ const exportPaperDetails = async (req, res, next) => {
             { label: 'Class', value: 'classy' },
             { label: 'Division', value: 'division' },
             { label: 'Total Points', value: 'totalPoints' },
-            { label: 'Attempted Questions', value: 'attemptedQuestions' }
+            { label: 'Attempted Questions', value: 'attemptedQuestions' },
+            { label: 'Correct Questions', value: 'correctAnswers' }
         ];
 
         const csvHeader = `
@@ -443,9 +457,9 @@ const deleteUser = async (req, res, next) => {
             Cheat.deleteMany({ user: userData._id }),
             Result.deleteMany({ user: userData._id })
         ]);
-        await CodeSubmission.deleteMany({userId: userId});
-        await ContestCheat.deleteMany({user:userId})
-        await CodeContestSubmission.deleteMany({userId:userId});
+        await CodeSubmission.deleteMany({ userId: userId });
+        await ContestCheat.deleteMany({ user: userId })
+        await CodeContestSubmission.deleteMany({ userId: userId });
         // Check if any related data was deleted
         let relatedDataMessage = "User and related data deleted successfully";
 

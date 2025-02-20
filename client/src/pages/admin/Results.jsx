@@ -73,7 +73,7 @@ const StudentResultsPage = () => {
         // console.log(response);
         if (response.status === 200) {
           const data = response.data.data;
-          // console.log(data);
+          console.log(data);
           setResultData(data);
         }
       } catch (error) {
@@ -239,6 +239,11 @@ const StudentResultsPage = () => {
                     <MdAssignment className="mr-2" /> Attempted
                   </div>
                 </th>
+                <th className="p-4 text-left">
+                  <div className="flex items-center">
+                    <MdAssignment className="mr-2" /> Correct Questions
+                  </div>
+                </th>
                 <th className="p-4 text-left">Actions</th>
               </tr>
             </thead>
@@ -251,6 +256,7 @@ const StudentResultsPage = () => {
                     <td className="p-4">{student.userDetails.division}</td>
                     <td className="p-4">{student.totalPoints}</td>
                     <td className="p-4">{student.attemptedQuestions}</td>
+                    <td className="p-4">{student.correctAnswers}</td>
                     <td className="p-4">
                       <div className="flex gap-2">
                         <Link to={`/admin/result/${student.userDetails._id}/${params.paperkey}/${student.userDetails.name}`}>

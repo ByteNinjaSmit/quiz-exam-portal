@@ -26,7 +26,7 @@ const ExamDashboard = () => {
     const fetchExams = async () => {
         setIsLoading(true);
         try {
-            const response = await axios.get(`${API}/api/exam/all/exams`, {
+            const response = await axios.get(`${API}/api/exam/all/exams-admin`, {
                 headers: {
                     Authorization: authorizationToken,
                 },

@@ -45,6 +45,8 @@ import CodingProblemPlatform from "./pages/client/Solve-Code";
 import CodingContestEditor from "./pages/client/Code-Contest";
 import CodeContestDashboard from "./pages/admin/Coding-Contest-Overview";
 import CodingContestForm from "./pages/admin/Create-Contest";
+import QuizLeaderboardOverview from "./pages/client/Quiz-Leaderboard";
+import EditProfileFacultyAdmin from "./pages/admin/Edit-Profile";
 
 
 
@@ -78,10 +80,11 @@ const App = () => {
 
             {/* User Routes */}
             <Route exact path="/user" element={<UserLayout />} >
-
               <Route exact path="dashboard" element={<Dashboard />} />
+
               <Route exact path="exams" element={<ExamListPage />} />
               <Route exact path="global-leaderboard" element={<GlobalLeaderboardOverview />} />
+              <Route exact path="quiz-leaderboard/:paperKey" element={<QuizLeaderboardOverview />} />
               <Route exact path="edit-profile" element={<UpdateProfile />} />
               <Route exact path="paper/:title/:paperKey/:id" element={<ExamInterface />} />
               <Route exact path="results" element={<UserResults />} />
@@ -95,6 +98,7 @@ const App = () => {
             {/* Admin Routes */}
             <Route exact path="/admin" element={<AdminLayout />}>
               <Route exact path="dashboard" element={<AdminDashboard />} />
+              <Route exact path="edit-profile" element={<EditProfileFacultyAdmin />} />
               <Route exact path="dashboard/exam" element={<ExamDashboard />} />
               <Route exact path="dashboard/code" element={<CodeProblemDashboard />} />
               <Route exact path="dashboard/contest" element={<CodeContestDashboard />} />

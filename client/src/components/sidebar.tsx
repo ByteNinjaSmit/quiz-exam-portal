@@ -2,7 +2,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // import Link from "next/link"; // Import the Link component for navigation
-import { FaHome, FaUsers, FaClipboardList, FaChartBar, FaTrophy, FaCog, FaQuestionCircle, FaTimes,FaLaptopCode ,FaCode } from "react-icons/fa";
+import { FaHome, FaUsers, FaClipboardList, FaChartBar, FaTrophy, FaCog, FaQuestionCircle, FaTimes,FaLaptopCode ,FaCode, FaUser } from "react-icons/fa";
 
 // import { useParams, useRouter } from "next/navigation";
 // import { useSession } from "@/app/store/session";
@@ -20,6 +20,12 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ sidebarOpen, toggleSidebar 
             text: "Dashboard Overview",
             description: "Main dashboard view",
             to:`/admin/dashboard`,
+        },
+        {
+            icon: <FaUser  className="w-5 h-5" />,
+            text: "Edit Profile",
+            description: "Main dashboard view",
+            to:`/admin/edit-profile`,
         },
         {
             icon: <FaUsers className="w-5 h-5" />,

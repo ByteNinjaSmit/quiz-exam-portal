@@ -255,7 +255,7 @@ const ExamInterface = () => {
     if (!examData.isFastQuiz && currentQuestion) {
 
 
-      console.log("Answer submitted:", selectedOption);
+      // console.log("Answer submitted:", selectedOption);
       // Additional submission logic here (e.g., saving points or answer)
       if (!isOptionLocked && currentQuestion) {
         const isCorrect = currentQuestion.options.some(
@@ -267,13 +267,13 @@ const ExamInterface = () => {
           const defaultPoints = 1000; // default point for Mannual Quiz
           const pointsForCorrectAnswer =
             currentQuestion.maxPoint || defaultPoints;
-          console.log(`Answer is correct ${pointsForCorrectAnswer}`);
+          // console.log(`Answer is correct ${pointsForCorrectAnswer}`);
           final_point = pointsForCorrectAnswer;
         }
         if (!isCorrect) {
           const defaultPoints = 0; // default point for Mannual Quiz
           const pointsForIncorrectAnswer = defaultPoints;
-          console.log(`Answer is Incorrect ${pointsForIncorrectAnswer}`);
+          // console.log(`Answer is Incorrect ${pointsForIncorrectAnswer}`);
           final_point = pointsForIncorrectAnswer;
         }
 
@@ -371,7 +371,7 @@ const ExamInterface = () => {
         }
 
         // Log or save the points earned
-        console.log(`Points earned: ${earnedPoints}`);
+        // console.log(`Points earned: ${earnedPoints}`);
         // Lock options until timer reaches 0
 
         try {

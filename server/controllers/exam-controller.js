@@ -205,6 +205,36 @@ const getExams = async (req, res, next) => {
         res.status(500).json({ message: "Internal server error" });
     }
 };
+// ------------------------
+// GET Exams By Created
+// --------------------------
+const getExamsByCreated = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        const { isTeacher, isHod, isTnp, _id } = req.user;
+        let exams = [];
+
+        if ((isTeacher || isTnp) && !isHod) {
+            // Fetch exams created by the specific user
+            exams = await QuestionPaper.find({ createdBy: _id })
+                .select("-questions")
+                .sort({ createdAt: -1 });
+        } else if (isHod) {
+            // Fetch all exams (HOD has full access)
+            exams = await QuestionPaper.find()
+                .select("-questions")
+                .sort({ createdAt: -1 });
+        }
+
+        return res.status(200).json(exams);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 // ----------------
 // POST USER RESULT OF EACH QUESTION
@@ -779,7 +809,7 @@ const deleteExam = async (req, res, next) => {
         const deleteResults = await Result.deleteMany({ paperKey: deletedExam.paperKey });
 
         // Delete The Also Cheats
-        await Cheat.deleteMany({paperKey:deletedExam.paperKey});
+        await Cheat.deleteMany({ paperKey: deletedExam.paperKey });
 
 
         // Return a success response
@@ -871,6 +901,7 @@ module.exports = {
     handleSocketConnection,
     startExamQue,
     getExams,
+    getExamsByCreated,
     storeResult,
     postCheat,
     getCheatStatus,

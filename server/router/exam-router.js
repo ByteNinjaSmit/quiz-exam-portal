@@ -8,6 +8,7 @@ const multer = require('multer');
 const path = require('path');
 
 router.route("/all/exams").get(authMiddleware,examController.getExams);
+router.route("/all/exams-admin").get(authMiddleware,facultyMiddleware,examController.getExamsByCreated)
 router.route("/set/result").post(authMiddleware,examController.storeResult);
 //  to post is Cheated or not
 router.route("/set/cheat").post(authMiddleware,examController.postCheat);

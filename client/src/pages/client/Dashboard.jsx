@@ -140,6 +140,7 @@ const Dashboard = () => {
     const options = { hour: "2-digit", minute: "2-digit", hour12: true };
     return date.toLocaleTimeString("en-US", options);
   };
+  // console.log(results);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 via-purple-100 to-pink-100 p-4">
@@ -241,10 +242,18 @@ const Dashboard = () => {
                           Exam is scheduled
                         </p>
                       )}
-                      {isExamEnded && (
+                      {isExamEnded && (<>
                         <p className="text-red-600 font-medium mt-2">
                           Exam is ended
                         </p>
+                        {results?.some(r => r.paperKey === exam?.paperKey) && (
+                          <Link to={`/user/quiz-leaderboard/${exam?.paperKey}`}>
+                            <button className="mt-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300">
+                              See Your Rank
+                            </button>
+                          </Link>
+                        )}
+                      </>
                       )}
                       {isExamOngoing && (
                         <Link
