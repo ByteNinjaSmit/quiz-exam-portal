@@ -6,6 +6,8 @@ const CodeControllers = require("../controllers/code-controller");
 
 // Post Code
 router.route("/run-code").post(authMiddleware,CodeControllers.executeAndFetchResult);
+// router.route("/run-code").post(authMiddleware,CodeControllers.executeAndFetchResult);
+
 
 
 
