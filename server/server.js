@@ -78,8 +78,8 @@ const io = new Server(server, {
         methods: ["GET", "POST", "DELETE", "PATCH", "HEAD", "PUT"],
         credentials: true,
     },
-    pingInterval: 10000,
-    pingTimeout: 30000,
+    pingInterval: 5000,
+    pingTimeout: 20000,
     allowEIO3: true, // backward compatibility
 });
 const PORT = process.env.PORT || 5000;

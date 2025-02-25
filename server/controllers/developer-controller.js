@@ -65,7 +65,8 @@ const developerLogin = async (req, res, next) => {
         if (user) {
             // Generate token
             const token = await userExist.generateToken();
-
+            console.log("Developer is Logged In");
+            
             return res.status(200).json({
                 message: "Login Successful",
                 token,

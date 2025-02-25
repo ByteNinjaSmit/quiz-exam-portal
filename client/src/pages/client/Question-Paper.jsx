@@ -110,38 +110,55 @@ const ExamInterface = () => {
 
   // Socket Connection
   useEffect(() => {
-    socketRef.current = io(API);
-    socketRef.current.emit("loadExam", { title, paperKey }); // Join the socket room based on paper key
+    if (!title || !paperKey) return;
 
-    socketRef.current.on("question", (data) => {
-      if (!isExamEnded) {
-        // Prevent updating question data if exam has ended
-        setCurrentQuestion(data.question);
-        setQuestionIndex(data.questionIndex);
-        setRemainingTime(data.remainingTime);
-        setIsAnswerCorrect(null); // Reset answer state on new question
+    // Ensure socket initializes only once
+    if (!socketRef.current) {
+      socketRef.current = io(API, {
+        reconnection: true, // Auto-reconnect enabled
+        reconnectionAttempts: 10, // Max attempts
+        reconnectionDelay: 3000, // Delay between attempts
+        reconnectionDelayMax: 10000, // Max delay in ms
+      });
 
-        // Reset the option selection state for the new question
-        setIsSubmitActive(false);
-        setIsOptionLocked(false); // Unlock options for the new question
-        setSelectedOption(null); // Reset the selected option
-      }
-    });
+      socketRef.current.on("connect", () => {
+        console.log("Socket connected, requesting exam data...");
+        socketRef.current.emit("loadExam", { title, paperKey });
+      });
 
-    socketRef.current.on("examEnd", () => {
-      setIsExamEnded(true); // Set exam end state
-      setCurrentQuestion(null);
-      setQuestionIndex(null);
-      setRemainingTime(null); // Clear the current question
-    });
+      socketRef.current.on("question", (data) => {
+        if (!isExamEnded) {
+          setCurrentQuestion(data.question);
+          setQuestionIndex(data.questionIndex);
+          setRemainingTime(data.remainingTime);
+          setIsSubmitActive(false);
+          setIsOptionLocked(false);
+          setSelectedOption(null);
+        }
+      });
 
+      socketRef.current.on("examEnd", () => {
+        setIsExamEnded(true);
+        setCurrentQuestion(null);
+        setQuestionIndex(null);
+        setRemainingTime(null);
+      });
+
+      socketRef.current.on("disconnect", () => {
+        console.log("Socket disconnected, attempting to reconnect...");
+      });
+    }
+
+    // Cleanup function
     return () => {
-      socketRef.current.off("question");
-      socketRef.current.off("examEnd");
-      // socketRef.current.disconnect();
+      if (socketRef.current) {
+        socketRef.current.off("question");
+        socketRef.current.off("examEnd");
+        socketRef.current.disconnect();
+        socketRef.current = null; // Reset ref to avoid stale socket instance
+      }
     };
-  }, [isExamEnded, title, paperKey]);
-
+  }, [title, paperKey]); // ✅ Removed `isExamEnded` from dependencies
 
 
   // Main exam countdown timer
@@ -520,7 +537,7 @@ const ExamInterface = () => {
       document.removeEventListener("keydown", blockAllKeys);
     };
   }, []);
-  
+
   // Force Fullscreen on Load
   useEffect(() => {
     const enterFullScreen = () => {
@@ -575,7 +592,7 @@ const ExamInterface = () => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
       e.returnValue = ""; // Some browsers require this for confirmation
-      handleCheatFunction(e); 
+      handleCheatFunction(e);
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -595,8 +612,8 @@ const ExamInterface = () => {
   if (isLoading) {
     return (
       <>
-      <p>Loading exam...</p>
-      <p>You will automatic redirect to Dashboard...</p>
+        <p>Loading exam...</p>
+        <p>You will automatic redirect to Dashboard...</p>
       </>
     )
   }
@@ -683,7 +700,7 @@ const ExamInterface = () => {
             </h2>
             {/* <div className="p-8"> */}
             {/* <div className="p-2 bg-[#F7F8FA] rounded-sm border border-[#E0E0E0] flex justify-between items-start"> */}
-            <div className="text-xl text-gray-700 whitespace-pre font-mono font-semibold">
+            <div className="text-xl text-gray-700 whitespace-pre-wrap font-mono font-semibold">
               {currentQuestion?.questionText}
             </div>
             {/* </div> */}
