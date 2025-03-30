@@ -36,6 +36,8 @@ const EditExam = () => {
   const [examData, setExamData] = useState({
     title: "",
     classyear: "",
+    division:"",
+    batch:"",
     startTime: "",
     endTime: "",
     paperKey: "",
@@ -208,6 +210,8 @@ const EditExam = () => {
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classyear);
+      formData.append("division", examData.division);
+      formData.append("batch", examData.batch);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -271,6 +275,8 @@ const EditExam = () => {
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classyear);
+      formData.append("division", examData.division);
+      formData.append("batch", examData.batch);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -385,7 +391,43 @@ const EditExam = () => {
                 <option value="B.Tech">B.Tech</option>
               </select>
             </div>
-
+            <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                Division
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.division}
+                onChange={(e) =>
+                  setExamData({ ...examData, division: e.target.value })
+                }
+              >
+                <option value="">Select Division</option>
+                <option value="ALL">ALL</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                Batch
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.batch}
+                onChange={(e) =>
+                  setExamData({ ...examData, batch: e.target.value })
+                }
+              >
+                <option value="">Select Batch</option>
+                <option value="ALL">ALL</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select>
+            </div>
             <div>
               <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
                 <FaLock className="mr-2" />
@@ -420,7 +462,7 @@ const EditExam = () => {
               <input
                 type="datetime-local"
                 className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                value={examData.startTime}
+                value={examData.startTime  ? examData.startTime.slice(0,16) : ""}
                 onChange={(e) =>
                   setExamData({ ...examData, startTime: e.target.value })
                 }
@@ -435,7 +477,7 @@ const EditExam = () => {
               <input
                 type="datetime-local"
                 className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                value={examData.endTime}
+                value={examData.endTime  ? examData.endTime.slice(0,16) : ""}
                 onChange={(e) =>
                   setExamData({ ...examData, endTime: e.target.value })
                 }

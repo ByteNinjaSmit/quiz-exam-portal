@@ -392,6 +392,8 @@ const exportPaperDetails = async (req, res, next) => {
         Question Paper Details
         Title: ${questionPaper.title}
         Class: ${questionPaper.classyear}
+        Division: ${questionPaper.division}
+        Batch: ${questionPaper.batch}
         Start Time: ${questionPaper.startTime}
         End Time: ${questionPaper.endTime}
         Is Quiz: ${questionPaper.isQuiz}

@@ -8,18 +8,44 @@ const Result = require("../database/models/result-model");
 
 const getExam = async (req, res, next) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
         const { classyear } = req.params;
+        const { division, batch } = req.user;
         if (!classyear) {
             return res.status(400).json({ message: "Class year is required" });
+        }
+        if(!division){
+            return res.status(400).json({ message: "Division is required" });
+        }
+        if(!batch){
+            return res.status(400).json({ message: "Batch is required" });
         }
 
         // Fetch exams where classyear matches or is 'All', and isPublished is true
         const exams = await QuestionPaper.find({
-            $or: [{ classyear: classyear }, { classyear: "ALL" }],
-            isPublished: true, // Ensure that only published exams are fetched
+            isPublished: true, // Ensure only published exams
+            $or: [
+                // 1. Exact Match on all fields
+                { classyear, division, batch },
+                
+                // 2. Allow "ALL" for classyear only if division & batch match exactly
+                { classyear, division, batch: "ALL" },
+                { classyear, division: "ALL", batch },
+                
+                // 3. Allow "ALL" for division & batch separately (but not both together)
+                { classyear, division: "ALL", batch: "ALL" },
+                
+                // 4. Allow "ALL" for classyear only if division & batch match
+                { classyear: "ALL", division, batch },
+                
+                // 5. Fully generic match (last resort)
+                { classyear: "ALL", division: "ALL", batch: "ALL" },
+            ],
         })
-            .select("-questions") // Exclude questions from the result
-            .sort({ createdAt: -1 }); // Sort by creation date
+            .select("-questions") // Exclude questions from response
+            .sort({ createdAt: -1 }); // Sort by creation date (newest first)
 
         // Slice to get only the first two exams
         const slicedExams = exams.slice(0, 2);
@@ -36,30 +62,50 @@ const getExam = async (req, res, next) => {
 
 const getExams = async (req, res, next) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
         const { classyear } = req.params;
+        const { division, batch } = req.user;
         if (!classyear) {
             return res.status(400).json({ message: "Class year is required" });
         }
+        if(!division){
+            return res.status(400).json({ message: "Division is required" });
+        }
+        if(!batch){
+            return res.status(400).json({ message: "Batch is required" });
+        }
 
-        // Fetch exams where classyear matches or is 'All', and isPublished is true
+        // Query prioritization order: Exact match first, "ALL" only if needed
         const exams = await QuestionPaper.find({
-            $or: [{ classyear: classyear }, { classyear: "ALL" }],
-            isPublished: true, // Ensure that only published exams are fetched
+            isPublished: true, // Ensure only published exams
+            $or: [
+                // 1. Exact Match on all fields
+                { classyear, division, batch },
+                
+                // 2. Allow "ALL" for classyear only if division & batch match exactly
+                { classyear, division, batch: "ALL" },
+                { classyear, division: "ALL", batch },
+                
+                // 3. Allow "ALL" for division & batch separately (but not both together)
+                { classyear, division: "ALL", batch: "ALL" },
+                
+                // 4. Allow "ALL" for classyear only if division & batch match
+                { classyear: "ALL", division, batch },
+                
+                // 5. Fully generic match (last resort)
+                { classyear: "ALL", division: "ALL", batch: "ALL" },
+            ],
         })
-            .select("-questions") // Exclude questions from the result
-            .sort({ createdAt: -1 }); // Sort by creation date
+            .select("-questions") // Exclude questions from response
+            .sort({ createdAt: -1 }); // Sort by creation date (newest first)
 
-        // Slice to get only the first two exams
-        // const slicedExams = exams.slice(0, 2);
-
-        // if (exams.length === 0) {
-        //     return res.status(404).json({ message: "No published exams found for this class year" });
-        // }
-        return res.status(200).json({ exams: exams });
+        return res.status(200).json({ exams });
     } catch (error) {
         next(error);
     }
-}
+};
 
 // ---------------------
 // Edit Profile

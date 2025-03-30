@@ -42,11 +42,12 @@ import UpdateProfile from "./pages/client/Edit-Profile";
 import GlobalLeaderboardOverview from "./pages/client/Global-Leaderboard";
 import CodeProblemDashboard from "./pages/admin/Code-Exam-Overview";
 import CodingProblemPlatform from "./pages/client/Solve-Code";
-import CodingContestEditor from "./pages/client/Code-Contest";
+import CodingContestPlatform from "./pages/client/Code-Contest";
 import CodeContestDashboard from "./pages/admin/Coding-Contest-Overview";
 import CodingContestForm from "./pages/admin/Create-Contest";
 import QuizLeaderboardOverview from "./pages/client/Quiz-Leaderboard";
 import EditProfileFacultyAdmin from "./pages/admin/Edit-Profile";
+import ContestResult from "./pages/admin/Contest-Result";
 
 
 
@@ -54,11 +55,13 @@ import EditProfileFacultyAdmin from "./pages/admin/Edit-Profile";
 const App = () => {
   const location = useLocation();
   const isDeveloperRoute = location.pathname.startsWith("/developer");
+  const isQuestionPaperRoute = location.pathname.startsWith("/user/paper");
+  const isCodingContestRoute = location.pathname.startsWith("/user/coding-contest")
   return (
     <>
         <div className="app">
           {/* Navbar */}
-          {!isDeveloperRoute && <MainNavbar />}
+          {(!isDeveloperRoute && !isQuestionPaperRoute && !isCodingContestRoute) && <MainNavbar />}
 
           {/* Routes */}
           <Routes>
@@ -81,7 +84,6 @@ const App = () => {
             {/* User Routes */}
             <Route exact path="/user" element={<UserLayout />} >
               <Route exact path="dashboard" element={<Dashboard />} />
-
               <Route exact path="exams" element={<ExamListPage />} />
               <Route exact path="global-leaderboard" element={<GlobalLeaderboardOverview />} />
               <Route exact path="quiz-leaderboard/:paperKey" element={<QuizLeaderboardOverview />} />
@@ -90,7 +92,7 @@ const App = () => {
               <Route exact path="results" element={<UserResults />} />
               <Route exact path="editor" element={<CodingPlatform />} />
               <Route exact path="problem-solving/:id" element={<CodingProblemPlatform />} />
-              <Route exact path="coding-contest/:id" element={<CodingContestEditor />} />
+              <Route exact path="coding-contest/:id" element={<CodingContestPlatform />} />
               <Route exact path="result/:userid/:paperkey" element={<QuestionPaperResult />} />
             </Route>
 
@@ -112,6 +114,7 @@ const App = () => {
               <Route exact path="edit-exam/question_paper/:examId/:title/:paperkey" element={<EditExam />} />
               <Route exact path="view-exam/question_paper/:examId/:title/:paperkey" element={<ViewQuestionPaper />} />
               <Route exact path="view-result/question_paper/:paperkey/:title" element={<StudentResultsPage />} />
+              <Route exact path="view-result/contest/:id" element={<ContestResult />} />
               <Route exact path="result/:userId/:paperkey/:name" element={<QuestionPaperResultView />} />
               <Route exact path="leaderboard" element={<LeaderboardOverview />} />
               <Route exact path="results/:userId/:name" element={<SingleUserResults />} />
@@ -122,7 +125,7 @@ const App = () => {
           </Routes>
 
           {/* Footer */}
-          {!isDeveloperRoute && <Footer />}
+          {(!isDeveloperRoute && !isQuestionPaperRoute && !isCodingContestRoute)  && <Footer />}
         </div>
     </>
   )

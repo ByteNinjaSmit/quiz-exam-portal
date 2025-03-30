@@ -220,14 +220,14 @@ const QuestionPaperResult = () => {
           </div>
 
           <div className="hidden md:block">
-            <table className="w-full">
+            <table className="w-full border-collapse">
               <thead className="bg-[#F0F1F3]">
                 <tr>
-                  <th className="p-4 text-left">No.</th>
-                  <th className="p-4 text-left">Question</th>
-                  <th className="p-4 text-left">Your Answer</th>
-                  <th className="p-4 text-left">Result</th>
-                  <th className="p-4 text-left">Points</th>
+                  <th className="p-4 text-left w-12">No.</th>
+                  <th className="p-4 text-left w-2/5">Question</th>
+                  <th className="p-4 text-left w-1/4">Your Answer</th>
+                  <th className="p-4 text-left w-1/6">Result</th>
+                  <th className="p-4 text-left w-1/6">Points</th>
                 </tr>
               </thead>
               <tbody>
@@ -237,7 +237,7 @@ const QuestionPaperResult = () => {
                     className={index % 2 === 0 ? "bg-white" : "bg-[#F0F1F3]"}
                   >
                     <td className="p-4">{index + 1}</td>
-                    <td className="p-4 whitespace-pre text-sm">{question.question}</td>
+                    <td className="p-4 whitespace-pre-wrap text-sm">{question.question}</td>
                     <td className="p-4">{question.userAnswer}</td>
                     <td className="p-4">
                       <span
@@ -260,10 +260,14 @@ const QuestionPaperResult = () => {
                     </td>
                   </tr>
                 ))) : (
-                  <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-                    <MdInbox className="text-6xl text-muted-foreground mb-4" />
-                    <p className="text-xl text-muted-foreground">No result found</p>
-                  </div>
+                  <tr>
+                    <td colSpan="5" className="p-6 text-center">
+                      <div className="flex flex-col items-center justify-center">
+                        <MdInbox className="text-6xl text-gray-400 mb-4" />
+                        <p className="text-xl text-gray-500">No results found</p>
+                      </div>
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </table>

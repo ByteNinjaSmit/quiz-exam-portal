@@ -111,9 +111,9 @@ const getAdmins = async (req, res, next) => {
 const userRegister = async (req, res, next) => {
     try {
         // const reqBody = await request.json();
-        const { name, username, classy, division, rollNo, password } = req.body;
+        const { name, username, classy, division, rollNo, batch,password } = req.body;
         // Validate that all fields are provided
-        if (!username || !classy || !name || !division || !password || !rollNo) {
+        if (!username || !classy || !name || !division || !password || !rollNo ||!batch) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -130,6 +130,7 @@ const userRegister = async (req, res, next) => {
             classy,
             division,
             rollNo,
+            batch,
             password
         });
 

@@ -4,6 +4,7 @@ const CodeSubmission = require("../database/models/code-submission-model");
 const CodeContest = require("../database/models/code-contest-model");
 const CodeContestSubmission = require("../database/models/codeContest-submission-model");
 const ContestCheat = require("../database/models/code-cheat-model");
+const User = require("../database/models/user-model");
 
 // Controller to create a new coding problem
 const createProblem = async (req, res, next) => {
@@ -27,7 +28,7 @@ const createProblem = async (req, res, next) => {
         } = req.body;
 
         // Validate mandatory fields
-        if (!title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language ) {
+        if (!title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language) {
             return res.status(400).json({
                 message: "Title, difficulty, description, constraints, examples, and test cases are required fields."
             });
@@ -173,7 +174,7 @@ const getAllSubmissionByUserByProblem = async (req, res, next) => {
         }
 
         // Fetch submissions
-        const submissions = await CodeSubmission.find({ problemId, userId });
+        const submissions = await CodeSubmission.find({ problemId, userId }).sort({ createdAt: -1 });;
         // Send response
         res.status(200).json({ success: true, data: submissions });
     } catch (error) {
@@ -201,7 +202,7 @@ const deleteProblemById = async (req, res, next) => {
         // Delete all submissions related to the problem
         await CodeSubmission.deleteMany({ problemId });
         console.log(`Problem ${problemId} and related submissions deleted successfully.`);
-        
+
         return res.status(200).json({ success: true, message: "Problem and related submissions deleted successfully." });
     } catch (error) {
         console.error("Error in Delete Problem: ", error);
@@ -230,6 +231,8 @@ const createCodeContest = async (req, res, next) => {
             categories,
             testCases,
             classyear,
+            division,
+            batch,
             score,
             startTime,
             endTime,
@@ -238,7 +241,7 @@ const createCodeContest = async (req, res, next) => {
         } = req.body;
 
         // Validate mandatory fields
-        if (!name || !title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language || !classyear || !score || !startTime || !endTime || !createdBy) {
+        if (!name || !title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language || !classyear || !score || !startTime || !endTime || !createdBy ||!division ||!batch) {
             return res.status(400).json({
                 message: "Title, difficulty, description, constraints, examples, and test cases are required fields."
             });
@@ -278,6 +281,8 @@ const createCodeContest = async (req, res, next) => {
             category: categories,
             testCases,
             classyear,
+            division,
+            batch,
             score,
             startTime,
             endTime,
@@ -329,10 +334,34 @@ const getContests = async (req, res, next) => {
 
 const getTop2Contests = async (req, res, next) => {
     try {
-        const contest = await CodeContest.find()
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+        const { classy,division, batch } = req.user;
+        const classyear = classy;
+        const contest = await CodeContest.find({
+            $or: [
+                // 1. Exact Match on all fields
+                { classyear, division, batch },
+                
+                // 2. Allow "ALL" for classyear only if division & batch match exactly
+                { classyear, division, batch: "ALL" },
+                { classyear, division: "ALL", batch },
+                
+                // 3. Allow "ALL" for division & batch separately (but not both together)
+                { classyear, division: "ALL", batch: "ALL" },
+                
+                // 4. Allow "ALL" for classyear only if division & batch match
+                { classyear: "ALL", division, batch },
+                
+                // 5. Fully generic match (last resort)
+                { classyear: "ALL", division: "ALL", batch: "ALL" },
+            ],
+        })
             .select('name difficulty category startTime endTime classyear score createdAt')
             .sort({ createdAt: -1 }) // Sort by createdAt in descending order
             .limit(2); // Get only top 2
+        
 
         return res.status(200).json({ contest });
     } catch (error) {
@@ -344,10 +373,10 @@ const getTop2Contests = async (req, res, next) => {
 
 const submitContestSubmission = async (req, res, next) => {
     try {
-        const { problemId,score, userId, code, accuracy, avgRuntime, testCasesPassed, output, isSuccessfullyRun } = req.body;
+        const { problemId, score, userId, code, accuracy, avgRuntime, testCasesPassed, output, isSuccessfullyRun } = req.body;
 
         // Validate required fields
-        if (!problemId || score===undefined || !userId || !code || !output || accuracy === undefined || avgRuntime === undefined || testCasesPassed === undefined) {
+        if (!problemId || score === undefined || !userId || !code || !output || accuracy === undefined || avgRuntime === undefined || testCasesPassed === undefined) {
             return res.status(400).json({ success: false, message: "All fields are required." });
         }
 
@@ -406,7 +435,7 @@ const getAllContestSubmissionByUserByProblem = async (req, res, next) => {
         }
 
         // Fetch submissions
-        const submissions = await CodeContestSubmission.find({ problemId, userId });
+        const submissions = await CodeContestSubmission.find({ problemId, userId }).sort({ createdAt: -1 });;
         // Send response
         res.status(200).json({ success: true, data: submissions });
     } catch (error) {
@@ -433,9 +462,9 @@ const deleteCodingContestById = async (req, res, next) => {
         }
         // Delete all submissions related to the problem
         await CodeContestSubmission.deleteMany({ problemId });
-        await ContestCheat.deleteMany({problemId})
+        await ContestCheat.deleteMany({ problemId })
         console.log(`Contest ${problemId} and related submissions deleted successfully.`);
-        
+
         return res.status(200).json({ success: true, message: "Contest and related submissions deleted successfully." });
     } catch (error) {
         console.error("Error in Delete Contest: ", error);
@@ -540,15 +569,124 @@ const getContestCheatStatus = async (req, res, next) => {
     }
 };
 
+// --------------------
+// Code Contest Result
+// --------------------
+
+const getResultOfSingleContest = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        // Verify id by Mongoose
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid contest id" })
+        }
+        // Step 1: Find the Code contest 
+        const contest = await CodeContest.findById(id);
+        if (!contest) {
+            return res.status(404).json({ message: "Contest not found" });
+        }
+        // Step 2: Find the user's results associated with contest id
+        const contestResults = await CodeContestSubmission.find({ problemId: id });
+        if (contestResults.length === 0) {
+            return res.status(404).json({ message: "No results found for this contest." });
+        }
+        //  Step 3: Calculate Total Points and Attempted Contest For Each user
+        const userData = {};
+        contestResults.forEach((result) => {
+            const userId = result.userId.toString();
+
+            // Initialize user data if not present
+            if (!userData[userId]) {
+                userData[userId] = {
+                    accuracy: result.accuracy,
+                    testCasesPassed: result.testCasesPassed,
+                    code: result.code,
+                    userDetails: null,
+                    output: result.output,
+                    avgRuntime: result.avgRuntime,
+                    score: result.score,
+                    isCheat:false,
+                };
+            }
+            // Update only if the new score is higher
+            else if (result.score > userData[userId].score) {
+                userData[userId] = {
+                    accuracy: result.accuracy,
+                    testCasesPassed: result.testCasesPassed,
+                    code: result.code,
+                    userDetails: null,
+                    isCheat:false,
+                    output: result.output,
+                    avgRuntime: result.avgRuntime,
+                    score: result.score,
+                };
+            }
+        });
+
+        // step 4: Fetch user Details for all unique users
+        const userIds = Object.keys(userData);
+        const users = await User.find({ _id: { $in: userIds } }, { name: 1, username: 1, classy: 1, division: 1 }); // Fetch only necessary fields
+
+        // Get All Cheat
+        const cheatsData = await ContestCheat.find({problemId:id});
+
+        cheatsData.forEach(cheat=>{
+            const userId = cheat.user.toString();
+            if(userData[userId]){
+                userData[userId].isCheat = cheat.isCheat;
+            }
+        })
 
 
+        // Attach user details to user data
+        users.forEach(user => {
+            const userId = user._id.toString();
+            if (userData[userId]) {
+                userData[userId].userDetails = user;
+            }
+        });
 
-module.exports = { 
-    createProblem, 
-    getProblemById, 
-    getProblems, 
-    submitSubmission, 
-    getAllSubmissionByUserByProblem, 
+        // Prepare final data and sort by score 
+        const sortedUsers = Object.keys(userData)
+            .map(userId => ({
+                userId,
+                accuracy: userData[userId].accuracy,
+                testCasesPassed: userData[userId].testCasesPassed,
+                code: userData[userId].code,
+                output: userData[userId].output,
+                avgRuntime: userData[userId].avgRuntime,
+                score: userData[userId].score,
+                userDetails: userData[userId].userDetails,
+                isCheat:userData[userId].isCheat
+            }))
+            .sort((a, b) => b.score - a.score);
+
+
+        // Prepare final data
+        const finalData = {
+            contest: {
+                name: contest.name,
+                title: contest.title,
+                startTime: contest.startTime,
+                endTime: contest.endTime,
+            },
+            users: sortedUsers,// Sorted users with their details
+        };
+
+        // Step 5: Send the response
+        return res.status(200).json({ contestId: id, results: finalData });
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+module.exports = {
+    createProblem,
+    getProblemById,
+    getProblems,
+    submitSubmission,
+    getAllSubmissionByUserByProblem,
     deleteProblemById,
     createCodeContest,
     getContests,
@@ -559,4 +697,5 @@ module.exports = {
     getTop2Contests,
     postContestCheat,
     getContestCheatStatus,
+    getResultOfSingleContest,
 };

@@ -257,12 +257,6 @@ const SingleUserResults = () => {
                           <MdVisibility className="text-xl" />
                         </button>
                       </Link>
-                      {/* <button
-                        className=" p-2 rounded-full bg-gradient-to-r hover:from-indigo-700 hover:to-purple-700 hover:text-white transition-colors"
-                        title="Download Result"
-                      >
-                        <MdFileDownload className="text-xl" />
-                      </button> */}
                     </div>
                   </td>
                 </tr>

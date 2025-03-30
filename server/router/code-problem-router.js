@@ -33,4 +33,7 @@ router.route("/set/cheat").post(authMiddleware,CodeProblemControllers.postContes
 // To get
 router.route("/cheat-status/:user/:problemId").get(authMiddleware,CodeProblemControllers.getContestCheatStatus);
 
+// Get Result Of Code Contest 
+router.route("/get-contest-result/:id").get(authMiddleware,facultyMiddleware,CodeProblemControllers.getResultOfSingleContest);
+
 module.exports = router;

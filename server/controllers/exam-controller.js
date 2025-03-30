@@ -214,6 +214,7 @@ const getExamsByCreated = async (req, res, next) => {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
 
+        
         const { isTeacher, isHod, isTnp, _id } = req.user;
         let exams = [];
 
@@ -386,6 +387,8 @@ const newExam = async (req, res, next) => {
         isFastQuiz,
         isPublished,
         classyear,
+        division,
+        batch,
         startTime,
         endTime,
         questions,
@@ -404,6 +407,12 @@ const newExam = async (req, res, next) => {
         }
         if (typeof isPublished === "undefined") {
             return res.status(400).json({ message: "isPublished is required." });
+        }
+        if (!division) {
+            return res.status(400).json({ message: "division is required." });
+        }
+        if (!batch) {
+            return res.status(400).json({ message: "batch is required." });
         }
         if (!classyear) {
             return res.status(400).json({ message: "Class year is required." });
@@ -468,6 +477,8 @@ const newExam = async (req, res, next) => {
             isFastQuiz,
             isPublished,
             classyear,
+            division,
+            batch,
             startTime,
             endTime,
             questions: updatedQuestions,
@@ -494,6 +505,8 @@ const updateExam = async (req, res, next) => {
         isFastQuiz,
         isPublished,
         classyear,
+        division,
+        batch,
         startTime,
         endTime,
         questions,
@@ -514,6 +527,12 @@ const updateExam = async (req, res, next) => {
         }
         if (!classyear) {
             return res.status(400).json({ message: "Class year is required." });
+        }
+        if (!division) {
+            return res.status(400).json({ message: "Division is required." });
+            }
+        if(!batch){
+            return res.status(400).json({ message: "Batch is required." });
         }
         if (!startTime || !endTime) {
             return res.status(400).json({ message: "Start time and End time are required." });
@@ -576,6 +595,8 @@ const updateExam = async (req, res, next) => {
                     isFastQuiz,
                     isPublished,
                     classyear,
+                    division,
+                    batch,
                     startTime,
                     endTime,
                     questions: updatedQuestions,

@@ -5,6 +5,7 @@ import { Toaster, toast } from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { IoChevronBackCircle } from "react-icons/io5";
 import { useAuth } from "../../store/auth";
+import axios from "axios";
 
 const CreateUser = () => {
     const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
@@ -15,6 +16,7 @@ const CreateUser = () => {
     class: "",
     division: "",
     rollNo: "",
+    batch:"",
     password: ""
   });
   const [showModal, setShowModal] = useState(false);  // for showing add more or exit
@@ -33,6 +35,8 @@ const CreateUser = () => {
         return !value ? "Class is required" : "";
       case "division":
         return !value ? "Division is required" : "";
+      case "batch":
+          return !value ? "batch is required" : "";
       case "rollNo":
         return !value || isNaN(value) ? "Enter a valid Roll Number" : "";
       case "password":
@@ -66,6 +70,7 @@ const CreateUser = () => {
           classy: formData.class,
           division: formData.division,
           rollNo: formData.rollNo,
+          batch: formData.batch,
           password: formData.password
         }, {
           headers: {
@@ -110,6 +115,7 @@ const CreateUser = () => {
       class: "",
       division: "",
       rollNo: "",
+      batch: "",
       password: ""
     });
     setErrors({});
@@ -224,6 +230,20 @@ const CreateUser = () => {
                 placeholder="Enter Roll No"
               />
               {errors.rollNo && <p className="text-red-500 text-sm">{errors.rollNo}</p>}
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                <MdFormatListNumbered />Batch
+              </label>
+              <input
+                type="text"
+                name="batch"
+                value={formData.batch}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Enter Batch"
+              />
+              {errors.batch && <p className="text-red-500 text-sm">{errors.batch}</p>}
             </div>
 
             <div className="space-y-2">

@@ -34,6 +34,7 @@ const CreateNewUser = () => {
     class: "",
     division: "",
     rollNo: "",
+    batch:"",
     password: "",
   });
 
@@ -52,6 +53,8 @@ const CreateNewUser = () => {
         return !value ? "Class is required" : "";
       case "division":
         return !value ? "Division is required" : "";
+      case "batch":
+          return !value ? "batch is required" : "";
       case "rollNo":
         return !value || isNaN(value) ? "Enter a valid Roll Number" : "";
       case "password":
@@ -86,6 +89,7 @@ const CreateNewUser = () => {
           classy: formData.class,
           division: formData.division,
           rollNo: formData.rollNo,
+          batch: formData.batch,
           password: formData.password
         }, {
           headers: {
@@ -134,6 +138,7 @@ const CreateNewUser = () => {
       class: "",
       division: "",
       rollNo: "",
+      batch: "",
       password: "",
     });
     setErrors({});
@@ -274,6 +279,23 @@ const CreateNewUser = () => {
               />
               {errors.rollNo && (
                 <p className="text-red-500 text-sm">{errors.rollNo}</p>
+              )}
+            </div>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                <MdFormatListNumbered /> Batch
+              </label>
+              <input
+                type="text"
+                name="batch"
+                required
+                value={formData.batch}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Enter Batch"
+              />
+              {errors.batch && (
+                <p className="text-red-500 text-sm">{errors.batch}</p>
               )}
             </div>
 

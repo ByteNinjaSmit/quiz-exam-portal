@@ -50,75 +50,60 @@ const ExamInterface = () => {
   // Getting Parameter
   const { id, title, paperKey } = useParams();
 
-  // if Paramter null or any value navigate to home
-  if (!id || !title || !paperKey) {
-    return <Navigate to="/" />;
-  } else if (
-    id === "undefined" ||
-    title === "undefined" ||
-    paperKey === "undefined"
-  ) {
-    return <Navigate to="/" />;
-  }
-
-  // Creating Post Function To hit server for start exam
   useEffect(() => {
     const makePostFunction = async () => {
       setIsLoading(true);
       setError(null); // Reset error state before making request
+
       try {
-        const response = await fetch(`${API}/api/question/start-exam`, {
-          method: "POST",
+        const response = await axios.post(`${API}/api/question/start-exam`, {
+          title,
+          paperKey,
+        }, {
           headers: {
             "Content-Type": "application/json",
             Authorization: authorizationToken,
           },
-          body: JSON.stringify({
-            title,
-            paperKey,
-          }),
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json(); // Get the raw response text
-        setExamData(data);
-        // Handle success response here (e.g., updating state)
+        setExamData(response.data);
+        // console.log("Exam Data", response.data);
       } catch (error) {
         console.error("Error occurred while making POST request:", error);
-        setError(error.message); // Set error message to state
+        setError(error.response?.data?.message || error.message);
       } finally {
         setIsLoading(false);
       }
     };
 
     makePostFunction();
-  }, [title, paperKey]); // Include title in dependency array
+  }, [title, paperKey]); // Include title and paperKey in dependency array
 
   useEffect(() => {
-    const now = new Date();
-    const examStartTime = new Date(examData?.startTime);
-
-    if (now >= examStartTime) {
-      setIsStarting(false); // Exam has started
-    } else {
-      setIsStarting(true); // Exam has not started yet
+    if (!examData || !examData.startTime) {
+      return; // Ensure examData is loaded
     }
-  }, [examData?.startTime]);
+
+    const examStartTime = new Date(examData.startTime);
+    const now = new Date();
+
+    setIsStarting(now < examStartTime); // If now is before start time, it's still starting
+  }, [examData]);
+
 
   // Socket Connection
   useEffect(() => {
-    if (!title || !paperKey) return;
+    if (!title || !paperKey) return; 
 
     // Ensure socket initializes only once
     if (!socketRef.current) {
       socketRef.current = io(API, {
         reconnection: true, // Auto-reconnect enabled
         reconnectionAttempts: 10, // Max attempts
-        reconnectionDelay: 3000, // Delay between attempts
+        reconnectionDelay: 2000, // Delay between attempts
         reconnectionDelayMax: 10000, // Max delay in ms
+        transports: ["websocket"],
+        withCredentials: true,
       });
 
       socketRef.current.on("connect", () => {
@@ -128,15 +113,20 @@ const ExamInterface = () => {
 
       socketRef.current.on("question", (data) => {
         if (!isExamEnded) {
-          setCurrentQuestion(data.question);
+          setCurrentQuestion((prevQuestion) => {
+            if (!prevQuestion || JSON.stringify(prevQuestion) !== JSON.stringify(data.question)) {
+              setIsSubmitActive(false);
+              setIsOptionLocked(false);
+              setSelectedOption(null);
+              return data.question; // Update only if the question has changed
+            }
+            return prevQuestion; // Keep the existing question if it's the same
+          });
+  
           setQuestionIndex(data.questionIndex);
           setRemainingTime(data.remainingTime);
-          setIsSubmitActive(false);
-          setIsOptionLocked(false);
-          setSelectedOption(null);
         }
       });
-
       socketRef.current.on("examEnd", () => {
         setIsExamEnded(true);
         setCurrentQuestion(null);
@@ -160,6 +150,9 @@ const ExamInterface = () => {
     };
   }, [title, paperKey]); // ✅ Removed `isExamEnded` from dependencies
 
+
+  
+  // console.log(currentQuestion);
 
   // Main exam countdown timer
   useEffect(() => {
@@ -247,7 +240,7 @@ const ExamInterface = () => {
         // If isCheat is true, update state and navigate to dashboard
         if (isCheat) {
           setIsCheated(true);
-          toast.warning("You Cheated Exam Go OUT");
+          toast.warning("Violation detected! You have been removed from the exam.");
           navigate("/user/dashboard"); // Navigate to dashboard
         } else {
           setIsCheated(false); // Set false if not cheated
@@ -281,11 +274,35 @@ const ExamInterface = () => {
         setIsAnswerCorrect(isCorrect);
         let final_point = 0;
         if (isCorrect) {
-          const defaultPoints = 1000; // default point for Mannual Quiz
+          // Total time limit of the question
+          const totalTimeLimit = currentQuestion.timeLimit; // e.g., 30 seconds
+          const defaultPoints = 1000; // Default points if currentQuestion.points is undefined
           const pointsForCorrectAnswer =
-            currentQuestion.maxPoint || defaultPoints;
-          // console.log(`Answer is correct ${pointsForCorrectAnswer}`);
-          final_point = pointsForCorrectAnswer;
+            currentQuestion.maxPoint || defaultPoints; // Points for the question
+
+          // Calculate the earned points based on remaining time
+          const timeSegments = 20; // Number of segments
+          const segmentDuration = totalTimeLimit / timeSegments; // Duration of each segment
+          const maxPointsPercent = 100; // Maximum percentage of points
+
+          // Calculate the segment index based on remaining time
+          const segmentIndex = Math.max(
+            0,
+            Math.floor(remainingTime / segmentDuration)
+          );
+
+          // Determine the percentage of points based on the segment index
+          const percentagePoints = Math.min(
+            maxPointsPercent,
+            5 + segmentIndex * 5
+          ); // Starting at 5% and increasing by 5% per segment
+
+          // Calculate the earned points
+          final_point =
+            (percentagePoints * pointsForCorrectAnswer) / maxPointsPercent;
+
+          // Log or save the points earned
+          // console.log(`Points earned: ${earnedPoints}`);
         }
         if (!isCorrect) {
           const defaultPoints = 0; // default point for Mannual Quiz
@@ -358,7 +375,7 @@ const ExamInterface = () => {
         if (isCorrect) {
           // Total time limit of the question
           const totalTimeLimit = currentQuestion.timeLimit; // e.g., 30 seconds
-          const defaultPoints = 800; // Default points if currentQuestion.points is undefined
+          const defaultPoints = 1000; // Default points if currentQuestion.points is undefined
           const pointsForCorrectAnswer =
             currentQuestion.maxPoint || defaultPoints; // Points for the question
 
@@ -603,20 +620,28 @@ const ExamInterface = () => {
 
   useEffect(() => {
     if (isExamEnded) {
+      // Exit Fullscreen
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch((err) => {
+          console.error("Error exiting fullscreen:", err);
+        });
+      }
+  
       setTimeout(() => {
         navigate("/user/dashboard");
-      }, 2000); // 2 seconds delay
+      }, 2000); // 2 seconds delay before redirecting
     }
   }, [isExamEnded, navigate]);
+  
 
   if (isLoading) {
     return (
-      <>
-        <p>Loading exam...</p>
-        <p>You will automatic redirect to Dashboard...</p>
-      </>
-    )
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-lg font-bold">Loading exam data...</p>
+      </div>
+    );
   }
+
 
   if (isStarting) {
     return (
@@ -629,6 +654,7 @@ const ExamInterface = () => {
   }
 
   if (isExamEnded) {
+    // Exit Full Screen
     return <p>Exam ended</p>;
   }
 

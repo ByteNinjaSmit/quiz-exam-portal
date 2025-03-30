@@ -34,6 +34,8 @@ const CreateExam = () => {
   const [examData, setExamData] = useState({
     title: "",
     classYear: "",
+    division:"",
+    batch:"",
     startTime: "",
     endTime: "",
     paperKey: "",
@@ -171,32 +173,36 @@ const CreateExam = () => {
     try {
       const formData = new FormData();
       const isPublished = true;
+  
       // Append non-file fields
       formData.append("isQuiz", isQuiz);
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classYear);
-      formData.append(
-        "startTime",
-          
-      );
-      formData.append(
-        "endTime",
-        convertToISTAndFormatForMongo(examData.endTime)
-      );
+      formData.append("division", examData.division);
+      formData.append("batch", examData.batch);
+      
+      // Ensure startTime and endTime are valid
+      if (examData.startTime) {
+        formData.append("startTime", convertToISTAndFormatForMongo(examData.startTime));
+      }
+      if (examData.endTime) {
+        formData.append("endTime", convertToISTAndFormatForMongo(examData.endTime));
+      }
+  
       formData.append("paperKey", examData.paperKey);
       formData.append("title", examData.title);
-
+  
       // Append questions as a JSON string
       formData.append("questions", JSON.stringify(examData.questions));
-
+  
       // Append file uploads (if any)
       examData.questions.forEach((question, index) => {
         if (question.image && question.image instanceof File) {
-            formData.append('files', question.image); // Append each file
+          formData.append(`files`, question.image); // Append each file
         }
-    });
-
+      });
+  
       const response = await axios.post(
         `${API}/api/exam/new-exam`,
         formData,
@@ -205,7 +211,7 @@ const CreateExam = () => {
             "Content-Type": "multipart/form-data",
             Authorization: authorizationToken,
           },
-          withCredentials: true, // Ensures cookies are sent with the request (if needed)
+          withCredentials: true, // Ensures cookies are sent with the request
           credentials: "include",
           onUploadProgress: (progressEvent) => {
             const percentage = Math.round(
@@ -215,18 +221,23 @@ const CreateExam = () => {
           },
         }
       );
-      const data = await response.data;
+  
       if (response.status === 201) {
-        toast.success(data.message);
+        toast.success(response.data.message);
         setProgress(0);
         navigate("/admin/dashboard/exam");
       }
     } catch (error) {
       setProgress(0);
       console.error(error);
-      toast.error( error.response.data.message || "An error occurred during the exam creation.");
+      
+      // Handle error message safely
+      toast.error(
+        error.response?.data?.message || "An error occurred during exam creation."
+      );
     }
   };
+  
 
   // handeling save as draft
   const handleSaveDraft = async (e) => {
@@ -239,6 +250,8 @@ const CreateExam = () => {
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classYear);
+      formData.append("division", examData.division);
+      formData.append("batch", examData.batch);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -256,16 +269,15 @@ const CreateExam = () => {
       // Append file uploads (if any)
       examData.questions.forEach((question, index) => {
         if (question.image && question.image instanceof File) {
-            formData.append('files', question.image); // Append each file
+          formData.append('files', question.image); // Append each file
         }
-    });
+      });
 
       const response = await axios.post(
         `${API}/api/exam/new-exam`,
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: authorizationToken,
           },
           withCredentials: true, // Ensures cookies are sent with the request (if needed)
@@ -287,7 +299,7 @@ const CreateExam = () => {
     } catch (error) {
       setProgress(0);
       console.error(error);
-      toast.error( error.response.data.message ||"An error occurred during the exam creation.");
+      toast.error(error.response.data.message || "An error occurred during the exam creation.");
     }
   };
 
@@ -305,7 +317,7 @@ const CreateExam = () => {
     }));
     toast.success(`Question ${questionIndex + 1} deleted successfully!`);
   };
-  console.log(convertToISTAndFormatForMongo(examData.startTime));
+  // console.log(convertToISTAndFormatForMongo(examData.startTime));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 p-4 md:p-8">
@@ -351,6 +363,43 @@ const CreateExam = () => {
                 <option value="SY">SY</option>
                 <option value="TY">TY</option>
                 <option value="B.Tech">B.Tech</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                Division
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.division}
+                onChange={(e) =>
+                  setExamData({ ...examData, division: e.target.value })
+                }
+              >
+                <option value="">Select Division</option>
+                <option value="ALL">ALL</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                Batch
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.batch}
+                onChange={(e) =>
+                  setExamData({ ...examData, batch: e.target.value })
+                }
+              >
+                <option value="">Select Batch</option>
+                <option value="ALL">ALL</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
               </select>
             </div>
 

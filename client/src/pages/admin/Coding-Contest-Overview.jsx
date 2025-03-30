@@ -34,7 +34,7 @@ const CodeContestDashboard = () => {
             }
             const data = response.data;
             console.log(data.contest);
-            
+
             setProblems(data.contest);
         } catch (error) {
             console.error(error);
@@ -178,6 +178,7 @@ const CodeContestDashboard = () => {
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Difficulty</th>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Result</th>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
@@ -198,6 +199,15 @@ const CodeContestDashboard = () => {
                                             </td>
                                             <td className="px-4 py-4">
                                                 <div className="text-sm text-gray-500">{problem?.category}</div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <div className="flex space-x-3 items-center">
+                                                    <Link to={`/admin/view-result/contest/${problem._id}`}>
+                                                        <button className="text-red-600 hover:text-red-800">
+                                                            <FiEye />
+                                                        </button>
+                                                    </Link>
+                                                </div>
                                             </td>
                                             <td className="px-4 py-4">
                                                 <div className="flex space-x-3 items-center">

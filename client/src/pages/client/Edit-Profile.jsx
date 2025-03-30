@@ -232,6 +232,24 @@ const UpdateProfile = () => {
                 <p className="text-red-500 text-sm">{errors.rollNo}</p>
               )}
             </div>
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                <MdFormatListNumbered /> Batch
+              </label>
+              <input
+                type="text"
+                name="batch"
+                readOnly
+                disabled={true}
+                value={user.batch}
+                // onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600 opacity-50"
+                placeholder="Enter Batch"
+              />
+              {errors.batch && (
+                <p className="text-red-500 text-sm">{errors.batch}</p>
+              )}
+            </div>
 
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">

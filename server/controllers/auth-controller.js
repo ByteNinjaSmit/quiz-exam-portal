@@ -30,8 +30,8 @@ const home = async (req, res) => {
 // *--------------------------
 const userRegister = async (req, res) => {
     try {
-        const { name, username, classy, division, rollNo, password } = req.body;
-        if (!name || !username || !classy || !division || !rollNo || !password) {
+        const { name, username, classy, division, rollNo,batch, password } = req.body;
+        if (!name || !username || !classy || !division || !batch ||!rollNo || !password) {
             return res.status(400).json({ msg: "Please enter all fields" });
         }
         const userExist = await User.findOne({ username });
@@ -47,6 +47,7 @@ const userRegister = async (req, res) => {
             classy,
             division,
             rollNo,
+            batch,
             password,
         });
 
@@ -65,12 +66,12 @@ const userRegister = async (req, res) => {
 const downloadTemplate = async (req, res) => {
     try {
         // Define CSV headers
-        const headers = ["name", "username", "classy", "division", "rollNo", "password"];
+        const headers = ["name", "username", "classy", "division", "rollNo","batch", "password"];
 
         // Example data (optional)
         const exampleRows = [
-            { name: "John Doe", username: "johndoe10", classy: "10th", division: "A", rollNo: "101", password: "123456" },
-            { name: "Jane Smith", username: "janesmith11", classy: "11th", division: "B", rollNo: "102", password: "abcdef" },
+            { name: "John Doe", username: "johndoe10", classy: "10th", division: "A", rollNo: "101",batch:"AS1", password: "123456" },
+            { name: "Jane Smith", username: "janesmith11", classy: "11th", division: "B", rollNo: "102",batch:"AS1", password: "abcdef" },
         ];
 
         // Set response headers for file download
@@ -118,8 +119,8 @@ const uploadUsers = async (req, res) => {
 
                     for (const user of users) {
                         // Validate required fields
-                        const { name, username, classy, division, rollNo, password } = user;
-                        if (!name || !username || !classy || !division || !rollNo || !password) {
+                        const { name, username, classy, division, rollNo, password,batch } = user;
+                        if (!name || !username || !classy || !division || !batch || !rollNo || !password) {
                             return res.status(400).json({ message: "Missing fields in the CSV file." });
                         }
 
@@ -142,6 +143,7 @@ const uploadUsers = async (req, res) => {
                             classy,
                             division,
                             rollNo,
+                            batch,
                             password:hash_password,
                         });
                     }
@@ -342,7 +344,7 @@ const getCurrentUser = async (req, res) => {
 
 const updateUser = async (req, res, next) => {
     const { userId } = req.params;
-    const { name, username, classy, division, rollNo, password } = req.body;
+    const { name, username, classy, division, rollNo,batch, password } = req.body;
 
     try {
         if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -350,7 +352,7 @@ const updateUser = async (req, res, next) => {
         }
 
         // passeword exceptional
-        if (!name || !username || !classy || !division || !rollNo) {
+        if (!name || !username || !classy || !division || !rollNo || !batch) {
             return res.status(400).json({ message: "Please enter all fields" });
         }
         const updateData = {};
@@ -359,6 +361,7 @@ const updateUser = async (req, res, next) => {
         if (classy) updateData.classy = classy;
         if (division) updateData.division = division;
         if (rollNo) updateData.rollNo = rollNo;
+        if (batch) updateData.batch = batch;
         // If the password is provided, hash it before updating
         if (password) {
             const saltRound = await bcrypt.genSalt(10);

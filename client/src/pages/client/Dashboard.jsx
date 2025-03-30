@@ -182,6 +182,9 @@ const Dashboard = () => {
                 <p className="text-indigo-600">
                   {user?.classy} {user?.division}
                 </p>
+                <p className="text-indigo-600">
+                  {user?.batch} 
+                </p>
                 <p className="text-purple-600">{user?.rollNo}</p>
               </div>
             </div>

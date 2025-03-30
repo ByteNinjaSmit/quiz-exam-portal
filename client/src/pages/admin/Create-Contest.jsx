@@ -33,8 +33,8 @@ int main() {
     return 0;
 }
   `,
-    java: `// Java boilerplate You Don't Have to Change Class name instead of code becuase our file name is code.java
-public class code {
+    java: `// Java boilerplate Main Classs Must Be Public
+public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, Java!");
     }
@@ -66,6 +66,8 @@ const CodingContestForm = () => {
         startTime: "",
         endTime: "",
         classyear: "",
+        division:"",
+        batch:"",
         score: "",
         createdBy: user?._id,
 
@@ -75,6 +77,8 @@ const CodingContestForm = () => {
 
     const difficultyOptions = ["Easy", "Medium", "Hard"];
     const classyearOptions = ["ALL", "FY", "SY", "TY", "B.Tech"];
+    const divisionOptions = ["ALL", "A", "B"];
+    const batchOptions = ["ALL", "A", "B", "C" ];
     const languageOptions = ["cpp", "java", "python"];
     const tagOptions = ["Arrays", "Strings", "LinkedList", "Trees", "Graphs", "DP"];
     const categoryOptions = ["Array", "Dynamic-Programming", "Graph", "Tree", "String"];
@@ -102,6 +106,21 @@ const CodingContestForm = () => {
             classyear: classyear,
         }));
     };
+    const handleDivisionChange = (e) => {
+        const division = e.target.value;
+        setFormData((prev) => ({
+            ...prev,
+            division: division,
+        }));
+    };
+    const handleBatchChange = (e) => {
+        const batch = e.target.value;
+        setFormData((prev) => ({
+            ...prev,
+            batch: batch,
+        }));
+    };
+
 
     const handleTagChange = (tag) => {
         const updatedTags = formData.tags.includes(tag)
@@ -211,6 +230,8 @@ const CodingContestForm = () => {
                     startTime: "",
                     endTime: "",
                     classyear: "",
+                    division:"",
+                    batch:"",
                     score: "",
                     createdBy: user?._id,
                 })
@@ -301,8 +322,48 @@ const CodingContestForm = () => {
                         className="w-full p-3 border rounded-md focus:ring-2 focus:ring-[#F72585] focus:border-transparent"
                         aria-label="Difficulty level"
                     >
-                        <option value="">Select Difficulty</option>
+                        <option value="">Select Class</option>
                         {classyearOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                        <PiStudentBold className="text-[#F72585] text-xl" />
+                        <label className="text-[16px] font-semibold">Select Division</label>
+                    </div>
+                    <select
+                        name="division"
+                        value={formData.division}
+                        onChange={handleDivisionChange}
+                        className="w-full p-3 border rounded-md focus:ring-2 focus:ring-[#F72585] focus:border-transparent"
+                        aria-label="Difficulty level"
+                    >
+                        <option value="">Select Division</option>
+                        {divisionOptions.map((option) => (
+                            <option key={option} value={option}>
+                                {option}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className="mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                        <PiStudentBold className="text-[#F72585] text-xl" />
+                        <label className="text-[16px] font-semibold">Select Batch</label>
+                    </div>
+                    <select
+                        name="batch"
+                        value={formData.batch}
+                        onChange={handleBatchChange}
+                        className="w-full p-3 border rounded-md focus:ring-2 focus:ring-[#F72585] focus:border-transparent"
+                        aria-label="Difficulty level"
+                    >
+                        <option value="">Select Batch</option>
+                        {batchOptions.map((option) => (
                             <option key={option} value={option}>
                                 {option}
                             </option>

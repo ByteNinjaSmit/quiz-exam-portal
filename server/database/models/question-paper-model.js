@@ -42,6 +42,14 @@ const questionPaperSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  division:{
+    type:String,
+    required:true
+  },
+  batch:{
+    type:String,
+    required:true
+  },
   createdBy:{
     type:mongoose.Schema.Types.ObjectId,
     ref: 'Faculty',

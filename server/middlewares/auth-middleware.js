@@ -39,7 +39,7 @@ const authMiddleware = async (req, res, next) => {
     if (!userData) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    // console.log(userData)
     req.user = userData;
     req.token = token;
     req.userID = userData._id;
