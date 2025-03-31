@@ -60,11 +60,12 @@ const App = () => {
   const isDeveloperRoute = location.pathname.startsWith("/developer");
   const isQuestionPaperRoute = location.pathname.startsWith("/user/paper");
   const isCodingContestRoute = location.pathname.startsWith("/user/coding-contest")
+  const isLogin = location.pathname.startsWith("/login");
   return (
     <>
         <div className="app">
           {/* Navbar */}
-          {(!isDeveloperRoute && !isQuestionPaperRoute && !isCodingContestRoute) && <MainNavbar />}
+          {(!isDeveloperRoute && !isQuestionPaperRoute && !isCodingContestRoute && !isLogin) && <MainNavbar />}
 
           {/* Routes */}
           <Routes>
@@ -131,7 +132,7 @@ const App = () => {
           </Routes>
 
           {/* Footer */}
-          {(!isDeveloperRoute && !isQuestionPaperRoute && !isCodingContestRoute)  && <Footer />}
+          {(!isDeveloperRoute && !isQuestionPaperRoute && !isCodingContestRoute && !isLogin)  && <Footer />}
         </div>
     </>
   )

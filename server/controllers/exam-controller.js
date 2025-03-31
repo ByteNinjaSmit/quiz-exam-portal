@@ -11,18 +11,25 @@ const path = require('path');
 
 let examStartTime;
 let examEndTime;
-let currentQuestionIndex = 0;
-let questionPaper = null;
+// let currentQuestionIndex = 0;
+// let questionPaper = null;
+const activeTimers = {}; // Store active timers per paperKey
+const examData = new Map(); // Key: paperKey, Value: { questionPaper, currentQuestionIndex, examStartTime, examEndTime }
 
 // Load the question paper from the database
 async function loadQuestionPaper(title, paperKey) {
+    if (examData.has(paperKey)) return examData.get(paperKey).questionPaper; // Use existing data
+
     try {
-        questionPaper = await QuestionPaper.findOne({ title, paperKey }); // Include paperKey in the query
+        const questionPaper = await QuestionPaper.findOne({ title, paperKey }); // Include paperKey in the query
         if (questionPaper) {
-            console.log("Loaded question paper:", questionPaper.title);
-            examStartTime = new Date(questionPaper.startTime).getTime();
-            examEndTime = new Date(questionPaper.endTime).getTime();
-            currentQuestionIndex = questionPaper.currentQuestionIndex || 0;
+            console.log(`Loaded question paper for ${paperKey}:`, questionPaper.title);
+            examData.set(paperKey, {
+                questionPaper,
+                currentQuestionIndex: questionPaper.currentQuestionIndex || 0,
+                examStartTime: new Date(questionPaper.startTime).getTime(),
+                examEndTime: new Date(questionPaper.endTime).getTime()
+            });
         }
         return questionPaper; // Return the question paper
     } catch (error) {
@@ -31,63 +38,57 @@ async function loadQuestionPaper(title, paperKey) {
     }
 }
 
-// Calculate the current question index based on the elapsed time since examStartTime
-function getElapsedQuestionIndex() {
-    const timeElapsed = (Date.now() - examStartTime) / 1000; // time in seconds
+// Calculate the current question index based on elapsed time
+function getElapsedQuestionIndex(paperKey) {
+    const exam = examData.get(paperKey);
+    if (!exam) return 0;
+    const { questionPaper, examStartTime } = exam;
+    const timeElapsed = (Date.now() - examStartTime) / 1000;
     let cumulativeTime = 0;
-
     for (let i = 0; i < questionPaper.questions.length; i++) {
         cumulativeTime += questionPaper.questions[i].timeLimit;
-        if (timeElapsed < cumulativeTime) {
-            return i;
-        }
+        if (timeElapsed < cumulativeTime) return i;
     }
-
-    return questionPaper.questions.length - 1; // If past the last question, return the last index
+    return questionPaper.questions.length - 1;
 }
-
 // Start the exam and broadcast the first question
 function startExam(io, paperKey) {
     console.log("Starting the exam...");
     broadcastCurrentQuestion(io, paperKey);
 }
 
-// Broadcast the current question and set up the interval for the next question
+// Broadcast the current question
 async function broadcastCurrentQuestion(io, paperKey) {
+    const exam = examData.get(paperKey);
+    if (!exam) return;
+    const { questionPaper, examStartTime, examEndTime } = exam;
+
     const currentTime = Date.now();
     if (currentTime >= examEndTime) {
         endExam(io, paperKey);
         return;
     }
 
-    currentQuestionIndex = getElapsedQuestionIndex();
-    const currentQuestion = questionPaper.questions[currentQuestionIndex];
-    const cumulativeTime = questionPaper.questions
-        .slice(0, currentQuestionIndex)
-        .reduce((total, q) => total + q.timeLimit, 0);
-    const timeSpentOnCurrentQuestion =
-        (currentTime - examStartTime) / 1000 - cumulativeTime;
-    const remainingTime =
-        (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
+    exam.currentQuestionIndex = getElapsedQuestionIndex(paperKey);
+    const currentQuestion = questionPaper.questions[exam.currentQuestionIndex];
+    const cumulativeTime = questionPaper.questions.slice(0, exam.currentQuestionIndex).reduce((total, q) => total + q.timeLimit, 0);
+    const timeSpentOnCurrentQuestion = (currentTime - examStartTime) / 1000 - cumulativeTime;
+    const remainingTime = (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
 
-    console.log(
-        `Broadcasting Question ${currentQuestionIndex + 1}:`,
-        currentQuestion.questionText
-    );
+    console.log(`Broadcasting Question ${exam.currentQuestionIndex + 1} for ${paperKey}:`, currentQuestion.questionText);
 
     io.to(paperKey).emit("question", {
         question: currentQuestion,
-        questionIndex: currentQuestionIndex + 1,
+        questionIndex: exam.currentQuestionIndex + 1,
         remainingTime: remainingTime / 1000,
     });
 
     await QuestionPaper.updateOne(
-        { title: questionPaper.title },
-        { currentQuestionIndex }
+        { title: questionPaper.title, paperKey },
+        { currentQuestionIndex: exam.currentQuestionIndex }
     );
 
     setTimeout(() => {
-        currentQuestionIndex++;
         broadcastCurrentQuestion(io, paperKey);
     }, remainingTime);
 }
@@ -95,67 +96,66 @@ async function broadcastCurrentQuestion(io, paperKey) {
 // End the exam
 function endExam(io, paperKey) {
     io.to(paperKey).emit("examEnd", { message: "Exam has ended" });
-    console.log("Exam has ended");
+    console.log(`Exam ended for room: ${paperKey}`);
 }
 
 // Check if it's time to start the exam
 function checkAndStartExam(io, paperKey) {
+    const exam = examData.get(paperKey);
+    if (!exam) return;
+    const { examStartTime, examEndTime } = exam;
     const now = Date.now();
+
     if (now >= examStartTime && now <= examEndTime) {
         startExam(io, paperKey);
     } else {
-        console.log("Waiting for the scheduled start time...");
-        const timeUntilStart = examStartTime - now;
-        setTimeout(() => startExam(io, paperKey), timeUntilStart);
+        console.log(`Waiting for scheduled start time for ${paperKey}`);
+        setTimeout(() => startExam(io, paperKey), examStartTime - now);
     }
 }
 
-// Handle new client connections and broadcast the current question
-function handleSocketConnection(io, loadQuestionPaper, checkAndStartExam) {
+// Handle new client connections
+function handleSocketConnection(io) {
     io.on("connection", (socket) => {
         console.log("New client connected");
 
         socket.on("loadExam", async ({ title, paperKey }) => {
             if (!title || !paperKey) {
-                socket.emit("error", {
-                    message: "Exam title and paperKey is required.",
-                });
+                socket.emit("error", { message: "Exam title and paperKey are required." });
                 return;
             }
 
-            await loadQuestionPaper(title, paperKey);
+            const questionPaper = await loadQuestionPaper(title, paperKey);
             if (!questionPaper) {
-                console.log("Question paper not found.");
+                console.log(`Question paper not found for ${paperKey}`);
                 socket.emit("error", { message: "Question paper not found." });
                 return;
             }
-            // console.log(paperKey)
-            socket.join(paperKey); // Join the room with paperKey
 
+            socket.join(paperKey);
             console.log(`User joined room: ${paperKey}`);
             checkAndStartExam(io, paperKey);
 
+            const exam = examData.get(paperKey);
+            if (!exam) return;
+            const { examStartTime, examEndTime, currentQuestionIndex } = exam;
             const currentTime = Date.now();
+
             if (currentTime >= examEndTime) {
                 endExam(io, paperKey);
                 return;
             }
 
             if (examStartTime) {
-                const timeElapsed = currentTime - examStartTime;
-                currentQuestionIndex = getElapsedQuestionIndex();
-                const currentQuestion = questionPaper.questions[currentQuestionIndex];
-                const cumulativeTime = questionPaper.questions
-                    .slice(0, currentQuestionIndex)
-                    .reduce((total, q) => total + q.timeLimit, 0);
-                const timeSpentOnCurrentQuestion =
-                    (currentTime - examStartTime) / 1000 - cumulativeTime;
-                const remainingTime =
-                    (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
+                exam.currentQuestionIndex = getElapsedQuestionIndex(paperKey);
+                const currentQuestion = questionPaper.questions[exam.currentQuestionIndex];
+                const cumulativeTime = questionPaper.questions.slice(0, exam.currentQuestionIndex).reduce((total, q) => total + q.timeLimit, 0);
+                const timeSpentOnCurrentQuestion = (currentTime - examStartTime) / 1000 - cumulativeTime;
+                const remainingTime = (currentQuestion.timeLimit - timeSpentOnCurrentQuestion) * 1000;
 
                 io.to(paperKey).emit("question", {
                     question: currentQuestion,
-                    questionIndex: currentQuestionIndex + 1,
+                    questionIndex: exam.currentQuestionIndex + 1,
                     remainingTime: remainingTime / 1000,
                 });
             }

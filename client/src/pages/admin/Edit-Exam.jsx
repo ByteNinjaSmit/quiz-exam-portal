@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaPlus,
   FaTrash,
@@ -26,18 +26,18 @@ import axios from "axios";
 // Global State
 import { useAuth } from "../../store/auth";
 import { toast } from "react-toastify";
-import { useNavigate, Link,useParams} from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 
 const EditExam = () => {
-  const [loading, setLoading] =useState(false);
+  const [loading, setLoading] = useState(false);
   const { API, authorizationToken } = useAuth();
   const navigate = useNavigate();
   const params = useParams();
   const [examData, setExamData] = useState({
     title: "",
     classyear: "",
-    division:"",
-    batch:"",
+    division: "",
+    batch: "",
     startTime: "",
     endTime: "",
     paperKey: "",
@@ -88,7 +88,7 @@ const EditExam = () => {
         );
         if (response.status === 200) {
           //   setData(response.data);
-          console.log("Data From Backend",response.data.data);
+          console.log("Data From Backend", response.data.data);
           setExamData(response.data.data);
           setIsQuiz(response.data.data.isQuiz)
           setIsFastQuiz(response.data.data.isFastQuiz)
@@ -325,7 +325,7 @@ const EditExam = () => {
     } catch (error) {
       setProgress(0);
       console.error(error);
-      toast.error( error.response.data.message|| "An error occurred during the exam creation.");
+      toast.error(error.response.data.message || "An error occurred during the exam creation.");
     }
   };
 
@@ -343,7 +343,7 @@ const EditExam = () => {
     }));
     toast.success(`Question ${questionIndex + 1} deleted successfully!`);
   };
-  console.log("Frontend Data",examData);
+  console.log("Frontend Data", examData);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 p-4 md:p-8">
@@ -462,7 +462,7 @@ const EditExam = () => {
               <input
                 type="datetime-local"
                 className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                value={examData.startTime  ? examData.startTime.slice(0,16) : ""}
+                value={examData.startTime ? examData.startTime.slice(0, 16) : ""}
                 onChange={(e) =>
                   setExamData({ ...examData, startTime: e.target.value })
                 }
@@ -477,7 +477,7 @@ const EditExam = () => {
               <input
                 type="datetime-local"
                 className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
-                value={examData.endTime  ? examData.endTime.slice(0,16) : ""}
+                value={examData.endTime ? examData.endTime.slice(0, 16) : ""}
                 onChange={(e) =>
                   setExamData({ ...examData, endTime: e.target.value })
                 }

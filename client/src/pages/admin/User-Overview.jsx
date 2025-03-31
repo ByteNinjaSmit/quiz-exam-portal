@@ -289,7 +289,7 @@ const UserManagement = () => {
                                                 <div className="flex space-x-2">
                                                     <button
                                                         onClick={(e) => handleEdit(e, user._id)}
-                                                        className="text-accent hover:text-[#F72585] transition-colors duration-200"
+                                                        className="text-[#FF4C4C] hover:text-[#F72585] transition-colors duration-200"
                                                         title="Edit user"
                                                     >
                                                         <MdEdit size={20} />
