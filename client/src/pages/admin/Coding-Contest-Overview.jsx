@@ -214,6 +214,11 @@ const CodeContestDashboard = () => {
                                                     <button className="text-red-600 hover:text-red-800" onClick={() => handleDelete(problem?._id)}>
                                                         <FiTrash2 />
                                                     </button>
+                                                    <Link to={`/admin/edit-contest/${problem._id}`}>
+                                                    <button className="text-green-600 hover:text-green-800">
+                                                        <FiEdit2 />
+                                                    </button>
+                                                    </Link>
                                                 </div>
                                             </td>
                                         </tr>

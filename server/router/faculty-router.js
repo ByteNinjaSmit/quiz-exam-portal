@@ -32,4 +32,8 @@ router.route("/export-result/:paperKey").get(facultyControllers.exportPaperDetai
 // Delete User
 router.route("/delete-user/:userId").delete(authMiddleware,facultyMiddleware,facultyControllers.deleteUser);
 
+
+// Update Profile 
+router.route("/update-profile").patch(authMiddleware,facultyMiddleware,facultyControllers.updateProfile);
+
 module.exports = router;

@@ -1,5 +1,7 @@
 require("dotenv").config();
 const User = require("../database/models/user-model");
+const Faculty = require("../database/models/faculty-model")
+const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const { Parser } = require('json2csv'); // Import the json2csv library
 
@@ -186,7 +188,7 @@ const getPaperDetails = async (req, res) => {
                 totalPoints: userData[userId].totalPoints,
                 attemptedQuestions: userData[userId].attemptedQuestions,
                 userDetails: userData[userId].userDetails,
-                correctAnswers:userData[userId].correctAnswers,
+                correctAnswers: userData[userId].correctAnswers,
             }))
             .sort((a, b) => b.totalPoints - a.totalPoints);
 
@@ -339,7 +341,7 @@ const exportPaperDetails = async (req, res, next) => {
                 userData[userId] = {
                     totalPoints: 0,
                     attemptedQuestions: 0,
-                    userDetails: null ,// Placeholder for user details
+                    userDetails: null,// Placeholder for user details
                     correctAnswers: 0,
                 };
             }
@@ -368,7 +370,7 @@ const exportPaperDetails = async (req, res, next) => {
                 userId,
                 totalPoints: userData[userId].totalPoints,
                 attemptedQuestions: userData[userId].attemptedQuestions,
-                correctAnswers:userData[userId].correctAnswers,
+                correctAnswers: userData[userId].correctAnswers,
                 name: userData[userId].userDetails?.name || 'N/A',
                 username: userData[userId].userDetails?.username || 'N/A',
                 classy: userData[userId].userDetails?.classy || 'N/A',
@@ -486,5 +488,39 @@ const deleteUser = async (req, res, next) => {
 
 
 
+// -------------
+// Update Profile
+// ---------------
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult, exportPaperDetails, deleteUser };
+const updateProfile = async (req, res, next) => {
+    try {
+        const userId = req.userID;
+        const { name, username, email, phone, subject, password } = req.body;
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
+        // Validate All Fields
+        const updateData = {};
+        if (name) updateData.name = name;
+        if (username) updateData.username = username;
+        if (email) updateData.email = email;
+        if (phone) updateData.phone = phone;
+        if (subject) updateData.subject = subject;
+        if (password) {
+            const saltRound = await bcrypt.genSalt(10);
+            const hash_password = await bcrypt.hash(password, saltRound);
+            updateData.password = hash_password;
+        }
+        const updatedUser = await Faculty.findByIdAndUpdate({ _id: userId }, updateData, { new: true }).exec();
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" })
+        }
+        return res.status(200).json({ message: "User Profile Updated successfully" })
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+
+module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult, exportPaperDetails, deleteUser,updateProfile };

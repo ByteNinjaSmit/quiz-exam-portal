@@ -14,7 +14,9 @@ const LoginPage = () => {
     const { isLoggedIn, API, storeTokenInCookies } = useAuth(); // Custom hook from AuthContext
     const navigate = useNavigate();
 
-
+    if(isLoggedIn){
+        navigate('/');
+    }
 
 
     const handleLogin = async (e) => {

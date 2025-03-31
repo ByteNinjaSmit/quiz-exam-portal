@@ -241,7 +241,7 @@ const createCodeContest = async (req, res, next) => {
         } = req.body;
 
         // Validate mandatory fields
-        if (!name || !title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language || !classyear || !score || !startTime || !endTime || !createdBy ||!division ||!batch) {
+        if (!name || !title || !difficulty || !description || !constraints || !examples.length || !testCases.length || !code || !language || !classyear || !score || !startTime || !endTime || !createdBy || !division || !batch) {
             return res.status(400).json({
                 message: "Title, difficulty, description, constraints, examples, and test cases are required fields."
             });
@@ -301,6 +301,106 @@ const createCodeContest = async (req, res, next) => {
     }
 };
 
+// Update Coding Contest 
+const updateCodeContest = async (req, res, next) => {
+    try {
+        const {
+            name,
+            title,
+            difficulty,
+            code,
+            language,
+            tags,
+            description,
+            constraints,
+            examples,
+            timeComplexity,
+            spaceComplexity,
+            solution,
+            categories,
+            testCases,
+            classyear,
+            division,
+            batch,
+            score,
+            startTime,
+            endTime,
+            createdBy
+        } = req.body;
+        const id = req.params.id;
+        // Validate mandatory fields
+        if (!name || !title || !difficulty || !description || !constraints || !examples.length ||
+            !testCases.length || !code || !language || !classyear || !score || !startTime || !endTime ||
+            !createdBy || !division || !batch) {
+            return res.status(400).json({
+                success: false,
+                message: "All required fields must be provided."
+            });
+        }
+        // Validate id by mongose
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, message: "Invalid id." });
+        }
+        // Validate difficulty
+        const validDifficulties = ["Easy", "Medium", "Hard"];
+        if (!validDifficulties.includes(difficulty)) {
+            return res.status(400).json({ message: "Invalid difficulty level." });
+        }
+        const validLanguage = ["cpp", "java", "python"];
+        if (!validLanguage.includes(language)) {
+            return res.status(400).json({ message: "Invalid Selected language." });
+        }
+        // Validate examples and test cases structure
+        if (!Array.isArray(examples) || !examples.every(e => e.input && e.output)) {
+            return res.status(400).json({ message: "Each example must have an input and output." });
+        }
+        if (!Array.isArray(testCases) || !testCases.every(tc => tc.input && tc.output)) {
+            return res.status(400).json({ message: "Each test case must have an input and output." });
+        }
+        // Find the Contest by id
+        const contest = await CodeContest.findById(id);
+        if (!contest) {
+            return res.status(404).json({ success: false, message: "Coding Contest not found" });
+        }
+        // Update the Contest
+        // Update the contest
+        const updatedContest = await CodeContest.findByIdAndUpdate(
+            id,
+            {
+                name,
+                title,
+                difficulty,
+                code,
+                language,
+                tags,
+                description,
+                constraints,
+                examples,
+                timeComplexity,
+                spaceComplexity,
+                solution,
+                category: categories || [], // Ensure categories is an array
+                testCases,
+                classyear,
+                division,
+                batch,
+                score,
+                startTime,
+                endTime,
+                createdBy
+            },
+            { new: true } // Returns the updated contest
+        );
+        return res.status(200).json({
+            success: true,
+            message: "Coding Contest updated successfully.",
+        });
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 // Controller to get a particular problem by ID
 const getContestById = async (req, res, next) => {
     try {
@@ -337,23 +437,23 @@ const getTop2Contests = async (req, res, next) => {
         if (!req.user) {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
-        const { classy,division, batch } = req.user;
+        const { classy, division, batch } = req.user;
         const classyear = classy;
         const contest = await CodeContest.find({
             $or: [
                 // 1. Exact Match on all fields
                 { classyear, division, batch },
-                
+
                 // 2. Allow "ALL" for classyear only if division & batch match exactly
                 { classyear, division, batch: "ALL" },
                 { classyear, division: "ALL", batch },
-                
+
                 // 3. Allow "ALL" for division & batch separately (but not both together)
                 { classyear, division: "ALL", batch: "ALL" },
-                
+
                 // 4. Allow "ALL" for classyear only if division & batch match
                 { classyear: "ALL", division, batch },
-                
+
                 // 5. Fully generic match (last resort)
                 { classyear: "ALL", division: "ALL", batch: "ALL" },
             ],
@@ -361,7 +461,7 @@ const getTop2Contests = async (req, res, next) => {
             .select('name difficulty category startTime endTime classyear score createdAt')
             .sort({ createdAt: -1 }) // Sort by createdAt in descending order
             .limit(2); // Get only top 2
-        
+
 
         return res.status(200).json({ contest });
     } catch (error) {
@@ -605,7 +705,7 @@ const getResultOfSingleContest = async (req, res, next) => {
                     output: result.output,
                     avgRuntime: result.avgRuntime,
                     score: result.score,
-                    isCheat:false,
+                    isCheat: false,
                 };
             }
             // Update only if the new score is higher
@@ -615,7 +715,7 @@ const getResultOfSingleContest = async (req, res, next) => {
                     testCasesPassed: result.testCasesPassed,
                     code: result.code,
                     userDetails: null,
-                    isCheat:false,
+                    isCheat: false,
                     output: result.output,
                     avgRuntime: result.avgRuntime,
                     score: result.score,
@@ -628,11 +728,11 @@ const getResultOfSingleContest = async (req, res, next) => {
         const users = await User.find({ _id: { $in: userIds } }, { name: 1, username: 1, classy: 1, division: 1 }); // Fetch only necessary fields
 
         // Get All Cheat
-        const cheatsData = await ContestCheat.find({problemId:id});
+        const cheatsData = await ContestCheat.find({ problemId: id });
 
-        cheatsData.forEach(cheat=>{
+        cheatsData.forEach(cheat => {
             const userId = cheat.user.toString();
-            if(userData[userId]){
+            if (userData[userId]) {
                 userData[userId].isCheat = cheat.isCheat;
             }
         })
@@ -657,7 +757,7 @@ const getResultOfSingleContest = async (req, res, next) => {
                 avgRuntime: userData[userId].avgRuntime,
                 score: userData[userId].score,
                 userDetails: userData[userId].userDetails,
-                isCheat:userData[userId].isCheat
+                isCheat: userData[userId].isCheat
             }))
             .sort((a, b) => b.score - a.score);
 
@@ -698,4 +798,5 @@ module.exports = {
     postContestCheat,
     getContestCheatStatus,
     getResultOfSingleContest,
+    updateCodeContest,
 };

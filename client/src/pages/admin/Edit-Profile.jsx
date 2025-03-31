@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { MdAdminPanelSettings, MdPerson, MdEmail, MdPhone, MdLock, MdSchool, MdSupervisorAccount, MdBusinessCenter, MdSubject, MdCheckCircleOutline, MdRefresh, MdDoneAll, MdErrorOutline, MdHome, MdGroup, MdVisibility, MdVisibilityOff, MdHelpOutline, MdDarkMode, MdLightMode } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import axios from "axios";
 import { useAuth } from "../../store/auth";
 
 const EditProfileFacultyAdmin = () => {
   const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
     username: "",
@@ -34,7 +35,13 @@ const EditProfileFacultyAdmin = () => {
       document.documentElement.classList.remove("dark");
     }
   }, [darkMode]);
-
+  useEffect(() => {
+    const hasRefreshed = sessionStorage.getItem("hasRefreshed");
+    if (!hasRefreshed) {
+      sessionStorage.setItem("hasRefreshed", "true");
+      window.location.reload();
+    }
+  }, []);
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -48,6 +55,21 @@ const EditProfileFacultyAdmin = () => {
       [role]: !prev[role]
     }));
   };
+
+  useEffect(() => {
+    setFormData({
+      fullName: user.name,
+      username: user.username,
+      email: user.email,
+      phone: user.phone,
+      subject: user.subject,
+    })
+    setRoles({
+      isTeacher: user.isTeacher,
+      isHOD: user.isHOD,
+      isTNP: user.isTNP
+    })
+  }, [user])
 
   const resetForm = () => {
     setFormData({
@@ -73,8 +95,8 @@ const EditProfileFacultyAdmin = () => {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `${API}/api/dev/register-faculty`, // Endpoint URL
+      const response = await axios.patch(
+        `${API}/api/faculty/update-profile`, // Endpoint URL
         {
           name: formData.fullName,
           username: formData.username,
@@ -82,10 +104,6 @@ const EditProfileFacultyAdmin = () => {
           phone: formData.phone,
           subject: formData.subject,
           password: formData.password,
-          isTnp: roles.isTNP,
-          isHod: roles.isHOD,
-          isTeacher: roles.isTeacher
-
         },
         {
           headers: {
@@ -98,21 +116,31 @@ const EditProfileFacultyAdmin = () => {
       );
 
       // Handle success response
-      if (response.status === 200 || response.status === 201) {
-        setShowModal(true);
+      if (response.status === 200) {
+        // setShowModal(true);
+        toast.success(response.data.message);
+        setFormData({
+          fullName: "",
+          username: "",
+          email: "",
+          phone: "",
+          password: "",
+          subject: ""
+        });
+        setRoles({
+          isTeacher: false,
+          isHOD: false,
+          isTNP: false
+        });
+        navigate("/admin/dashboard")
+        sessionStorage.removeItem("hasRefreshed");
       } else {
         toast.error(response.data.message); // Display error message if not 200/201
       }
 
     } catch (error) {
       // Handle errors
-      if (error.response) {
         toast.error(error.response.data.message || "An error occurred while submitting.");
-      } else if (error.request) {
-        toast.error("No response received from the server.");
-      } else {
-        toast.error("An error occurred while setting up the request.");
-      }
     } finally {
       setIsLoading(false);
     }
@@ -213,6 +241,21 @@ const EditProfileFacultyAdmin = () => {
               </div>
             </div>
 
+
+            <div className="space-y-2">
+              <label className="flex items-center text-gray-700 dark:text-gray-200">
+                <MdSubject className="mr-2" />
+                Subject (Optional)
+              </label>
+              <input
+                type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                placeholder="Enter Subject Specialization"
+                className="w-full p-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#F72585] transition-all dark:bg-gray-700 dark:text-white"
+              />
+            </div>
             <div className="space-y-2">
               <label className="flex items-center text-gray-700 dark:text-gray-200">
                 <MdLock className="mr-2" />
@@ -237,29 +280,15 @@ const EditProfileFacultyAdmin = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="flex items-center text-gray-700 dark:text-gray-200">
-                <MdSubject className="mr-2" />
-                Subject (Optional)
-              </label>
-              <input
-                type="text"
-                name="subject"
-                value={formData.subject}
-                onChange={handleInputChange}
-                placeholder="Enter Subject Specialization"
-                className="w-full p-3 border border-[#E0E0E0] rounded-lg focus:ring-2 focus:ring-[#F72585] transition-all dark:bg-gray-700 dark:text-white"
-              />
-            </div>
-
-            {/* <div className="space-y-4">
+            <div className="space-y-4">
               <label className="block text-gray-700 dark:text-gray-200">Role Assignment</label>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center space-x-2">
                   <button
                     type="button"
-                    onClick={() => handleRoleToggle("isTeacher")}
-                    className={`p-3 rounded-lg flex items-center space-x-2 ${roles.isTeacher
+                    // onClick={() => handleRoleToggle("isTeacher")}
+                    disabled={true}
+                    className={`p-3 rounded-lg flex items-center opacity-50 cursor-not-allowed space-x-2 ${roles.isTeacher
                       ? "bg-[#F72585] text-white"
                       : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
                       }`}
@@ -273,8 +302,9 @@ const EditProfileFacultyAdmin = () => {
                 <div className="flex items-center space-x-2">
                   <button
                     type="button"
-                    onClick={() => handleRoleToggle("isHOD")}
-                    className={`p-3 rounded-lg flex items-center space-x-2 ${roles.isHOD
+                    // onClick={() => handleRoleToggle("isHOD")}
+                    disabled={true}
+                    className={`p-3 rounded-lg flex items-center opacity-50 cursor-not-allowed space-x-2 ${roles.isHOD
                       ? "bg-[#F72585] text-white"
                       : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
                       }`}
@@ -288,8 +318,9 @@ const EditProfileFacultyAdmin = () => {
                 <div className="flex items-center space-x-2">
                   <button
                     type="button"
-                    onClick={() => handleRoleToggle("isTNP")}
-                    className={`p-3 rounded-lg flex items-center space-x-2 ${roles.isTNP
+                    // onClick={() => handleRoleToggle("isTNP")}
+                    disabled={true}
+                    className={`p-3 rounded-lg flex items-center opacity-50 cursor-not-allowed space-x-2 ${roles.isTNP
                       ? "bg-[#F72585] text-white"
                       : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200"
                       }`}
@@ -300,19 +331,19 @@ const EditProfileFacultyAdmin = () => {
                   <MdHelpOutline className="text-gray-500 cursor-help" title="Assign TNP role" />
                 </div>
               </div>
-            </div> */}
+            </div>
 
             <div className="flex flex-wrap gap-4 pt-6">
               <button
                 type="submit"
                 className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-400 to-green-600 text-white rounded-lg hover:scale-105 transition-transform"
-                // disabled={isLoading}
-                disabled={true}
+                disabled={isLoading}
+                // disabled={true}
               >
                 <MdCheckCircleOutline />
-                <span>Save Changes</span>
+                <span>Update Profile</span>
               </button>
-
+{/* 
               <button
                 type="button"
                 onClick={resetForm}
@@ -320,13 +351,13 @@ const EditProfileFacultyAdmin = () => {
               >
                 <MdRefresh />
                 <span>Reset Form</span>
-              </button>
+              </button> */}
               <Link to={`/admin/dashboard`}>
                 <button
                   className="w-full px-6 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
-                  onClick={()=> setDarkMode(false)}
+                  onClick={() => setDarkMode(false)}
                 >
-                  Go to Faculty List
+                  Go to Dashboard
                 </button>
               </Link>
             </div>
@@ -343,15 +374,6 @@ const EditProfileFacultyAdmin = () => {
                 Faculty/Admin Added Successfully!
               </h3>
               <div className="flex flex-col gap-3">
-                <button
-                  onClick={() => {
-                    setShowModal(false);
-                    resetForm();
-                  }}
-                  className="w-full py-2 bg-[#F72585] text-white rounded-lg hover:bg-opacity-90"
-                >
-                  Add Another Faculty/Admin
-                </button>
                 <Link to={`/admin/dashboard`}>
                   <button
                     onClick={() => setShowModal(false) &&
@@ -359,7 +381,7 @@ const EditProfileFacultyAdmin = () => {
                     }
                     className="w-full py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600"
                   >
-                    Go to Faculty List
+                    Go to Dashboard
                   </button>
                 </Link>
               </div>

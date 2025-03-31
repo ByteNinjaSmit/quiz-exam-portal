@@ -1,5 +1,6 @@
 import React from "react";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -18,20 +19,20 @@ const Footer = () => {
             <h3 className="text-xl font-semibold text-gray-800 mb-4">Quick Links</h3>
             <ul className="space-y-2">
               {[
-                "Home",
-                "About",
-                "Contact",
-                "FAQ",
-                "Terms of Service",
-                "Privacy Policy"
+                { name: "Home", path: "/" },
+                { name: "About", path: "/about" },
+                { name: "Contact", path: "mailto:smitrajbankar11@gmail.com" },
+                { name: "FAQ", path: "/faq" },
+                { name: "Terms of Service", path: "#" },
+                { name: "Privacy Policy", path: "#" },
               ].map((link) => (
-                <li key={link}>
-                  <button
+                <li key={link.name}>
+                  <Link
+                    to={link.path}
                     className="hover:text-gray-900 hover:underline transition duration-300"
-                    onClick={() => console.log(`Navigate to ${link}`)}
                   >
-                    {link}
-                  </button>
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>

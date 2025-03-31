@@ -48,6 +48,9 @@ import CodingContestForm from "./pages/admin/Create-Contest";
 import QuizLeaderboardOverview from "./pages/client/Quiz-Leaderboard";
 import EditProfileFacultyAdmin from "./pages/admin/Edit-Profile";
 import ContestResult from "./pages/admin/Contest-Result";
+import About from "./pages/About";
+import EditCodingContestForm from "./pages/admin/Edit-Contest";
+import FAQ from "./pages/FAQ";
 
 
 
@@ -67,6 +70,8 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<HomePage />} />
             <Route exact path="/login" element={<LoginPage />} />
+            <Route exact path="/about" element={<About />} />
+            <Route exact path="/faq" element={<FAQ />} />
 
             {/* Developer Routes */}
             <Route path="/developer/login" element={<DeveloperLogin />} />
@@ -112,6 +117,7 @@ const App = () => {
               <Route exact path="create-problem" element={<CodingProblemForm />} />
               <Route exact path="create-contest" element={<CodingContestForm />} />
               <Route exact path="edit-exam/question_paper/:examId/:title/:paperkey" element={<EditExam />} />
+              <Route exact path="edit-contest/:id" element={<EditCodingContestForm />} />
               <Route exact path="view-exam/question_paper/:examId/:title/:paperkey" element={<ViewQuestionPaper />} />
               <Route exact path="view-result/question_paper/:paperkey/:title" element={<StudentResultsPage />} />
               <Route exact path="view-result/contest/:id" element={<ContestResult />} />

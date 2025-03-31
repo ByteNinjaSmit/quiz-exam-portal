@@ -67,13 +67,13 @@ const AdminSidebar: React.FC<AdminSidebarProps> = ({ sidebarOpen, toggleSidebar 
             icon: <FaCog className="w-5 h-5" />,
             text: "Settings",
             description: "System configuration",
-            to:`/admin/settings`,
+            to:`#`,
         },
         {
             icon: <FaQuestionCircle className="w-5 h-5" />,
             text: "Support & Docs",
             description: "Help and documentation",
-            to:`/admin/help`,
+            to:`#`,
         }
     ];
 

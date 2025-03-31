@@ -36,4 +36,7 @@ router.route("/cheat-status/:user/:problemId").get(authMiddleware,CodeProblemCon
 // Get Result Of Code Contest 
 router.route("/get-contest-result/:id").get(authMiddleware,facultyMiddleware,CodeProblemControllers.getResultOfSingleContest);
 
+// Update Coding Contest by Id
+router.route("/update-coding-contest/:id").put(authMiddleware, facultyMiddleware, CodeProblemControllers.updateCodeContest);
+
 module.exports = router;

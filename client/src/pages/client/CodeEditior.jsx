@@ -38,7 +38,7 @@ int main() {
   return 0;
 }
 `,
-  java: `// Java boilerplate You Don't Have to Change Class name instead of code becuase our file name is code.java
+  java: `// Java boilerplate Main Class Must be Public
 public class code {
   public static void main(String[] args) {
       System.out.println("Hello, Java!");
@@ -117,95 +117,80 @@ const CodingPlatform = () => {
   };
 
   const handleRunCode = async (e) => {
-    e.preventDefault();
-    setIsExecuted(false);
-    setIsError(false);
-    setIsLoading(true);
-    setIsExecutionStart(true);
+    e.preventDefault()
+    setIsExecuted(false)
+    setIsError(false)
+    setIsLoading(true)
+    setIsExecutionStart(true)
+
     try {
-      const response = await axios.post(`${API}/api/code/run-code`,
-        // pass header
+
+
+      const response = await axios.post(
+        `${API}/api/code/new-code-judge`,
         {
           language: selectedLanguage,
           code: code,
           input: testCases[0]?.input || " ",
         },
-        // pass header
         {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
             Authorization: authorizationToken,
           },
           withCredentials: true,
         },
-        {
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            // console.log(`Upload Progress: ${progress}%`);
-          },
-        },
-      );
+      )
 
-      // console.log('Response:', response.data.result);
-      setOutput(response.data.result)
-      setIsExecuted(true);
-      setErrorMessage(null);
+      if (response.data.status === "completed") {
+        const actualOutput = response.data.output.trim()
+        const expectedOutput = testCases[0]?.output?.trim() || ""
+        const executionTime = response.data.executionTime
+
+        setOutput(actualOutput)
+        setErrorMessage(null)
+        setIsExecuted(true)
+
+      } else if (response.data.status === "error") {
+        const errorDetails = response.data.error || "Unknown error occurred."
+        const cleanedErrorDetails = cleanErrorDetails(errorDetails, selectedLanguage)
+
+        setErrorMessage({
+          error: "Compilation Error",
+          details: cleanedErrorDetails,
+        })
+        setOutput(cleanedErrorDetails)
+        setIsError(true)
+
+      }
     } catch (error) {
-      setIsError(true);
-      // console.log(error);
+      setIsError(true)
+
+      let errorMessage = "Execution failed."
 
       if (error.response && error.response.data) {
-        // console.error('Error:', error.response.data);
+        const errorDetails = error.response.data.details || "Unknown error occurred."
+        const errorSummary = error.response.data.error || "Code execution failed"
 
-        const errorDetails = error.response.data.details || 'Unknown error occurred.';
-        const errorSummary = error.response.data.error || 'Code execution failed';
-
-        // Check for syntax errors and clean the error message
-        if (errorDetails.includes('SyntaxError')) {
-          // Use a regular expression to remove the unwanted file path information
-          const cleanedErrorDetails = cleanErrorDetails(errorDetails, selectedLanguage);
-
-
-          setErrorMessage({
-            error: errorSummary,
-            details: cleanedErrorDetails,
-          });
-          setOutput(cleanedErrorDetails);
-        }
-        // Handle infinite loop or timeout errors
-        else if (errorDetails.includes('Command failed')) {
-          setErrorMessage({
-            error: errorSummary,
-            details: 'The code execution may have gone into an infinite loop or timed out.',
-          });
-          setOutput('The code execution may have gone into an infinite loop or timed out.');
-        }
-        // Default error handling
-        else {
-          setErrorMessage({
-            error: errorSummary,
-            details: errorDetails,
-          });
-          setOutput(errorDetails);
-        }
-      }
-      // Generic fallback for unexpected errors
-      else {
         setErrorMessage({
-          error: 'Unexpected Error',
-          details: error.message || 'Execution failed.',
-        });
-        setOutput('Execution failed.');
+          error: errorSummary,
+          details: errorDetails,
+        })
+        errorMessage = errorDetails
+      } else {
+        setErrorMessage({
+          error: "Unexpected Error",
+          details: error.message || "Execution failed.",
+        })
       }
+
+      setOutput(errorMessage)
+
     } finally {
-      setIsLoading(false);
-      setIsExecutionStart(false);
+      setIsLoading(false)
+      setIsExecutionStart(false)
     }
-
-
-  };
+  }
 
   return (
     <div className="min-h-screen bg-[#FAFAFB]">
