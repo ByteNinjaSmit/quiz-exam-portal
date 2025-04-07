@@ -12,37 +12,46 @@ const getExam = async (req, res, next) => {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
         const { classyear } = req.params;
-        const { division, batch } = req.user;
+        const { division, batch, department, isHonors } = req.user;
         if (!classyear) {
             return res.status(400).json({ message: "Class year is required" });
         }
-        if(!division){
+        if (!division) {
             return res.status(400).json({ message: "Division is required" });
         }
-        if(!batch){
+        if (!batch) {
             return res.status(400).json({ message: "Batch is required" });
         }
-
+        if (!department) {
+            return res.status(400).json({ message: "Department is required" });
+        }
+        if (!isHonors) {
+            return res.status(400).json({ message: "Is Honors is required" });
+        }
         // Fetch exams where classyear matches or is 'All', and isPublished is true
         const exams = await QuestionPaper.find({
             isPublished: true, // Ensure only published exams
             $or: [
-                // 1. Exact Match on all fields
-                { classyear, division, batch },
-                
-                // 2. Allow "ALL" for classyear only if division & batch match exactly
-                { classyear, division, batch: "ALL" },
-                { classyear, division: "ALL", batch },
-                
-                // 3. Allow "ALL" for division & batch separately (but not both together)
-                { classyear, division: "ALL", batch: "ALL" },
-                
-                // 4. Allow "ALL" for classyear only if division & batch match
-                { classyear: "ALL", division, batch },
-                
-                // 5. Fully generic match (last resort)
-                { classyear: "ALL", division: "ALL", batch: "ALL" },
-            ],
+                // 1. Exact match on everything OR isHonors = "ALL"
+                { classyear, division, batch, department, isHonors },
+                { classyear, division, batch, department, isHonors: "ALL" },
+
+                // 2. Fully generic
+                { classyear: "ALL", division: "ALL", batch: "ALL", department: "ALL", isHonors },
+                { classyear: "ALL", division: "ALL", batch: "ALL", department: "ALL", isHonors: "ALL" },
+
+                // 3. Dept = ALL, classyear ≠ ALL → division & batch must be ALL
+                { classyear, division: "ALL", batch: "ALL", department: "ALL", isHonors },
+                { classyear, division: "ALL", batch: "ALL", department: "ALL", isHonors: "ALL" },
+
+                // 4. Dept match, classyear match, division = ALL, batch = ALL
+                { classyear, division: "ALL", batch: "ALL", department, isHonors },
+                { classyear, division: "ALL", batch: "ALL", department, isHonors: "ALL" },
+
+                // 5. Dept match, classyear match, division match, batch = ALL
+                { classyear, division, batch: "ALL", department, isHonors },
+                { classyear, division, batch: "ALL", department, isHonors: "ALL" },
+            ]
         })
             .select("-questions") // Exclude questions from response
             .sort({ createdAt: -1 }); // Sort by creation date (newest first)
@@ -66,37 +75,48 @@ const getExams = async (req, res, next) => {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
         const { classyear } = req.params;
-        const { division, batch } = req.user;
+        const { division, batch, department,isHonors } = req.user;
         if (!classyear) {
             return res.status(400).json({ message: "Class year is required" });
         }
-        if(!division){
+        if (!division) {
             return res.status(400).json({ message: "Division is required" });
         }
-        if(!batch){
+        if (!batch) {
             return res.status(400).json({ message: "Batch is required" });
+        }
+        if (!department) {
+            return res.status(400).json({ message: "Department is required" });
+        }
+        if(isHonors){
+            return res.status(400).json({ message: "isHonors is required" });
         }
 
         // Query prioritization order: Exact match first, "ALL" only if needed
         const exams = await QuestionPaper.find({
             isPublished: true, // Ensure only published exams
             $or: [
-                // 1. Exact Match on all fields
-                { classyear, division, batch },
-                
-                // 2. Allow "ALL" for classyear only if division & batch match exactly
-                { classyear, division, batch: "ALL" },
-                { classyear, division: "ALL", batch },
-                
-                // 3. Allow "ALL" for division & batch separately (but not both together)
-                { classyear, division: "ALL", batch: "ALL" },
-                
-                // 4. Allow "ALL" for classyear only if division & batch match
-                { classyear: "ALL", division, batch },
-                
-                // 5. Fully generic match (last resort)
-                { classyear: "ALL", division: "ALL", batch: "ALL" },
-            ],
+                // 1. Exact match on everything OR isHonors = "ALL"
+                { classyear, division, batch, department, isHonors },
+                { classyear, division, batch, department, isHonors: "ALL" },
+
+                // 2. Fully generic
+                { classyear: "ALL", division: "ALL", batch: "ALL", department: "ALL", isHonors },
+                { classyear: "ALL", division: "ALL", batch: "ALL", department: "ALL", isHonors: "ALL" },
+
+                // 3. Dept = ALL, classyear ≠ ALL → division & batch must be ALL
+                { classyear, division: "ALL", batch: "ALL", department: "ALL", isHonors },
+                { classyear, division: "ALL", batch: "ALL", department: "ALL", isHonors: "ALL" },
+
+                // 4. Dept match, classyear match, division = ALL, batch = ALL
+                { classyear, division: "ALL", batch: "ALL", department, isHonors },
+                { classyear, division: "ALL", batch: "ALL", department, isHonors: "ALL" },
+
+                // 5. Dept match, classyear match, division match, batch = ALL
+                { classyear, division, batch: "ALL", department, isHonors },
+                { classyear, division, batch: "ALL", department, isHonors: "ALL" },
+            ]
+
         })
             .select("-questions") // Exclude questions from response
             .sort({ createdAt: -1 }); // Sort by creation date (newest first)

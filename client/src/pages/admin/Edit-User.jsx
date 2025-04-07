@@ -35,6 +35,8 @@ const EditUser = () => {
     division: "",
     rollNo: "",
     batch:"",
+    isHonors:"",
+    department:"",
     password: "",
   });
 
@@ -49,12 +51,16 @@ const EditUser = () => {
         return value.length < 3 ? "Name must be at least 3 characters" : "";
       case "username":
         return value.length < 5 ? "Username must be at least 5 characters" : "";
+        case "department":
+          return !value ? "Department is required" : "";
       case "class":
         return !value ? "Class is required" : "";
       case "division":
         return !value ? "Division is required" : "";
       case "batch":
           return !value ? "Division is required" : "";
+      case "isHonors":
+        return !value ? "isHonors is required" : "";
       case "rollNo":
         return !value || isNaN(value) ? "Enter a valid Roll Number" : "";
       case "password":
@@ -80,10 +86,12 @@ const EditUser = () => {
           setFormData({
             name: data.name,
             username: data.username,
+            department: data?.department,
             class: data.classy,
             division: data.division,
             rollNo: data.rollNo,
-            batch:data?.batch
+            batch:data?.batch,
+            isHonors: data?.isHonors,
           })
         }
       } catch (error) {
@@ -115,10 +123,12 @@ const EditUser = () => {
         const response = await axios.put(`${API}/api/auth/update-user/${params.userId}`, {
           name: formData.name,
           username: formData.username,
+          department: formData.department,
           classy: formData.class,
           division: formData.division,
           rollNo: formData.rollNo,
           batch: formData.batch,
+          isHonors:formData.isHonors,
           password: formData.password
         }, {
           headers: {
@@ -164,10 +174,12 @@ const EditUser = () => {
     setFormData({
       name: "",
       username: "",
+      department:"",
       class: "",
       division: "",
       rollNo: "",
       batch: "",
+      isHonors:"",
       password: "",
     });
     setErrors({});
@@ -259,6 +271,24 @@ const EditUser = () => {
 
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                <MdClass /> Department
+              </label>
+              <input
+                type="text"
+                name="department"
+                required
+                value={formData.department}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Enter Class"
+              />
+              {errors.department && (
+                <p className="text-red-500 text-sm">{errors.department}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                 <MdClass /> Class
               </label>
               <input
@@ -327,7 +357,23 @@ const EditUser = () => {
                 <p className="text-red-500 text-sm">{errors.batch}</p>
               )}
             </div>
-
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                <MdFormatListNumbered /> isHonors
+              </label>
+              <input
+                type="text"
+                name="isHonors"
+                required
+                value={formData.isHonors}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Enter Honors (YES/NO)"
+              />
+              {errors.isHonors && (
+                <p className="text-red-500 text-sm">{errors.isHonors}</p>
+              )}
+            </div>
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                 <MdLockOutline /> Password

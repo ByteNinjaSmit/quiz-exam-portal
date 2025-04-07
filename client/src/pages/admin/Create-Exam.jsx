@@ -34,8 +34,10 @@ const CreateExam = () => {
   const [examData, setExamData] = useState({
     title: "",
     classYear: "",
+    department:"",
     division:"",
     batch:"",
+    isHonors:"",
     startTime: "",
     endTime: "",
     paperKey: "",
@@ -179,8 +181,10 @@ const CreateExam = () => {
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classYear);
+      formData.append("department", examData.department);
       formData.append("division", examData.division);
       formData.append("batch", examData.batch);
+      formData.append("isHonors", examData.isHonors);
       
       // Ensure startTime and endTime are valid
       if (examData.startTime) {
@@ -250,8 +254,10 @@ const CreateExam = () => {
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classYear);
+      formData.append("department", examData.department);
       formData.append("division", examData.division);
       formData.append("batch", examData.batch);
+      formData.append("isHonors",examData.isHonors);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -345,6 +351,24 @@ const CreateExam = () => {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
+          <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                Department Name
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.department}
+                onChange={(e) =>
+                  setExamData({ ...examData, department: e.target.value })
+                }
+              >
+                <option value="">Select Department</option>
+                <option value="ALL">ALL</option>
+                <option value="Computer">Computer</option>
+                <option value="IT">SY</option>
+              </select>
+            </div>
             <div>
               <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
                 <FaQuestion className="mr-2" />
@@ -400,6 +424,24 @@ const CreateExam = () => {
                 <option value="A">A</option>
                 <option value="B">B</option>
                 <option value="C">C</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                For Honours Or All
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.isHonors}
+                onChange={(e) =>
+                  setExamData({ ...examData, isHonors: e.target.value })
+                }
+              >
+                <option value="">Select Option</option>
+                <option value="ALL">ALL</option>
+                <option value="YES">YES</option>
+                <option value="NO">NO</option>
               </select>
             </div>
 

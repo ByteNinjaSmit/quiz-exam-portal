@@ -395,6 +395,8 @@ const newExam = async (req, res, next) => {
         paperKey,
         userId,
         title,
+        department,
+        isHonors,
     } = req.body;
 
     try {
@@ -417,11 +419,17 @@ const newExam = async (req, res, next) => {
         if (!classyear) {
             return res.status(400).json({ message: "Class year is required." });
         }
+        if(!department){
+            return res.status(400).json({ message: "Department is required." });
+        }
         if (!startTime || !endTime) {
             return res.status(400).json({ message: "Start time and End time are required." });
         }
         if (!questions) {
             return res.status(400).json({ message: "Questions are required." });
+        }
+        if(!isHonors){
+            return res.status(400).json({ message: "isHonors is required." });
         }
 
         // Parse the questions if it's a string
@@ -484,6 +492,8 @@ const newExam = async (req, res, next) => {
             questions: updatedQuestions,
             paperKey,
             title,
+            department,
+            isHonors,
             createdBy: req.user._id,
         });
 
@@ -512,6 +522,8 @@ const updateExam = async (req, res, next) => {
         questions,
         paperKey,
         title,
+        department,
+        isHonors,
         userId,
     } = req.body;
     try {
@@ -534,11 +546,17 @@ const updateExam = async (req, res, next) => {
         if(!batch){
             return res.status(400).json({ message: "Batch is required." });
         }
+        if(!department){
+            return res.status(400).json({ message: "Department is required." });
+        }
         if (!startTime || !endTime) {
             return res.status(400).json({ message: "Start time and End time are required." });
         }
         if (!questions) {
             return res.status(400).json({ message: "Questions are required." });
+        }
+        if(!isHonors){
+            return res.status(400).json({ message: "isHonors is required." });
         }
 
         // Parse the questions if it's a string
@@ -599,8 +617,10 @@ const updateExam = async (req, res, next) => {
                     batch,
                     startTime,
                     endTime,
+                    department,
                     questions: updatedQuestions,
                     title,
+                    isHonors,
                     createdBy: req.user._id,
                 },
             },

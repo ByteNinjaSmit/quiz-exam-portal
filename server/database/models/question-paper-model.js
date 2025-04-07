@@ -38,9 +38,18 @@ const questionPaperSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  department:{
+    type:String,
+    required:true,
+    // ["Computer" , "IT"]
+  },
   classyear: {
     type: String,
     required: true,
+  },
+  isHonors:{
+    type:String,
+    required:true,
   },
   division:{
     type:String,

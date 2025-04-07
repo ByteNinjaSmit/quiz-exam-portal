@@ -17,7 +17,9 @@ const CreateUser = () => {
     division: "",
     rollNo: "",
     batch:"",
-    password: ""
+    isHonors:"",
+    department:"",
+    password: "",
   });
   const [showModal, setShowModal] = useState(false);  // for showing add more or exit
   const [showPassword, setShowPassword] = useState(false);
@@ -37,6 +39,10 @@ const CreateUser = () => {
         return !value ? "Division is required" : "";
       case "batch":
           return !value ? "batch is required" : "";
+      case "department":
+        return !value ? "Department is required" : "";
+      case "isHonors":
+        return !value ? "isHonors is required" : "";
       case "rollNo":
         return !value || isNaN(value) ? "Enter a valid Roll Number" : "";
       case "password":
@@ -67,10 +73,12 @@ const CreateUser = () => {
         const response = await axios.post(`${API}/api/dev/register-user`, {
           name: formData.name,
           username: formData.username,
+          department:formData.department,
           classy: formData.class,
           division: formData.division,
           rollNo: formData.rollNo,
           batch: formData.batch,
+          isHonors: formData.isHonors,
           password: formData.password
         }, {
           headers: {
@@ -112,11 +120,13 @@ const CreateUser = () => {
     setFormData({
       name: "",
       username: "",
+      department:"",
       class: "",
       division: "",
       rollNo: "",
       batch: "",
-      password: ""
+      isHonors:"",
+      password: "",
     });
     setErrors({});
   };
@@ -186,7 +196,23 @@ const CreateUser = () => {
               />
               {errors.username && <p className="text-red-500 text-sm">{errors.username}</p>}
             </div>
-
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                <MdClass /> Department
+              </label>
+              <input
+                type="text"
+                name="department"
+                required
+                value={formData.department}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Enter Department Name"
+              />
+              {errors.department && (
+                <p className="text-red-500 text-sm">{errors.department}</p>
+              )}
+            </div>
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                 <MdClass /> Class
@@ -245,7 +271,23 @@ const CreateUser = () => {
               />
               {errors.batch && <p className="text-red-500 text-sm">{errors.batch}</p>}
             </div>
-
+            <div className="space-y-2">
+              <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+                <MdFormatListNumbered /> isHonors
+              </label>
+              <input
+                type="text"
+                name="isHonors"
+                required
+                value={formData.isHonors}
+                onChange={handleChange}
+                className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#F72585] dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Enter Honors (YES/NO)"
+              />
+              {errors.isHonors && (
+                <p className="text-red-500 text-sm">{errors.isHonors}</p>
+              )}
+            </div>
             <div className="space-y-2">
               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-200">
                 <MdLockOutline /> Password

@@ -35,11 +35,13 @@ const EditExam = () => {
   const params = useParams();
   const [examData, setExamData] = useState({
     title: "",
+    department: "",
     classyear: "",
     division: "",
     batch: "",
     startTime: "",
     endTime: "",
+    isHonors: "",
     paperKey: "",
     questions: [],
   });
@@ -210,8 +212,10 @@ const EditExam = () => {
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classyear);
+      formData.append("department", examData.department);
       formData.append("division", examData.division);
       formData.append("batch", examData.batch);
+      formData.append("isHonors", examData.isHonors);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -275,8 +279,10 @@ const EditExam = () => {
       formData.append("isFastQuiz", isFastQuiz);
       formData.append("isPublished", isPublished);
       formData.append("classyear", examData.classyear);
+      formData.append("department", examData.department);
       formData.append("division", examData.division);
       formData.append("batch", examData.batch);
+      formData.append("isHonors", examData.isHonors);
       formData.append(
         "startTime",
         convertToISTAndFormatForMongo(examData.startTime)
@@ -378,6 +384,24 @@ const EditExam = () => {
               </label>
               <select
                 className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.department}
+                onChange={(e) =>
+                  setExamData({ ...examData, department: e.target.value })
+                }
+              >
+                <option value="">Select Department</option>
+                <option value="ALL">ALL</option>
+                <option value="Computer">Computer</option>
+                <option value="IT">IT</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                Class Year
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                 value={examData.classyear}
                 onChange={(e) =>
                   setExamData({ ...examData, classyear: e.target.value })
@@ -426,6 +450,24 @@ const EditExam = () => {
                 <option value="A">A</option>
                 <option value="B">B</option>
                 <option value="C">C</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-indigo-700 text-sm font-semibold mb-2 flex items-center">
+                <FaQuestion className="mr-2" />
+                For Honours Or All
+              </label>
+              <select
+                className="w-full px-4 py-3 border-2 border-indigo-100 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
+                value={examData.isHonors}
+                onChange={(e) =>
+                  setExamData({ ...examData, isHonors: e.target.value })
+                }
+              >
+                <option value="">Select Option</option>
+                <option value="ALL">ALL</option>
+                <option value="YES">YES</option>
+                <option value="NO">NO</option>
               </select>
             </div>
             <div>

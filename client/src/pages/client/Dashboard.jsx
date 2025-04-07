@@ -163,29 +163,20 @@ const Dashboard = () => {
               <h2 className="text-xl font-semibold text-indigo-800">Profile</h2>
               <FaUserEdit className="text-purple-600 cursor-pointer hover:text-indigo-600 transition-colors duration-300" />
             </div>
-            <div className="flex items-center mb-4">
-              {/* Replaced Image with icons */}
-              <FaRegUserCircle
-                className="w-20 h-20 rounded-full object-cover ring-4 ring-purple-200"
-                alt="Profile"
-              />
-              {/* <img
-                src={`https://${dummyData.profile.image}`}
-                alt="Profile"
-                className="w-20 h-20 rounded-full object-cover ring-4 ring-purple-200"
-              /> */}
-              <div className="ml-4">
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {user?.name}
-                </h3>
-                <p className="text-indigo-600">{user?.username}</p>
-                <p className="text-indigo-600">
-                  {user?.classy} {user?.division}
+            <div className="flex items-center gap-4 mb-6">
+              <FaRegUserCircle className="w-20 h-20 text-indigo-500 ring-4 ring-purple-200 rounded-full p-1 bg-white" />
+              <div className="space-y-1">
+                <h3 className="text-lg font-semibold text-gray-800">{user?.name}</h3>
+                <p className="text-sm text-indigo-600">PRN: @{user?.username}</p>
+                <p className="text-sm text-indigo-600">Department: {user?.department}</p>
+                <p className="text-sm text-indigo-600">
+                  Class: {user?.classy} {user?.division}
                 </p>
-                <p className="text-indigo-600">
-                  {user?.batch} 
+                <p className="text-sm text-indigo-600">Batch: {user?.batch}</p>
+                <p className="text-sm text-purple-600">Roll No: {user?.rollNo}</p>
+                <p className="text-sm text-indigo-600">
+                  Honors Student: {user?.isHonors}
                 </p>
-                <p className="text-purple-600">{user?.rollNo}</p>
               </div>
             </div>
             {/* <div className="grid grid-cols-2 gap-4">

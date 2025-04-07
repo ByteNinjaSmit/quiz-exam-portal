@@ -152,6 +152,15 @@ app.use('/database/uploads', express.static(path.join(__dirname, '/database/uplo
     }
 }));
 
+app.use((req, res, next) => {
+    logger.info(`Received ${req.method} request to ${req.url}`);
+    logger.info(`Request body, ${req.body}`);
+    logger.info(`Request IP, ${req.ip}`);
+    // console.log(`Incoming request: ${req.method} ${req.url} from ${req.ip}`);
+
+    next();
+});
+
 app.use('/database/uploads', (req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET');

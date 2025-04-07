@@ -491,7 +491,6 @@ const deleteUser = async (req, res, next) => {
 // -------------
 // Update Profile
 // ---------------
-
 const updateProfile = async (req, res, next) => {
     try {
         const userId = req.userID;
