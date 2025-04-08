@@ -21,7 +21,14 @@ const LiveLogsViewer = () => {
     useEffect(() => {
         // Only create the socket connection once
         if (!socketRef.current) {
-            socketRef.current = io(API); // Adjust the backend URL as needed
+            socketRef.current = io(API, {
+                reconnection: true, // Auto-reconnect enabled
+                reconnectionAttempts: 10, // Max attempts
+                reconnectionDelay: 2000, // Delay between attempts
+                reconnectionDelayMax: 10000, // Max delay in ms
+                transports: ['websocket', 'polling'],
+                withCredentials: true,
+              }); // Adjust the backend URL as needed
         }
 
         // Listen for log updates
