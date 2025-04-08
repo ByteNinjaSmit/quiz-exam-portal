@@ -88,7 +88,7 @@ const getExams = async (req, res, next) => {
         if (!department) {
             return res.status(400).json({ message: "Department is required" });
         }
-        if(isHonors){
+        if(!isHonors){
             return res.status(400).json({ message: "isHonors is required" });
         }
 
