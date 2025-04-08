@@ -121,7 +121,7 @@ const uploadUsers = async (req, res) => {
 
                     for (const user of users) {
                         // Validate required fields
-                        const { name, username,department, classy, division, rollNo, password,batch } = user;
+                        const { name, username,department, classy, division, rollNo, isHonors, password,batch } = user;
                         if (!name || !username || !department || !classy || !division || !batch || !rollNo || !isHonors|| !password) {
                             return res.status(400).json({ message: "Missing fields in the CSV file." });
                         }

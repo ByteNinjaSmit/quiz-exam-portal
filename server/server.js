@@ -100,7 +100,7 @@ app.get('/', (req, res) => {
 const rateLimiter = new RateLimiterRedis({
     storeClient: redisClient,
     keyPrefix: "middleware",
-    points: 1000,
+    points: 30000,
     duration: 5,
     blockDuration:5,
 });
@@ -120,7 +120,7 @@ app.use((req, res, next) => {
 //Ip based rate limiting for sensitive endpoints
 const sensitiveEndpointsLimiter = rateLimit({
     windowMs: 10* 1000,
-    max: 1000,
+    max: 30000,
     standardHeaders: true,
     legacyHeaders: false,
     keyGenerator: (req) => req.ip, // ✅ Use IP directly

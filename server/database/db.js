@@ -21,7 +21,7 @@ const connectToDatabase = async () => {
             bufferCommands: false,
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            maxPoolSize:100,
+            maxPoolSize:3000,
         }).then((mongoose) => mongoose.connection)
           .catch((error) => {
             console.error("Failed to connect to MongoDB:", error);

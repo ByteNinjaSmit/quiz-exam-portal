@@ -320,7 +320,7 @@ const ExamDashboard = () => {
                                             <td className="px-4 py-4">
                                                 <div className="flex space-x-3 items-center">
                                                     <Link to={`/admin/edit-exam/question_paper/${exam._id}/${exam.title}/${exam.paperKey}`} disabled={exam.isPublished}>
-                                                        <button className={`text-blue-600 hover:text-blue-800 ${exam.isPublished ? "hidden" : ""}`} disabled={exam.isPublished}>
+                                                        <button className={`text-blue-600 hover:text-blue-800 }`} >
                                                             <FiEdit2 />
                                                         </button>
                                                     </Link>
