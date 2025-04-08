@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
     // Function to store token in cookies
     const storeTokenInCookies = (serverToken) => {
         setToken(serverToken);
-        document.cookie = `authToken=${serverToken}; path=/; max-age=3600; secure; samesite=None`;
+        document.cookie = `authToken=${serverToken}; path=/; max-age=10800; secure; samesite=None`;
     };
 
     // API URL from environment variables
