@@ -83,7 +83,18 @@ const io = new Server(server, {
     allowEIO3: true, // backward compatibility
 });
 const PORT = process.env.PORT || 5000;
-app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+}));
+
+app.options('*', cors({
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  }));
+  
 app.use(express.json());
 
 // Error Catch
@@ -102,7 +113,7 @@ const rateLimiter = new RateLimiterRedis({
     keyPrefix: "middleware",
     points: 30000,
     duration: 5,
-    blockDuration:5,
+    blockDuration: 5,
 });
 
 app.use((req, res, next) => {
@@ -119,7 +130,7 @@ app.use((req, res, next) => {
 
 //Ip based rate limiting for sensitive endpoints
 const sensitiveEndpointsLimiter = rateLimit({
-    windowMs: 10* 1000,
+    windowMs: 10 * 1000,
     max: 30000,
     standardHeaders: true,
     legacyHeaders: false,
