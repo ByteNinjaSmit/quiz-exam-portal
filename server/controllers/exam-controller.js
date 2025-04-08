@@ -290,7 +290,7 @@ const storeResult = async (req, res, next) => {
 // -------------------
 
 const postCheat = async (req, res, next) => {
-    const { user, paperKey } = req.body;
+    const { user, paperKey,reason } = req.body;
 
     try {
         if (!mongoose.Types.ObjectId.isValid(user)) {
@@ -309,6 +309,7 @@ const postCheat = async (req, res, next) => {
             if (cheatRecord.isWarning) {
                 // If `isWarning` is true, update `isCheat` to true
                 cheatRecord.isCheat = true;
+                cheatRecord.reason = reason;
                 await cheatRecord.save();
                 return res
                     .status(200)
@@ -316,6 +317,7 @@ const postCheat = async (req, res, next) => {
             } else {
                 // If `isWarning` is false, set `isWarning` to true
                 cheatRecord.isWarning = true;
+                cheatRecord.reason  = reason;
                 await cheatRecord.save();
                 return res
                     .status(200)
@@ -327,6 +329,7 @@ const postCheat = async (req, res, next) => {
                 user,
                 paperKey,
                 isWarning: true, // Setting `isWarning` to true on creation
+                reason,
             });
 
             await newCheatRecord.save();

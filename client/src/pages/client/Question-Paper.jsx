@@ -27,7 +27,7 @@ const ExamInterface = () => {
 
   // For Is Cheated or Not with First And Second Warning
   const [isCheated, setIsCheated] = useState(false);
-
+  const [cheatReason, setCheatReason] = useState("");
 
   // Socket Io states
   const [isAnswerCorrect, setIsAnswerCorrect] = useState(null); // null = no answer yet
@@ -172,12 +172,13 @@ const ExamInterface = () => {
 
 
   // Handle CheatFunction
-  const handleCheatFunction = async (e) => {
+  const handleCheatFunction = async (e,reason) => {
     e.preventDefault();
 
     const cheatData = {
       user: user._id, // Replace with the actual user ID from your application state
       paperKey: paperKey, // Replace with the actual paper key from your application state
+      reason:reason,
     };
 
     try {
@@ -497,6 +498,7 @@ const ExamInterface = () => {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
+        setCheatReason("Tab Switching or Focus Loose");
         setShowWarning(true);
       }
     };
@@ -516,6 +518,7 @@ const ExamInterface = () => {
         (event.ctrlKey && event.key === "u") // Ctrl + U (View Source)
       ) {
         event.preventDefault();
+        setCheatReason("Right-click, Inspect Element, and Copying");
         setShowWarning(true);
       }
     };
@@ -533,6 +536,7 @@ const ExamInterface = () => {
   useEffect(() => {
     const disablePaste = (event) => {
       event.preventDefault();
+      setCheatReason("Clipboard & Input Pasting");
       setShowWarning(true);
     };
 
@@ -546,6 +550,7 @@ const ExamInterface = () => {
   useEffect(() => {
     const blockAllKeys = (event) => {
       event.preventDefault();
+      setCheatReason("All Keyboard Inputs");
       setShowWarning(true);
     };
 
@@ -570,6 +575,7 @@ const ExamInterface = () => {
     // Detect Fullscreen Exit & Force Re-entry
     const checkFullScreen = () => {
       if (!document.fullscreenElement) {
+        setCheatReason("Exiting From Full Screen");
         setShowWarning(true);
         enterFullScreen(); // Re-enter fullscreen if exited
       }
@@ -593,6 +599,7 @@ const ExamInterface = () => {
   // Detect Browser Back/Forward Navigation
   useEffect(() => {
     const preventBackNavigation = () => {
+      setCheatReason("Detected Browser Back/Forward Navigation");
       setShowWarning(true);
       window.history.pushState(null, "", window.location.href);
     };
@@ -609,7 +616,7 @@ const ExamInterface = () => {
     const handleBeforeUnload = (e) => {
       e.preventDefault();
       e.returnValue = ""; // Some browsers require this for confirmation
-      handleCheatFunction(e);
+      handleCheatFunction(e,"Detect and Prevent Page Refresh");
     };
 
     window.addEventListener("beforeunload", handleBeforeUnload);
@@ -681,7 +688,7 @@ const ExamInterface = () => {
               onClick={(e) => {
                 setShowWarning(false);
                 console.log("exam cheated");
-                handleCheatFunction(e); // this is function
+                handleCheatFunction(e,cheatReason); // this is function
               }}
               className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors"
             >

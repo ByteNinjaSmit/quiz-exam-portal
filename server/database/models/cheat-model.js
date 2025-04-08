@@ -14,6 +14,9 @@ const cheatSchema = new mongoose.Schema({
         type:Boolean,
         default:false,
     },
+    reason:{
+        type:String,
+    },
     paperKey: {
         type: String,
         required: true, // Make the paperKey mandatory
