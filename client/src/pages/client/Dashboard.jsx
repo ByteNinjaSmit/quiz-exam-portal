@@ -37,69 +37,63 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-
+  
+      const config = {
+        headers: { Authorization: authorizationToken },
+        withCredentials: true,
+      };
+  
       try {
+        // 1. Fetch Exams
         try {
-          // Fetch exams
-          const examResponse = await axios.get(`${API}/api/user/get-exam/${user.classy}`, {
-            headers: { Authorization: authorizationToken },
-            withCredentials: true,
-          });
-          setExams(examResponse.data.exams);
-        } catch (error) {
-          console.log(error);
+          const examRes = await axios.get(`${API}/api/user/get-exam/${user.classy}`, config);
+          setExams(examRes.data.exams);
+        } catch (err) {
+          console.warn("Exams fetch failed:", err.message);
         }
-        // Get Problems Data
+  
+        // 2. Fetch Problems
         try {
-          const problemResponse = await axios.get(`${API}/api/problem/get-all-problems`, {
-            headers: { Authorization: authorizationToken },
-            withCredentials: true,
-          })
-          setProblemData(problemResponse.data.problems);
-        } catch (error) {
-          console.log("Error From Fetching Problems", error);
+          const problemRes = await axios.get(`${API}/api/problem/get-all-problems`, config);
+          setProblemData(problemRes.data.problems);
+        } catch (err) {
+          console.warn("Problems fetch failed:", err.message);
         }
-        // Get Contest Data
+  
+        // 3. Fetch Contest
         try {
-          const contestResponse = await axios.get(`${API}/api/problem/get-latest-contest`,
-            {
-              headers: { Authorization: authorizationToken },
-              withCredentials: true,
-            })
-          setContestData(contestResponse.data.contest);
-        } catch (error) {
-          console.log("Error From Fetching Contests", error);
+          const contestRes = await axios.get(`${API}/api/problem/get-latest-contest`, config);
+          setContestData(contestRes.data.contest);
+        } catch (err) {
+          console.warn("Contest fetch failed:", err.message);
         }
-        // Fetch results
+  
+        // 4. Fetch Results
         try {
-          const resultsResponse = await axios.get(`${API}/api/exam/get/results/${user._id}`, {
-            headers: { Authorization: authorizationToken },
-            withCredentials: true,
-          });
-          setResults(resultsResponse.data);
-        } catch (error) {
-          console.log(error)
+          const resultRes = await axios.get(`${API}/api/exam/get/results/${user._id}`, config);
+          setResults(resultRes.data);
+        } catch (err) {
+          console.warn("Results fetch failed:", err.message);
         }
-        // Fetch leaderboard
+  
+        // 5. Fetch Leaderboard
         try {
-          const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`, {
-            headers: { Authorization: authorizationToken },
-            withCredentials: true,
-          });
-          setLeaderboardData(leaderboardResponse.data.data);
-        } catch (error) {
-          console.log("Error From Fetch Leaderboard",error);
+          const leaderboardRes = await axios.get(`${API}/api/exam/get/leaderboard`);
+          setLeaderboardData(leaderboardRes.data.data);
+        } catch (err) {
+          console.warn("Leaderboard fetch failed:", err.message);
         }
-      } catch (error) {
-        console.error(error);
-        toast.error(error.message || 'An error occurred');
+  
+      } catch (err) {
+        console.error("Something unexpected failed:", err.message);
       } finally {
         setIsLoading(false);
       }
     };
-
+  
     fetchData();
   }, [API]);
+  
 
   const dummyData = {
     profile: {
