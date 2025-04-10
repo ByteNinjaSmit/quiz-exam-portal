@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const contestCheatSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Users',
         required:true,
     },
     isWarning:{
@@ -13,6 +13,9 @@ const contestCheatSchema = new mongoose.Schema({
     isCheat:{
         type:Boolean,
         default:false,
+    },
+    reason:{
+        type:String,
     },
     problemId: {
         type: mongoose.Schema.Types.ObjectId,

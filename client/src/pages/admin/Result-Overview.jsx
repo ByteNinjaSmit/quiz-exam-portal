@@ -311,6 +311,7 @@ const ResultOverview = () => {
                                     <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Date</th>
                                     {/* <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publish</th> */}
                                     <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Attend</th>
+                                    <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Cheats</th>
                                     <th className="px-4 py-3 text-left text-xs font-medium text-[#3A0CA3] uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
@@ -345,6 +346,13 @@ const ResultOverview = () => {
                                                 <div className={`text-sm font-medium text-gray-900 items-center`}>
                                                     {exam.numberOfUniqueUsers}
                                                 </div>
+                                            </td>
+                                            <td className="px-4 py-4">
+                                                <Link to={`/admin/view-cheats/question_paper/${exam.paperKey}`}>
+                                                    <button className="text-gray-600 hover:text-gray-800">
+                                                        <FiEye />
+                                                    </button>
+                                                </Link>
                                             </td>
                                             <td className="px-4 py-4">
                                                 <div className="flex space-x-3 items-center">

@@ -86,6 +86,7 @@ const CodingContestPlatform = () => {
   const [isExamEnded, setIsExamEnded] = useState(false)
   const [remainingTime, setRemainingTime] = useState(0)
   const [isCheated, setIsCheated] = useState(false)
+  const [cheatReason , setCheatReason ] = useState("");
   const [showWarning, setShowWarning] = useState(false)
   const [warningCount, setWarningCount] = useState(0)
   const [tabSwitchCount, setTabSwitchCount] = useState(0)
@@ -560,6 +561,7 @@ const CodingContestPlatform = () => {
     const cheatData = {
       user: user?._id,
       problemId: problem?._id,
+      reason:cheatReason,
     }
 
     try {
@@ -720,7 +722,8 @@ const CodingContestPlatform = () => {
       if (document.hidden) {
         setTabSwitchCount((prev) => prev + 1)
         if (tabSwitchCount >= 0) {
-          toast.warning("Switching tabs is not allowed during the contest!")
+          toast.warning("Switching tabs is not allowed during the contest!");
+          setCheatReason("Detected Tab Switching")
           setShowWarning(true)
         } else {
           toast.warning("Switching tabs is not allowed during the contest!")
@@ -750,6 +753,7 @@ const CodingContestPlatform = () => {
         event.preventDefault()
         setWarningCount((prev) => prev + 1)
         if (warningCount >= 1) {
+          setCheatReason("Block Right-click, Inspect Element, and Copying");
           setShowWarning(true)
           // handleCheatFunction(); 
         } else {
@@ -775,6 +779,7 @@ const CodingContestPlatform = () => {
         event.preventDefault();
         setWarningCount((prev) => {
           if (prev >= 1) {
+            setCheatReason("Page Refresh (F5, Ctrl+R)");
             setShowWarning(true);
             // handleCheatFunction();
           }
@@ -799,6 +804,7 @@ const CodingContestPlatform = () => {
         event.preventDefault();
         setWarningCount((prev) => {
           if (prev >= 1) {
+            setCheatReason("Mobile Refresh (Pull-to-Refresh)");
             setShowWarning(true);
             // handleCheatFunction();
           }
@@ -822,6 +828,7 @@ const CodingContestPlatform = () => {
       if (document.hidden) {
         setWarningCount((prev) => {
           if (prev >= 1) {
+            setCheatReason("Split-Screen & Multiple Tabs");
             setShowWarning(true);
             // handleCheatFunction();
           }
@@ -847,6 +854,7 @@ const CodingContestPlatform = () => {
         setWarningCount((prev) => prev + 1)
 
         if (warningCount >= 1) {
+          setCheatReason("Disable Clipboard & Input Pasting");
           setShowWarning(true)
           // handleCheatFunction() // 🔥 Call anti-cheat function after 2 warnings
         } else {
@@ -861,6 +869,7 @@ const CodingContestPlatform = () => {
         setWarningCount((prev) => prev + 1)
 
         if (warningCount >= 1) {
+          setCheatReason("Clipboard & Input Pasting")
           setShowWarning(true)
           // handleCheatFunction() // 🔥 Call anti-cheat function after 2 warnings
         } else {
@@ -896,6 +905,7 @@ const CodingContestPlatform = () => {
   
     const checkFullScreen = () => {
       if (!document.fullscreenElement) {
+        setCheatReason("user exits fullscreen");
         setShowWarning(true); // 🚨 Show warning when user exits fullscreen
   
         // 🔥 Ensure re-entry on the next user interaction
@@ -919,6 +929,7 @@ const CodingContestPlatform = () => {
     const preventBackNavigation = () => {
       setWarningCount((prev) => prev + 1)
       if (warningCount >= 1) {
+        setCheatReason("Detect Browser Back/Forward Navigation");
         setShowWarning(true)
       } else {
         toast.warning("Navigation is not allowed during the contest!")
@@ -942,6 +953,7 @@ const CodingContestPlatform = () => {
         event.preventDefault()
         setWarningCount((prev) => prev + 1)
         if (warningCount >= 1) {
+          setCheatReason("Switching applications Detect Alt+Tab & Win+Tab Attempts");
           setShowWarning(true)
         } else {
           toast.warning("Switching applications is not allowed during the contest!")
@@ -971,6 +983,7 @@ const CodingContestPlatform = () => {
     // Detect Fullscreen Exit & Force Re-entry
     const checkFullScreen = () => {
       if (!document.fullscreenElement) {
+        setCheatReason("Fullscreen Exit & Force Re-entry");
         setShowWarning(true);
         enterFullScreen(); // Re-enter fullscreen if exited
       }

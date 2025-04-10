@@ -51,6 +51,8 @@ import ContestResult from "./pages/admin/Contest-Result";
 import About from "./pages/About";
 import EditCodingContestForm from "./pages/admin/Edit-Contest";
 import FAQ from "./pages/FAQ";
+import CheatMonitoringDashboard from "./pages/admin/Quiz-Cheat";
+import CheatMonitoringDashboardContest from "./pages/admin/Contest-Cheat";
 
 
 
@@ -121,7 +123,9 @@ const App = () => {
               <Route exact path="edit-contest/:id" element={<EditCodingContestForm />} />
               <Route exact path="view-exam/question_paper/:examId/:title/:paperkey" element={<ViewQuestionPaper />} />
               <Route exact path="view-result/question_paper/:paperkey/:title" element={<StudentResultsPage />} />
+              <Route exact path="view-cheats/question_paper/:paperkey" element={<CheatMonitoringDashboard />} />
               <Route exact path="view-result/contest/:id" element={<ContestResult />} />
+              <Route exact path="view-cheats/contest/:problemId" element={<CheatMonitoringDashboardContest />} />
               <Route exact path="result/:userId/:paperkey/:name" element={<QuestionPaperResultView />} />
               <Route exact path="leaderboard" element={<LeaderboardOverview />} />
               <Route exact path="results/:userId/:name" element={<SingleUserResults />} />

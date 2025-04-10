@@ -578,11 +578,11 @@ const deleteCodingContestById = async (req, res, next) => {
 // -------------------
 
 const postContestCheat = async (req, res, next) => {
-    const { user, problemId } = req.body;
+    const { user, problemId,reason } = req.body;
 
     try {
         // Validate required fields
-        if (!user || !problemId) {
+        if (!user || !problemId || !reason) {
             return res.status(400).json({ message: "Missing required data." });
         }
         if (!mongoose.Types.ObjectId.isValid(user)) {
@@ -600,6 +600,7 @@ const postContestCheat = async (req, res, next) => {
             if (cheatRecord.isWarning) {
                 // If `isWarning` is true, update `isCheat` to true
                 cheatRecord.isCheat = true;
+                cheatRecord.reason = reason;
                 await cheatRecord.save();
                 return res
                     .status(200)
@@ -607,6 +608,7 @@ const postContestCheat = async (req, res, next) => {
             } else {
                 // If `isWarning` is false, set `isWarning` to true
                 cheatRecord.isWarning = true;
+                cheatRecord.reason = reason;
                 await cheatRecord.save();
                 return res
                     .status(200)
@@ -617,6 +619,7 @@ const postContestCheat = async (req, res, next) => {
             const newCheatRecord = new ContestCheat({
                 user,
                 problemId,
+                reason,
                 isWarning: true, // Setting `isWarning` to true on creation
             });
 

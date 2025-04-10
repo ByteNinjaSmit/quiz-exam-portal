@@ -36,4 +36,10 @@ router.route("/delete-user/:userId").delete(authMiddleware,facultyMiddleware,fac
 // Update Profile 
 router.route("/update-profile").patch(authMiddleware,facultyMiddleware,facultyControllers.updateProfile);
 
+// Get Quiz Cheat Data 
+router.route("/get-quiz-cheat/:paperKey").get(authMiddleware,facultyMiddleware,facultyControllers.getQuizCheatData);
+// Get Contest Cheat Data
+router.route("/get-contest-cheat/:problemId").get(authMiddleware,facultyMiddleware,facultyControllers.getContestCheatData);
+
+
 module.exports = router;

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const cheatSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Users',
         required:true,
     },
     isWarning:{

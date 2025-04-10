@@ -11,6 +11,7 @@ const Cheat = require("../database/models/cheat-model");
 const CodeSubmission = require("../database/models/code-submission-model");
 const ContestCheat = require("../database/models/code-cheat-model");
 const CodeContestSubmission = require("../database/models/codeContest-submission-model");
+const CodeContest = require("../database/models/code-contest-model");
 
 // ---------------------------
 // GET ALL User
@@ -522,4 +523,116 @@ const updateProfile = async (req, res, next) => {
 }
 
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult, exportPaperDetails, deleteUser,updateProfile };
+// --------------------
+// Quiz Exam Cheat Data GET
+// --------------------
+const getQuizCheatData = async (req, res, next) => {
+    try {
+        const { paperKey } = req.params;
+
+        if (!paperKey) {
+            return res.status(400).json({ message: "Quiz paperKey is required" });
+        }
+
+        // Check if QuestionPaper with this paperKey exists
+        const isExist = await QuestionPaper.findOne({ paperKey: paperKey });
+
+        if (!isExist) {
+            return res.status(404).json({ message: "Paper Not Found" });
+        }
+
+        // Fetch all cheat records for the paperKey and populate user details
+        const cheatData = await Cheat.find({ paperKey: paperKey }).populate('user', '-password').exec();
+
+        return res.status(200).json({
+            message: "Cheat data fetched successfully",
+            cheatData,
+            count: cheatData.length,
+        });
+
+    } catch (error) {
+        console.error("Error in getQuizCheatData:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+// --------------------
+// Code Contest Cheat Data GET
+// --------------------
+const getContestCheatData = async (req, res, next) => {
+    try {
+        const { problemId } = req.params;
+
+        if (!problemId) {
+            return res.status(400).json({ message: "Contest problemId is required" });
+        }
+        // Valid Problem id by Mongoose Object Id
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
+            return res.status(400).json({ message: "Invalid Problem Id" });
+        }
+
+        // Check if QuestionPaper with this paperKey exists
+        const isExist = await CodeContest.findOne({ _id: problemId });
+
+        if (!isExist) {
+            return res.status(404).json({ message: "Code Contest Not Found" });
+        }
+
+        // Fetch all cheat records for the paperKey and populate user details
+        const cheatData = await Cheat.find({ problemId: problemId }).populate('user', '-password').exec();
+
+        return res.status(200).json({
+            message: "Cheat data fetched successfully",
+            cheatData,
+            count: cheatData.length,
+        });
+
+    } catch (error) {
+        console.error("Error in getQuizCheatData:", error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+// ---------------------
+// Delete Quiz Cheat Of Particular Student
+// ---------------------
+
+const deleteQuizCheatStudent = async (req, res, next) => {
+    try {
+        const { studentId, paperKey } = req.params;
+
+        if (!studentId || !paperKey) {
+            return res.status(400).json({ message: "All Fields Are Required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(studentId)) {
+            return res.status(400).json({ message: "Invalid Student Id" });
+        }
+
+        // Check if QuestionPaper with this paperKey exists
+        const isExist = await QuestionPaper.findOne({ paperKey });
+
+        if (!isExist) {
+            return res.status(404).json({ message: "Paper Not Found" });
+        }
+
+        // Find and delete the cheat entry
+        const deleted = await Cheat.findOneAndDelete({ user: studentId, paperKey });
+
+        if (!deleted) {
+            return res.status(404).json({ message: "Cheat record not found for this student and paper" });
+        }
+
+        return res.status(200).json({
+            message: "Cheat record deleted successfully",
+        });
+
+    } catch (error) {
+        console.error("Error deleting cheat record:", error);
+        next(error);
+    }
+};
+
+
+
+module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult, exportPaperDetails, deleteUser, updateProfile, getQuizCheatData, getContestCheatData,deleteQuizCheatStudent };

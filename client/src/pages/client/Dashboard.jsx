@@ -81,12 +81,15 @@ const Dashboard = () => {
           console.log(error)
         }
         // Fetch leaderboard
-        const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`, {
-          headers: { Authorization: authorizationToken },
-          withCredentials: true,
-        });
-        setLeaderboardData(leaderboardResponse.data.data);
-
+        try {
+          const leaderboardResponse = await axios.get(`${API}/api/exam/get/leaderboard`, {
+            headers: { Authorization: authorizationToken },
+            withCredentials: true,
+          });
+          setLeaderboardData(leaderboardResponse.data.data);
+        } catch (error) {
+          console.log("Error From Fetch Leaderboard",error);
+        }
       } catch (error) {
         console.error(error);
         toast.error(error.message || 'An error occurred');
