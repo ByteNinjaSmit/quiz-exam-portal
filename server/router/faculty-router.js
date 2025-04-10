@@ -40,6 +40,18 @@ router.route("/update-profile").patch(authMiddleware,facultyMiddleware,facultyCo
 router.route("/get-quiz-cheat/:paperKey").get(authMiddleware,facultyMiddleware,facultyControllers.getQuizCheatData);
 // Get Contest Cheat Data
 router.route("/get-contest-cheat/:problemId").get(authMiddleware,facultyMiddleware,facultyControllers.getContestCheatData);
+// Delete Quiz Cheat 
+router.route("/delete-quiz-cheat/:studentId/:paperKey").delete(authMiddleware,facultyMiddleware,facultyControllers.deleteQuizCheatStudent);
+// Update Warning Quiz Chaeat
+router.route("/update-warning-quiz-cheat").patch(authMiddleware, facultyMiddleware, facultyControllers.toggleWarningQuizCheatStudent);
+router.route("/update-ischeat-quiz-cheat").patch(authMiddleware, facultyMiddleware, facultyControllers.toggleIsCheatQuizStudent);
+
+// Delete Contest Cheat 
+router.route("/delete-contest-cheat/:studentId/:problemId").delete(authMiddleware,facultyMiddleware,facultyControllers.deleteContestCheatStudent);
+// Update Warning & Cheat Contest Chaeat
+router.route("/update-warning-contest-cheat").patch(authMiddleware, facultyMiddleware, facultyControllers.toggleWarningContestCheatStudent);
+router.route("/update-ischeat-contest-cheat").patch(authMiddleware, facultyMiddleware, facultyControllers.toggleIsCheatContestStudent);
+
 
 
 module.exports = router;

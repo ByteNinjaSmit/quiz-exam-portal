@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import { Eye, Trash2, AlertTriangle, Shield, Search, X, ChevronLeft, ChevronRight } from "lucide-react"
 import axios from "axios"
@@ -74,14 +72,14 @@ export default function CheatMonitoringDashboardContest() {
   const handleDelete = async (id) => {
     try {
       // API call to delete the record would go here
-      // const response = await axios.delete(`${API}/api/faculty/delete-cheat/${id}`, {
-      //   headers: { 'Authorization': authorizationToken },
-      //   withCredentials: true,
-      // })
-
-      // For now, just update the UI
-      setData(data.filter((item) => item._id !== id))
-      toast.success("Record deleted successfully")
+      const response = await axios.delete(`${API}/api/faculty/delete-contest-cheat/${id}/${params.problemId}`, {
+        headers: { 'Authorization': authorizationToken },
+        withCredentials: true,
+      })
+      if (response.status === 200) {
+        toast.success(response.data.message)
+        fetchData();
+      }
     } catch (error) {
       console.log(error)
       toast.error("Failed to delete record")
@@ -90,21 +88,21 @@ export default function CheatMonitoringDashboardContest() {
 
   const handleToggleWarning = async (id) => {
     try {
-      const item = data.find((item) => item._id === id)
-      if (!item) return
-
       // API call to update warning status would go here
-      // const response = await axios.patch(`${API}/api/faculty/update-cheat/${id}`,
-      //   { isWarning: !item.isWarning },
-      //   {
-      //     headers: { 'Authorization': authorizationToken },
-      //     withCredentials: true,
-      //   }
-      // )
-
-      // For now, just update the UI
-      setData(data.map((item) => (item._id === id ? { ...item, isWarning: !item.isWarning } : item)))
-      toast.success(`Warning ${item.isWarning ? "removed" : "added"} successfully`)
+      const response = await axios.patch(`${API}/api/faculty/update-warning-contest-cheat`,
+        {
+          studentId: id,
+          problemId: params?.problemId,
+        },
+        {
+          headers: { 'Authorization': authorizationToken },
+          withCredentials: true,
+        }
+      )
+      if (response.status === 200) {
+        toast.success(response.data.message)
+        fetchData();
+      }
     } catch (error) {
       console.log(error)
       toast.error("Failed to update warning status")
@@ -113,21 +111,22 @@ export default function CheatMonitoringDashboardContest() {
 
   const handleToggleCheat = async (id) => {
     try {
-      const item = data.find((item) => item._id === id)
-      if (!item) return
 
       // API call to update cheat status would go here
-      // const response = await axios.patch(`${API}/api/faculty/update-cheat/${id}`,
-      //   { isCheat: !item.isCheat },
-      //   {
-      //     headers: { 'Authorization': authorizationToken },
-      //     withCredentials: true,
-      //   }
-      // )
-
-      // For now, just update the UI
-      setData(data.map((item) => (item._id === id ? { ...item, isCheat: !item.isCheat } : item)))
-      toast.success(`Cheat status ${item.isCheat ? "removed" : "added"} successfully`)
+      const response = await axios.patch(`${API}/api/faculty/update-ischeat-contest-cheat`,
+        {
+          studentId: id,
+          problemId: params?.problemId,
+        },
+        {
+          headers: { 'Authorization': authorizationToken },
+          withCredentials: true,
+        }
+      )
+      if (response.status === 200) {
+        toast.success(response.data.message)
+        fetchData();
+      }
     } catch (error) {
       console.log(error)
       toast.error("Failed to update cheat status")
@@ -311,7 +310,7 @@ export default function CheatMonitoringDashboardContest() {
                         <Eye className="h-5 w-5" />
                       </button>
                       <button
-                        onClick={() => handleToggleWarning(item._id)}
+                        onClick={() => handleToggleWarning(item.user._id)}
                         className={`p-1 rounded-full transition-colors ${
                           item.isWarning
                             ? "text-yellow-500 hover:text-yellow-700 dark:text-yellow-400 dark:hover:text-yellow-300 hover:bg-yellow-100 dark:hover:bg-yellow-900/20"
@@ -322,7 +321,7 @@ export default function CheatMonitoringDashboardContest() {
                         <AlertTriangle className="h-5 w-5" />
                       </button>
                       <button
-                        onClick={() => handleToggleCheat(item._id)}
+                        onClick={() => handleToggleCheat(item.user._id)}
                         className={`p-1 rounded-full transition-colors ${
                           item.isCheat
                             ? "text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-100 dark:hover:bg-red-900/20"
@@ -333,7 +332,7 @@ export default function CheatMonitoringDashboardContest() {
                         <Shield className="h-5 w-5" />
                       </button>
                       <button
-                        onClick={() => handleDelete(item._id)}
+                        onClick={() => handleDelete(item.user._id)}
                         className="text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors"
                         title="Delete Record"
                       >
@@ -376,7 +375,7 @@ export default function CheatMonitoringDashboardContest() {
                     <Eye className="h-5 w-5" />
                   </button>
                   <button
-                    onClick={() => handleDelete(item._id)}
+                    onClick={() => handleDelete(item.user._id)}
                     className="text-gray-600 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 p-1 rounded-full hover:bg-red-100 dark:hover:bg-red-900/20 transition-colors"
                     title="Delete Record"
                   >
@@ -412,7 +411,7 @@ export default function CheatMonitoringDashboardContest() {
                 <p className="text-xs text-gray-500 dark:text-gray-400">{formatDate(item.createdAt)}</p>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => handleToggleWarning(item._id)}
+                    onClick={() => handleToggleWarning(item.user._id)}
                     className={`p-1 rounded-full transition-colors ${
                       item.isWarning
                         ? "text-yellow-500 hover:text-yellow-700 dark:text-yellow-400 dark:hover:text-yellow-300"
@@ -423,7 +422,7 @@ export default function CheatMonitoringDashboardContest() {
                     <AlertTriangle className="h-5 w-5" />
                   </button>
                   <button
-                    onClick={() => handleToggleCheat(item._id)}
+                    onClick={() => handleToggleCheat(item.user._id)}
                     className={`p-1 rounded-full transition-colors ${
                       item.isCheat
                         ? "text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"

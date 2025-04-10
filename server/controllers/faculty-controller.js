@@ -633,6 +633,261 @@ const deleteQuizCheatStudent = async (req, res, next) => {
     }
 };
 
+// -----------------------
+// Remove Warning From Cheat Quiz of Student
+// -----------------------
+const toggleWarningQuizCheatStudent = async (req, res, next) => {
+    try {
+        const { studentId, paperKey } = req.body;
+
+        if (!studentId || !paperKey) {
+            return res.status(400).json({ message: "All Fields Are Required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(studentId)) {
+            return res.status(400).json({ message: "Invalid Student Id" });
+        }
+
+        const paper = await QuestionPaper.findOne({ paperKey });
+        if (!paper) {
+            return res.status(404).json({ message: "Paper Not Found" });
+        }
+
+        const cheatRecord = await Cheat.findOne({ user: studentId, paperKey });
+        if (!cheatRecord) {
+            return res.status(404).json({ message: "Cheat record not found" });
+        }
+
+        // If warning is true, set it to false
+        if (cheatRecord.isWarning === true) {
+            cheatRecord.isWarning = false;
+            await cheatRecord.save();
+
+            return res.status(200).json({
+                message: "Warning removed successfully",
+                updatedRecord: cheatRecord,
+            });
+        } else {
+            return res.status(200).json({
+                message: "No warning was set for this student",
+            });
+        }
+    } catch (error) {
+        console.error("Toggle Warning Error:", error);
+        next(error);
+    }
+};
+
+// ---------------------------
+// Remove isCheat From Cheat Quiz of Student
+// ---------------------------
+const toggleIsCheatQuizStudent = async (req, res, next) => {
+    try {
+        const { studentId, paperKey } = req.body;
+
+        if (!studentId || !paperKey) {
+            return res.status(400).json({ message: "All Fields Are Required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(studentId)) {
+            return res.status(400).json({ message: "Invalid Student Id" });
+        }
+
+        const paper = await QuestionPaper.findOne({ paperKey });
+        if (!paper) {
+            return res.status(404).json({ message: "Paper Not Found" });
+        }
+
+        const cheatRecord = await Cheat.findOne({ user: studentId, paperKey });
+        if (!cheatRecord) {
+            return res.status(404).json({ message: "Cheat record not found" });
+        }
+
+         // If warning is true, set it to false
+         if (cheatRecord.isCheat === true) {
+            cheatRecord.isCheat = false;
+            await cheatRecord.save();
+
+            return res.status(200).json({
+                message: "isCheat removed successfully",
+                updatedRecord: cheatRecord,
+            });
+        } else {
+            return res.status(200).json({
+                message: "No isCheat was set for this student",
+            });
+        }
+
+    } catch (error) {
+        console.error("Toggle isCheat Error:", error);
+        next(error);
+    }
+};
+
+// ---------------------
+// Delete Code Contest Cheat of Student
+// -----------------------
+
+const deleteContestCheatStudent = async (req, res, next) => {
+    try {
+        const { studentId, problemId } = req.params;
+
+        if (!studentId || !problemId) {
+            return res.status(400).json({ message: "All Fields Are Required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(studentId)) {
+            return res.status(400).json({ message: "Invalid Student Id" });
+        }
+        if(!mongoose.Types.ObjectId.isValid(problemId)){
+            return res.status(400).json({ message: "Invalid Problem Id" });
+        }
+
+        // Check if CodeContest with this paperKey exists
+        const isExist = await CodeContest.findOne({_id:problemId});
+
+        if (!isExist) {
+            return res.status(404).json({ message: "Contest Not Found" });
+        }
+
+        // Find and delete the cheat entry
+        const deleted = await ContestCheat.findOneAndDelete({ user: studentId, problemId });
+
+        if (!deleted) {
+            return res.status(404).json({ message: "Cheat record not found for this student and Contest" });
+        }
+
+        return res.status(200).json({
+            message: "Cheat record deleted successfully",
+        });
+
+    } catch (error) {
+        console.error("Error deleting cheat record:", error);
+        next(error);
+    }
+};
 
 
-module.exports = { getUsers, getUser, getTotalUsers, getAllResults, getPaperDetails, getLeaderboard, deleteUserPaperResult, exportPaperDetails, deleteUser, updateProfile, getQuizCheatData, getContestCheatData,deleteQuizCheatStudent };
+// ----------------------
+// Remove Warning From Code Contest Cheat of Student
+// ----------------------
+
+const toggleWarningContestCheatStudent = async (req, res, next) => {
+    try {
+        const { studentId, problemId } = req.body;
+
+        if (!studentId || !problemId) {
+            return res.status(400).json({ message: "All Fields Are Required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(studentId)) {
+            return res.status(400).json({ message: "Invalid Student Id" });
+        }
+        if(!mongoose.Types.ObjectId.isValid(problemId)){
+            return res.status(400).json({ message: "Invalid Problem Id" });
+        }
+
+        const contest = await CodeContest.findOne({ _id:problemId });
+        if (!contest) {
+            return res.status(404).json({ message: "Contest Not Found" });
+        }
+
+        const cheatRecord = await ContestCheat.findOne({ user: studentId, problemId });
+        if (!cheatRecord) {
+            return res.status(404).json({ message: "Cheat record not found" });
+        }
+
+        // If warning is true, set it to false
+        if (cheatRecord.isWarning === true) {
+            cheatRecord.isWarning = false;
+            await cheatRecord.save();
+
+            return res.status(200).json({
+                message: "Warning removed successfully",
+                updatedRecord: cheatRecord,
+            });
+        } else {
+            return res.status(200).json({
+                message: "No warning was set for this student",
+            });
+        }
+    } catch (error) {
+        console.error("Toggle Warning Error:", error);
+        next(error);
+    }
+};
+
+
+// ----------------------
+// Remove isCheat From Code Contest Cheat Of Student 
+// -----------------------
+
+const toggleIsCheatContestStudent = async (req, res, next) => {
+    try {
+        const { studentId, problemId } = req.body;
+
+        if (!studentId || !problemId) {
+            return res.status(400).json({ message: "All Fields Are Required" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(studentId)) {
+            return res.status(400).json({ message: "Invalid Student Id" });
+        }
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
+            return res.status(400).json({ message: "Invalid Problem Id" });
+        }
+
+        const contest = await CodeContest.findOne({ _id:problemId });
+        if (!contest) {
+            return res.status(404).json({ message: "Contest Not Found" });
+        }
+
+        const cheatRecord = await ContestCheat.findOne({ user: studentId, problemId });
+        if (!cheatRecord) {
+            return res.status(404).json({ message: "Cheat record not found" });
+        }
+
+         // If warning is true, set it to false
+         if (cheatRecord.isCheat === true) {
+            cheatRecord.isCheat = false;
+            await cheatRecord.save();
+
+            return res.status(200).json({
+                message: "isCheat removed successfully",
+                updatedRecord: cheatRecord,
+            });
+        } else {
+            return res.status(200).json({
+                message: "No isCheat was set for this student",
+            });
+        }
+
+    } catch (error) {
+        console.error("Toggle isCheat Error:", error);
+        next(error);
+    }
+};
+
+
+
+module.exports = {
+    getUsers,
+    getUser,
+    getTotalUsers,
+    getAllResults,
+    getPaperDetails,
+    getLeaderboard,
+    deleteUserPaperResult,
+    exportPaperDetails,
+    deleteUser,
+    updateProfile,
+    getQuizCheatData,
+    getContestCheatData,
+    deleteQuizCheatStudent,
+    toggleWarningQuizCheatStudent,
+    toggleIsCheatQuizStudent,
+    deleteContestCheatStudent,
+    toggleWarningContestCheatStudent,
+    toggleIsCheatContestStudent,
+
+};
