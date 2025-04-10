@@ -579,7 +579,7 @@ const getContestCheatData = async (req, res, next) => {
         }
 
         // Fetch all cheat records for the paperKey and populate user details
-        const cheatData = await Cheat.find({ problemId: problemId }).populate('user', '-password').exec();
+        const cheatData = await ContestCheat.find({ problemId: problemId }).populate('user', '-password').exec();
 
         return res.status(200).json({
             message: "Cheat data fetched successfully",
