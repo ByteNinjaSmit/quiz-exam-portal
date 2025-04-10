@@ -1,5 +1,3 @@
-"use client"
-
 import { useEffect, useState } from "react"
 import CodeMirror from "@uiw/react-codemirror"
 import { javascript } from "@codemirror/lang-javascript"
@@ -178,28 +176,28 @@ const CodingProblemPlatform = () => {
   }, [API])
 
   const handleSubmitCode = async (e) => {
-    e.preventDefault()
-    setIsExecuted(false)
-    setIsError(false)
-    setIsLoading(true)
-    setIsExecutionStart(true)
-    setTestCaseResults([])
-
-    let passedCount = 0
-    setTestCasesPassedNumber(0)
-    let totalExecutionTime = 0
-    const totalTestCases = testCases.length
-    let finalOutput = ""
-    let accuracyPass = 0
-    let avgTime = 0
-    let isSuccessfullyRun = false
-    const newTestCaseResults = []
-
+    e.preventDefault();
+    setIsExecuted(false);
+    setIsError(false);
+    setIsLoading(true);
+    setIsExecutionStart(true);
+    setTestCaseResults([]);
+  
+    let passedCount = 0;
+    setTestCasesPassedNumber(0);
+    let totalExecutionTime = 0;
+    const totalTestCases = testCases.length;
+    let finalOutput = "";
+    let accuracyPass = 0;
+    let avgTime = 0;
+    let isSuccessfullyRun = false;
+    const newTestCaseResults = [];
+  
     try {
       for (let i = 0; i < testCases.length; i++) {
-        const { input, output: expectedOutput } = testCases[i]
-
-        // Update UI to show which test case is running
+        const { input, output: expectedOutput } = testCases[i];
+  
+        // Show which test case is running
         newTestCaseResults.push({
           index: i,
           status: "running",
@@ -207,9 +205,9 @@ const CodingProblemPlatform = () => {
           expectedOutput,
           actualOutput: "",
           executionTime: 0,
-        })
-        setTestCaseResults([...newTestCaseResults])
-
+        });
+        setTestCaseResults([...newTestCaseResults]);
+  
         const response = await axios.post(
           `${API}/api/code/new-code-judge`,
           {
@@ -223,155 +221,171 @@ const CodingProblemPlatform = () => {
               Authorization: authorizationToken,
             },
             withCredentials: true,
-          },
-        )
-
+          }
+        );
+  
         if (response.data.status === "completed") {
-          const actualOutput = response.data.output.trim()
-          const expectedTrimmed = expectedOutput.trim()
-          const executionTime = response.data.executionTime
-
-          totalExecutionTime += executionTime
-
-          // Update the test case result
+          const actualOutput = response.data.output.trim();
+          const expectedTrimmed = expectedOutput.trim();
+          const executionTime = response.data.executionTime;
+  
+          totalExecutionTime += executionTime;
+  
+          const status = actualOutput === expectedTrimmed ? "passed" : "failed";
+  
+          // ✅ Update the current test case instead of pushing again
           newTestCaseResults[i] = {
             ...newTestCaseResults[i],
-            status: actualOutput === expectedTrimmed ? "passed" : "failed",
+            status,
             actualOutput,
             executionTime,
-          }
-          setTestCaseResults([...newTestCaseResults])
-
-          if (actualOutput !== expectedTrimmed) {
-            setTestCasesPassedNumber(passedCount)
-            finalOutput = `Test case ${i + 1} failed.\nExpected: "${expectedTrimmed}"\nReceived: "${actualOutput}"`
-            setOutput(finalOutput)
-            setIsExecuted(true)
-
+          };
+          setTestCaseResults([...newTestCaseResults]);
+  
+          if (status === "failed") {
+            setTestCasesPassedNumber(passedCount);
+            finalOutput = `Test case ${i + 1} failed.\nExpected: "${expectedTrimmed}"\nReceived: "${actualOutput}"`;
+            setOutput(finalOutput);
+            setIsExecuted(true);
+  
+            accuracyPass = ((passedCount / totalTestCases) * 100).toFixed(2);
+            avgTime = (totalExecutionTime / (i + 1)).toFixed(2);
+  
             setSubmissionStats((prevStats) => ({
               ...prevStats,
               submissions: prevStats.submissions + 1,
-              accuracy: ((passedCount / totalTestCases) * 100).toFixed(2),
-              runtime: (totalExecutionTime / (i + 1)).toFixed(2),
-            }))
-
-            accuracyPass = ((passedCount / totalTestCases) * 100).toFixed(2)
-            avgTime = (totalExecutionTime / (i + 1)).toFixed(2)
-            isSuccessfullyRun = false
-
-            // Complete remaining test cases as "not run"
-            for (let j = i + 1; j < testCases.length; j++) {
-              newTestCaseResults.push({
-                index: j,
-                status: "not-run",
-                input: testCases[j].input,
-                expectedOutput: testCases[j].output,
-                actualOutput: "",
-                executionTime: 0,
-              })
-            }
-            setTestCaseResults([...newTestCaseResults])
-            break
+              accuracy: accuracyPass,
+              runtime: avgTime,
+            }));
+  
+            isSuccessfullyRun = false;
+  
+            // Mark remaining test cases as not run
+            // for (let j = i + 1; j < testCases.length; j++) {
+            //   newTestCaseResults.push({
+            //     index: j,
+            //     status: "not-run",
+            //     input: testCases[j].input,
+            //     expectedOutput: testCases[j].output,
+            //     actualOutput: "",
+            //     executionTime: 0,
+            //   });
+            // }
+            setTestCaseResults([...newTestCaseResults]);
+            break;
           }
-
-          passedCount++
+  
+          passedCount++;
         } else if (response.data.status === "error") {
-          const errorDetails = response.data.error || "Unknown error occurred."
-          const cleanedErrorDetails = cleanErrorDetails(errorDetails, selectedLanguage)
-
+          const errorDetails = response.data.error || "Unknown error occurred.";
+          const cleanedErrorDetails = cleanErrorDetails(
+            errorDetails,
+            selectedLanguage
+          );
+        
           setErrorMessage({
             error: "Code Execution Error",
             details: cleanedErrorDetails,
-          })
-
-          finalOutput = cleanedErrorDetails
-          setOutput(finalOutput)
-          setIsError(true)
-
-          // Mark current test case as error and remaining as not run
+          });
+        
+          finalOutput = cleanedErrorDetails;
+          setOutput(finalOutput);
+          setIsError(true);
+        
+          // ✅ Update current test case (already added with "running" status)
           newTestCaseResults[i] = {
             ...newTestCaseResults[i],
             status: "error",
             actualOutput: cleanedErrorDetails,
-          }
-
-          for (let j = i + 1; j < testCases.length; j++) {
-            newTestCaseResults.push({
-              index: j,
-              status: "not-run",
-              input: testCases[j].input,
-              expectedOutput: testCases[j].output,
-              actualOutput: "",
-              executionTime: 0,
-            })
-          }
-          setTestCaseResults([...newTestCaseResults])
-          return
+          };
+        
+          // ✅ Push remaining test cases as "not-run"
+          // for (let j = i + 1; j < testCases.length; j++) {
+          //   newTestCaseResults.push({
+          //     index: j,
+          //     status: "not-run",
+          //     input: testCases[j].input,
+          //     expectedOutput: testCases[j].output,
+          //     actualOutput: "",
+          //     executionTime: 0,
+          //   });
+          // }
+        
+          // ✅ Now update the state once with all test cases
+          setTestCaseResults([...newTestCaseResults]);
+          return;
         }
+        
       }
-
-      // If all test cases passed
+  
+      // ✅ All test cases passed
       if (passedCount === totalTestCases) {
-        setTestCasesPassedNumber(passedCount)
-        finalOutput = `All ${passedCount} test cases passed successfully.`
-
+        setTestCasesPassedNumber(passedCount);
+        finalOutput = `All ${passedCount} test cases passed successfully.`;
+        setOutput(finalOutput);
+        setIsExecuted(true);
+        setErrorMessage(null);
+  
+        accuracyPass = ((passedCount / totalTestCases) * 100).toFixed(2);
+        avgTime = (totalExecutionTime / totalTestCases).toFixed(2);
+  
         setSubmissionStats((prevStats) => ({
           ...prevStats,
           submissions: prevStats.submissions + 1,
-          accuracy: ((passedCount / totalTestCases) * 100).toFixed(2),
-          runtime: (totalExecutionTime / totalTestCases).toFixed(2),
-        }))
-
-        accuracyPass = ((passedCount / totalTestCases) * 100).toFixed(2)
-        avgTime = (totalExecutionTime / totalTestCases).toFixed(2)
-        isSuccessfullyRun = true
-
-        setOutput(finalOutput)
-        setIsExecuted(true)
-        setErrorMessage(null)
+          accuracy: accuracyPass,
+          runtime: avgTime,
+        }));
+  
+        isSuccessfullyRun = true;
       }
     } catch (error) {
-      setIsError(true)
-
+      setIsError(true);
+  
+      let finalErr = "Execution failed.";
       if (error.response && error.response.data) {
-        const errorDetails = error.response.data.error || "Unknown error occurred."
-        const cleanedErrorDetails = cleanErrorDetails(errorDetails, selectedLanguage)
-
+        const errorDetails = error.response.data.error || finalErr;
+        const cleaned = cleanErrorDetails(errorDetails, selectedLanguage);
+  
         setErrorMessage({
           error: "Execution Error",
-          details: cleanedErrorDetails,
-        })
-
-        finalOutput = cleanedErrorDetails
+          details: cleaned,
+        });
+  
+        finalErr = cleaned;
       } else {
         setErrorMessage({
           error: "Unexpected Error",
-          details: error.message || "Execution failed.",
-        })
-        finalOutput = "Execution failed."
+          details: error.message || finalErr,
+        });
       }
-
-      setOutput(finalOutput)
-
-      // Mark all remaining test cases as not run
-      const currentLength = newTestCaseResults.length
-      for (let i = currentLength; i < testCases.length; i++) {
-        newTestCaseResults.push({
-          index: i,
-          status: "not-run",
-          input: testCases[i].input,
-          expectedOutput: testCases[i].output,
-          actualOutput: "",
-          executionTime: 0,
-        })
-      }
-      setTestCaseResults([...newTestCaseResults])
+  
+      finalOutput = finalErr;
+      setOutput(finalOutput);
+  
+        // Update test case result with error
+        setTestCaseResults([
+          {
+            index: 0,
+            status: "error",
+            input: testCases[0]?.input || "",
+            expectedOutput: testCases[0]?.output || "",
+            actualOutput: finalOutput,
+            executionTime: 0,
+          },
+        ])
     } finally {
-      setIsLoading(false)
-      setIsExecutionStart(false)
-      await codeSubmission(finalOutput, passedCount, accuracyPass, avgTime, isSuccessfullyRun)
+      setIsLoading(false);
+      setIsExecutionStart(false);
+      await codeSubmission(
+        finalOutput,
+        passedCount,
+        accuracyPass,
+        avgTime,
+        isSuccessfullyRun
+      );
     }
-  }
+  };
+  
 
   const codeSubmission = async (output, passedCount, accuracyPass, avgTime, isSuccessfullyRun) => {
     try {
@@ -904,7 +918,7 @@ const CodingProblemPlatform = () => {
 
               <button
                 className="flex items-center gap-1.5 px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium shadow-sm hover:bg-gray-300 transition-colors ml-auto"
-                onClick={() => setCode("")}
+                onClick={() => setCode(problem.code)}
               >
                 <ArrowPathIcon className="w-4 h-4" />
                 Reset

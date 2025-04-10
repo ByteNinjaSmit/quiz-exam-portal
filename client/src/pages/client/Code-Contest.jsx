@@ -283,16 +283,16 @@ const CodingContestPlatform = () => {
             score = Math.round((problem.score * accuracyPass) / 100);
 
             // Complete remaining test cases as "not run"
-            for (let j = i + 1; j < testCases.length; j++) {
-              newTestCaseResults.push({
-                index: j,
-                status: "not-run",
-                input: testCases[j].input,
-                expectedOutput: testCases[j].output,
-                actualOutput: "",
-                executionTime: 0,
-              })
-            }
+            // for (let j = i + 1; j < testCases.length; j++) {
+            //   newTestCaseResults.push({
+            //     index: j,
+            //     status: "not-run",
+            //     input: testCases[j].input,
+            //     expectedOutput: testCases[j].output,
+            //     actualOutput: "",
+            //     executionTime: 0,
+            //   })
+            // }
             setTestCaseResults([...newTestCaseResults])
             break
           }
@@ -317,16 +317,16 @@ const CodingContestPlatform = () => {
             actualOutput: cleanedErrorDetails,
           }
 
-          for (let j = i + 1; j < testCases.length; j++) {
-            newTestCaseResults.push({
-              index: j,
-              status: "not-run",
-              input: testCases[j].input,
-              expectedOutput: testCases[j].output,
-              actualOutput: "",
-              executionTime: 0,
-            })
-          }
+          // for (let j = i + 1; j < testCases.length; j++) {
+          //   newTestCaseResults.push({
+          //     index: j,
+          //     status: "not-run",
+          //     input: testCases[j].input,
+          //     expectedOutput: testCases[j].output,
+          //     actualOutput: "",
+          //     executionTime: 0,
+          //   })
+          // }
           setTestCaseResults([...newTestCaseResults])
           return
         }
@@ -376,19 +376,17 @@ const CodingContestPlatform = () => {
 
       setOutput(finalOutput)
 
-      // Mark all remaining test cases as not run
-      const currentLength = newTestCaseResults.length
-      for (let i = currentLength; i < testCases.length; i++) {
-        newTestCaseResults.push({
-          index: i,
-          status: "not-run",
-          input: testCases[i].input,
-          expectedOutput: testCases[i].output,
-          actualOutput: "",
-          executionTime: 0,
-        })
-      }
-      setTestCaseResults([...newTestCaseResults])
+        // Update test case result with error
+        setTestCaseResults([
+          {
+            index: 0,
+            status: "error",
+            input: testCases[0]?.input || "",
+            expectedOutput: testCases[0]?.output || "",
+            actualOutput: finalOutput,
+            executionTime: 0,
+          },
+        ])
     } finally {
       setIsLoading(false)
       setIsExecutionStart(false)
@@ -1479,7 +1477,7 @@ const CodingContestPlatform = () => {
 
               <button
                 className="flex items-center gap-1.5 px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium shadow-sm hover:bg-gray-300 transition-colors ml-auto"
-                onClick={() => setCode("")}
+                onClick={() => setCode(problem.code)}
               >
                 <ArrowPathIcon className="w-4 h-4" />
                 Reset
