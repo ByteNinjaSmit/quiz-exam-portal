@@ -86,11 +86,11 @@ const CodingContestPlatform = () => {
   const [isExamEnded, setIsExamEnded] = useState(false)
   const [remainingTime, setRemainingTime] = useState(0)
   const [isCheated, setIsCheated] = useState(false)
-  const [cheatReason , setCheatReason ] = useState("");
+  const [cheatReason, setCheatReason] = useState("");
   const [showWarning, setShowWarning] = useState(false)
   const [warningCount, setWarningCount] = useState(0)
   const [tabSwitchCount, setTabSwitchCount] = useState(0)
-
+  const [endExam, setEndExam] = useState(false);
   // Problem Data
   const [problem, setProblem] = useState(null)
   const [submissionData, setSubmissionData] = useState([])
@@ -191,11 +191,69 @@ const CodingContestPlatform = () => {
     }
   }
 
+  const handleEndExam = async (e) => {
+    e.preventDefault()
+
+    const endExamdData = {
+      user: user?._id,
+      problemId: problem?._id,
+    }
+
+    try {
+      const response = await axios.post(`${API}/api/problem/end-contest`, endExamdData, {
+        headers: {
+          Authorization: authorizationToken,
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+
+      if (response.status === 200 || response.status === 201) {
+        checkExamEndedByUser()
+        // toast.success(response.data.message)
+      } else {
+        toast.error(response.data.message)
+      }
+    } catch (error) {
+      if (error.response) {
+        toast.error(error.response.data.message || "An error occurred while submitting.")
+      } else if (error.request) {
+        toast.error("No response received from the server.")
+      } else {
+        toast.error("An error occurred while setting up the request.")
+      }
+    }
+  }
+
+  const checkExamEndedByUser = async () => {
+    try {
+      const userId = user._id;
+      const problemId = problem._id;
+
+      const response = await axios.get(`${API}/api/problem/check-contest/${userId}/${problemId}`, {
+        headers: {
+          Authorization: authorizationToken,
+        },
+        withCredentials: true,
+        credentials: "include",
+      })
+
+      if (response.status === 200) {
+        setEndExam(true)
+        toast.warning(response.data.message)
+        navigate("/user/dashboard")
+      }
+    } catch (error) {
+      console.error(`Error occurred while getting cheat status: ${error}`)
+    }
+  }
+
+
   // Initial data loading
   useEffect(() => {
-    getProblem()
-    getSubmissions()
-
+    getProblem();
+    getSubmissions();
+    checkExamEndedByUser();
   }, [API])
 
   // Handle code submission
@@ -376,17 +434,17 @@ const CodingContestPlatform = () => {
 
       setOutput(finalOutput)
 
-        // Update test case result with error
-        setTestCaseResults([
-          {
-            index: 0,
-            status: "error",
-            input: testCases[0]?.input || "",
-            expectedOutput: testCases[0]?.output || "",
-            actualOutput: finalOutput,
-            executionTime: 0,
-          },
-        ])
+      // Update test case result with error
+      setTestCaseResults([
+        {
+          index: 0,
+          status: "error",
+          input: testCases[0]?.input || "",
+          expectedOutput: testCases[0]?.output || "",
+          actualOutput: finalOutput,
+          executionTime: 0,
+        },
+      ])
     } finally {
       setIsLoading(false)
       setIsExecutionStart(false)
@@ -559,7 +617,7 @@ const CodingContestPlatform = () => {
     const cheatData = {
       user: user?._id,
       problemId: problem?._id,
-      reason:cheatReason,
+      reason: cheatReason,
     }
 
     try {
@@ -898,29 +956,29 @@ const CodingContestPlatform = () => {
         console.error("Fullscreen request failed", err);
       }
     };
-  
+
     enterFullScreen(); // Trigger fullscreen on mount
-  
+
     const checkFullScreen = () => {
       if (!document.fullscreenElement) {
         setCheatReason("user exits fullscreen");
         setShowWarning(true); // 🚨 Show warning when user exits fullscreen
-  
+
         // 🔥 Ensure re-entry on the next user interaction
         document.addEventListener("click", enterFullScreen, { once: true });
       }
     };
-  
+
     document.addEventListener("fullscreenchange", checkFullScreen);
-  
+
     return () => {
       document.removeEventListener("fullscreenchange", checkFullScreen);
       document.removeEventListener("click", enterFullScreen);
     };
   }, []);
-  
-  
-  
+
+
+
 
   // Anti-Cheat: Detect Browser Back/Forward Navigation
   useEffect(() => {
@@ -1052,7 +1110,7 @@ const CodingContestPlatform = () => {
   }
 
   // Contest ended
-  if (isExamEnded) {
+  if (isExamEnded || endExam) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="max-w-md w-full p-8 bg-white rounded-lg shadow-lg">
@@ -1407,7 +1465,13 @@ const CodingContestPlatform = () => {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
+                <button
+                  onClick={(e)=>handleEndExam(e)}
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-1.5 rounded-md text-sm font-semibold transition-colors"
+                >
+                  END EXAM
+                </button>
                 <button
                   onClick={toggleFullScreen}
                   className="p-1.5 text-gray-500 hover:text-indigo-600 hover:bg-gray-100 rounded-md transition-colors"

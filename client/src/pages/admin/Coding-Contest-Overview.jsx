@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import axios from 'axios';
 import { toast } from "react-toastify";
+import { FaFileDownload } from "react-icons/fa";
 
 const CodeContestDashboard = () => {
     const [searchQuery, setSearchQuery] = useState("");
@@ -116,6 +117,41 @@ const CodeContestDashboard = () => {
         currentPage * itemsPerPage
     );
 
+
+    const downloadResult = async (e, id, title) => {
+        e.preventDefault();
+        try {
+            // Make a GET request to fetch the CSV data
+            const response = await axios.get(`${API}/api/problem/export-contest-result/${id}`, {
+                headers: {
+                    Authorization: authorizationToken, // Replace with the actual token
+                    "Content-Type": "application/json",
+                },
+                responseType: "blob", // Important to specify blob for downloading files
+                withCredentials: true,
+            });
+
+            // Create a blob URL for the downloaded data
+            const blob = new Blob([response.data], { type: "text/csv" });
+            const downloadUrl = window.URL.createObjectURL(blob);
+
+            // Create a temporary anchor element to trigger the download
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+
+            // Set a default filename for the downloaded file
+            link.download = `${title}_results.csv`;
+
+            // Append the link to the document, trigger click, and remove it
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error("Error downloading the file:", error);
+        }
+    };
+
+
     const totalPages = Math.ceil(filteredData?.length / itemsPerPage);
 
     return (
@@ -217,6 +253,11 @@ const CodeContestDashboard = () => {
                                                             <FiEye />
                                                         </button>
                                                     </Link>
+                                                    <button className="text-black hover:text-red-800"
+                                                        onClick={(e) => { downloadResult(e, problem._id, problem.name) }}
+                                                    >
+                                                        <FaFileDownload />
+                                                    </button>
                                                 </div>
                                             </td>
                                             <td className="px-4 py-4">
@@ -225,9 +266,9 @@ const CodeContestDashboard = () => {
                                                         <FiTrash2 />
                                                     </button>
                                                     <Link to={`/admin/edit-contest/${problem._id}`}>
-                                                    <button className="text-green-600 hover:text-green-800">
-                                                        <FiEdit2 />
-                                                    </button>
+                                                        <button className="text-green-600 hover:text-green-800">
+                                                            <FiEdit2 />
+                                                        </button>
                                                     </Link>
                                                 </div>
                                             </td>

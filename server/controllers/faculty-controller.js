@@ -344,6 +344,9 @@ const exportPaperDetails = async (req, res, next) => {
                     attemptedQuestions: 0,
                     userDetails: null,// Placeholder for user details
                     correctAnswers: 0,
+                    isCheat: false,
+                    isWarning: false,
+                    cheatReason: null,
                 };
             }
             userData[userId].totalPoints += result.points;
@@ -365,6 +368,18 @@ const exportPaperDetails = async (req, res, next) => {
             }
         });
 
+        // GET ALL Cheat
+        const cheatsData = await Cheat.find({ paperKey: paperKey });
+
+        cheatsData.forEach(cheat => {
+            const userId = cheat.user.toString();
+            if (userData[userId]) {
+                userData[userId].isCheat = cheat.isCheat;
+                userData[userId].isWarning = cheat.isWarning;
+                userData[userId].cheatReason = cheat.reason;
+            }
+        })
+
         // Prepare final data and sort by totalPoints
         const sortedUsers = Object.keys(userData)
             .map(userId => ({
@@ -376,6 +391,9 @@ const exportPaperDetails = async (req, res, next) => {
                 username: userData[userId].userDetails?.username || 'N/A',
                 classy: userData[userId].userDetails?.classy || 'N/A',
                 division: userData[userId].userDetails?.division || 'N/A',
+                isCheat: userData[userId].isCheat,
+                isWarning: userData[userId].isWarning,
+                cheatReason: userData[userId].cheatReason,
             }))
             .sort((a, b) => b.totalPoints - a.totalPoints);
 
@@ -388,7 +406,10 @@ const exportPaperDetails = async (req, res, next) => {
             { label: 'Division', value: 'division' },
             { label: 'Total Points', value: 'totalPoints' },
             { label: 'Attempted Questions', value: 'attemptedQuestions' },
-            { label: 'Correct Questions', value: 'correctAnswers' }
+            { label: 'Correct Questions', value: 'correctAnswers' },
+            { label: 'Cheat', value: 'isCheat' },
+            { label: 'Warning', value: 'isWarning' },
+            { label: 'Cheat_Reason', value: 'cheatReason' },
         ];
 
         const csvHeader = `
@@ -703,8 +724,8 @@ const toggleIsCheatQuizStudent = async (req, res, next) => {
             return res.status(404).json({ message: "Cheat record not found" });
         }
 
-         // If warning is true, set it to false
-         if (cheatRecord.isCheat === true) {
+        // If warning is true, set it to false
+        if (cheatRecord.isCheat === true) {
             cheatRecord.isCheat = false;
             await cheatRecord.save();
 
@@ -739,12 +760,12 @@ const deleteContestCheatStudent = async (req, res, next) => {
         if (!mongoose.Types.ObjectId.isValid(studentId)) {
             return res.status(400).json({ message: "Invalid Student Id" });
         }
-        if(!mongoose.Types.ObjectId.isValid(problemId)){
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
             return res.status(400).json({ message: "Invalid Problem Id" });
         }
 
         // Check if CodeContest with this paperKey exists
-        const isExist = await CodeContest.findOne({_id:problemId});
+        const isExist = await CodeContest.findOne({ _id: problemId });
 
         if (!isExist) {
             return res.status(404).json({ message: "Contest Not Found" });
@@ -783,11 +804,11 @@ const toggleWarningContestCheatStudent = async (req, res, next) => {
         if (!mongoose.Types.ObjectId.isValid(studentId)) {
             return res.status(400).json({ message: "Invalid Student Id" });
         }
-        if(!mongoose.Types.ObjectId.isValid(problemId)){
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
             return res.status(400).json({ message: "Invalid Problem Id" });
         }
 
-        const contest = await CodeContest.findOne({ _id:problemId });
+        const contest = await CodeContest.findOne({ _id: problemId });
         if (!contest) {
             return res.status(404).json({ message: "Contest Not Found" });
         }
@@ -837,7 +858,7 @@ const toggleIsCheatContestStudent = async (req, res, next) => {
             return res.status(400).json({ message: "Invalid Problem Id" });
         }
 
-        const contest = await CodeContest.findOne({ _id:problemId });
+        const contest = await CodeContest.findOne({ _id: problemId });
         if (!contest) {
             return res.status(404).json({ message: "Contest Not Found" });
         }
@@ -847,8 +868,8 @@ const toggleIsCheatContestStudent = async (req, res, next) => {
             return res.status(404).json({ message: "Cheat record not found" });
         }
 
-         // If warning is true, set it to false
-         if (cheatRecord.isCheat === true) {
+        // If warning is true, set it to false
+        if (cheatRecord.isCheat === true) {
             cheatRecord.isCheat = false;
             await cheatRecord.save();
 

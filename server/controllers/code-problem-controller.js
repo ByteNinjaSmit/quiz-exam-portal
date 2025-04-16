@@ -5,6 +5,8 @@ const CodeContest = require("../database/models/code-contest-model");
 const CodeContestSubmission = require("../database/models/codeContest-submission-model");
 const ContestCheat = require("../database/models/code-cheat-model");
 const User = require("../database/models/user-model");
+const EndContest = require("../database/models/end-contest-model");
+const { Parser } = require('json2csv'); // Import the json2csv library
 
 // Controller to create a new coding problem
 const createProblem = async (req, res, next) => {
@@ -578,7 +580,7 @@ const deleteCodingContestById = async (req, res, next) => {
 // -------------------
 
 const postContestCheat = async (req, res, next) => {
-    const { user, problemId,reason } = req.body;
+    const { user, problemId, reason } = req.body;
 
     try {
         // Validate required fields
@@ -784,6 +786,243 @@ const getResultOfSingleContest = async (req, res, next) => {
 }
 
 
+// Download Contest Result Data Export
+const exportContestDetails = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        // Verify id by Mongoose
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ message: "Invalid contest id" })
+        }
+        // Step 1: Find the Code contest 
+        const contest = await CodeContest.findById(id);
+        if (!contest) {
+            return res.status(404).json({ message: "Contest not found" });
+        }
+        // Step 2: Find the user's results associated with contest id
+        const contestResults = await CodeContestSubmission.find({ problemId: id });
+        if (contestResults.length === 0) {
+            return res.status(404).json({ message: "No results found for this contest." });
+        }
+        //  Step 3: Calculate Total Points and Attempted Contest For Each user
+        const userData = {};
+        contestResults.forEach((result) => {
+            const userId = result.userId.toString();
+
+            // Initialize user data if not present
+            if (!userData[userId]) {
+                userData[userId] = {
+                    accuracy: result.accuracy,
+                    testCasesPassed: result.testCasesPassed,
+                    code: result.code,
+                    userDetails: null,
+                    output: result.output,
+                    avgRuntime: result.avgRuntime,
+                    score: result.score,
+                    isCheat: false,
+                    isWarning: false,
+                    cheatReason: null,
+                };
+            }
+            // Update only if the new score is higher
+            else if (result.score > userData[userId].score) {
+                userData[userId] = {
+                    accuracy: result.accuracy,
+                    testCasesPassed: result.testCasesPassed,
+                    code: result.code,
+                    userDetails: null,
+                    isCheat: false,
+                    isWarning: false,
+                    cheatReason: null,
+                    output: result.output,
+                    avgRuntime: result.avgRuntime,
+                    score: result.score,
+                };
+            }
+        });
+
+        // step 4: Fetch user Details for all unique users
+        const userIds = Object.keys(userData);
+        const users = await User.find({ _id: { $in: userIds } }, { name: 1, username: 1, classy: 1, division: 1 }); // Fetch only necessary fields
+
+        // Get All Cheat
+        const cheatsData = await ContestCheat.find({ problemId: id });
+
+        cheatsData.forEach(cheat => {
+            const userId = cheat.user.toString();
+            if (userData[userId]) {
+                userData[userId].isCheat = cheat.isCheat;
+                userData[userId].isWarning = cheat.isWarning;
+                userData[userId].cheatReason = cheat.reason;
+            }
+        })
+
+
+        // Attach user details to user data
+        users.forEach(user => {
+            const userId = user._id.toString();
+            if (userData[userId]) {
+                userData[userId].userDetails = user;
+            }
+        });
+
+        // Prepare final data and sort by score 
+        const sortedUsers = Object.keys(userData)
+            .map(userId => ({
+                userId,
+                accuracy: userData[userId].accuracy,
+                testCasesPassed: userData[userId].testCasesPassed,
+                code: userData[userId].code,
+                output: userData[userId].output,
+                avgRuntime: userData[userId].avgRuntime,
+                score: userData[userId].score,
+                userDetails: userData[userId].userDetails,
+                isCheat: userData[userId].isCheat,
+                isWarning: userData[userId].isWarning,
+                cheatReason: userData[userId].cheatReason,
+                name: userData[userId].userDetails?.name || 'N/A',
+                username: userData[userId].userDetails?.username || 'N/A',
+                classy: userData[userId].userDetails?.classy || 'N/A',
+                division: userData[userId].userDetails?.division || 'N/A',
+            }))
+            .sort((a, b) => b.score - a.score);
+
+        const csvFields = [
+            // { label: 'User ID', value: 'userId' },
+            { label: 'Name', value: 'name' },
+            { label: 'Username', value: 'username' },
+            { label: 'Class', value: 'classy' },
+            { label: 'Division', value: 'division' },
+            { label: 'Accuracy', value: 'accuracy' },
+            { label: 'Test Case Passed', value: 'testCasesPassed' },
+            { lable: 'Avg._RunTime', value: 'avgRuntime' },
+            { label: 'Score', value: 'score' },
+            { label: 'Cheat', value: 'isCheat' },
+            { label: 'Warning', value: 'isWarning' },
+            { label: 'Cheat_Reason', value: 'cheatReason' },
+
+        ];
+
+        const csvHeader = `
+        Question Paper Details
+        Title: ${contest.title}
+        Name: ${contest.name}
+        Class: ${contest.classyear}
+        Division: ${contest.division}
+        Start Time: ${contest.startTime}
+        End Time: ${contest.endTime}
+                `.trim();
+
+
+        const json2csvParser = new Parser({ fields: csvFields });
+        const csvBody = json2csvParser.parse(sortedUsers);
+        const csvData = `${csvHeader}\n\n${csvBody}`;
+
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment(`${contest.title.replace(/\s+/g, '_')}_Results.csv`);
+        return res.status(200).send(csvData);
+
+    } catch (error) {
+        console.error('Error fetching paper details:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Server error while fetching paper details'
+        });
+    }
+}
+
+// --------------------
+// END CONTEST OF USER
+// -----------------
+
+const endContestByUser = async (req, res, next) => {
+    const { user, problemId } = req.body;
+    try {
+        if (!user || !problemId) {
+            return res.status(400).json({ message: "Missing required parameters." });
+        }
+        if (!mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ message: "User ID is required" })
+        }
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
+            return res.status(400).json({ message: "problemId  is required" })
+        }
+        // Check if the user has already submitted the problem
+        // FInd User is Exist 
+        const userExist = await User.findOne({ _id: user });
+        if (!userExist) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        // Find Problem is Exist
+        const problemExist = await CodeContest.findOne({ _id: problemId });
+        if (!problemExist) {
+            return res.status(404).json({ message: "Problem not found" });
+        }
+        // Check if the user has already submitted the problem
+        const userSubmitted = await EndContest.findOne({ problemId: problemId, user: user });
+        if (userSubmitted) {
+            return res.status(400).json({ message: "You have already Ended this Contest" });
+        }
+        // Create a new EndContest document
+        const endContest = new EndContest({
+            problemId: problemId,
+            user: user
+
+        })
+        // Save the EndContest document
+        await endContest.save();
+        return res.status(200).json({ message: "Contest Ended Successfully" });
+    } catch (error) {
+        next(error);
+    }
+}
+
+// -----------------------
+// Check User Contest Ended Or Not
+// -----------------------
+
+const checkContestEnd = async (req, res, next) => {
+    const { user, problemId } = req.params;
+    try {
+        if (!user || !problemId) {
+            return res.status(400).json({ message: "Missing required parameters." });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(user)) {
+            return res.status(400).json({ message: "Invalid User ID" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(problemId)) {
+            return res.status(400).json({ message: "Invalid Problem ID" });
+        }
+
+        // Check if the user exists
+        const userExist = await User.findById(user);
+        if (!userExist) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Check if the contest exists
+        const problemExist = await CodeContest.findById(problemId);
+        if (!problemExist) {
+            return res.status(404).json({ message: "Contest not found" });
+        }
+
+        // Check if the user ended the contest
+        const userSubmitted = await EndContest.findOne({ problemId, user });
+        if (userSubmitted) {
+            return res.status(200).json({ message: "Contest Ended" });
+        } else {
+            return res.status(404).json({ message: "Contest not ended yet" }); // 404 if not found
+        }
+    } catch (error) {
+        next(error);
+    }
+}
+
+
 module.exports = {
     createProblem,
     getProblemById,
@@ -802,4 +1041,7 @@ module.exports = {
     getContestCheatStatus,
     getResultOfSingleContest,
     updateCodeContest,
+    exportContestDetails,
+    endContestByUser,
+    checkContestEnd
 };

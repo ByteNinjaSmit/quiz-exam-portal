@@ -182,7 +182,7 @@ const CodingProblemPlatform = () => {
     setIsLoading(true);
     setIsExecutionStart(true);
     setTestCaseResults([]);
-  
+
     let passedCount = 0;
     setTestCasesPassedNumber(0);
     let totalExecutionTime = 0;
@@ -192,11 +192,11 @@ const CodingProblemPlatform = () => {
     let avgTime = 0;
     let isSuccessfullyRun = false;
     const newTestCaseResults = [];
-  
+
     try {
       for (let i = 0; i < testCases.length; i++) {
         const { input, output: expectedOutput } = testCases[i];
-  
+
         // Show which test case is running
         newTestCaseResults.push({
           index: i,
@@ -207,7 +207,7 @@ const CodingProblemPlatform = () => {
           executionTime: 0,
         });
         setTestCaseResults([...newTestCaseResults]);
-  
+
         const response = await axios.post(
           `${API}/api/code/new-code-judge`,
           {
@@ -223,16 +223,16 @@ const CodingProblemPlatform = () => {
             withCredentials: true,
           }
         );
-  
+
         if (response.data.status === "completed") {
           const actualOutput = response.data.output.trim();
           const expectedTrimmed = expectedOutput.trim();
           const executionTime = response.data.executionTime;
-  
+
           totalExecutionTime += executionTime;
-  
+
           const status = actualOutput === expectedTrimmed ? "passed" : "failed";
-  
+
           // ✅ Update the current test case instead of pushing again
           newTestCaseResults[i] = {
             ...newTestCaseResults[i],
@@ -241,25 +241,25 @@ const CodingProblemPlatform = () => {
             executionTime,
           };
           setTestCaseResults([...newTestCaseResults]);
-  
+
           if (status === "failed") {
             setTestCasesPassedNumber(passedCount);
             finalOutput = `Test case ${i + 1} failed.\nExpected: "${expectedTrimmed}"\nReceived: "${actualOutput}"`;
             setOutput(finalOutput);
             setIsExecuted(true);
-  
+
             accuracyPass = ((passedCount / totalTestCases) * 100).toFixed(2);
             avgTime = (totalExecutionTime / (i + 1)).toFixed(2);
-  
+
             setSubmissionStats((prevStats) => ({
               ...prevStats,
               submissions: prevStats.submissions + 1,
               accuracy: accuracyPass,
               runtime: avgTime,
             }));
-  
+
             isSuccessfullyRun = false;
-  
+
             // Mark remaining test cases as not run
             // for (let j = i + 1; j < testCases.length; j++) {
             //   newTestCaseResults.push({
@@ -274,7 +274,7 @@ const CodingProblemPlatform = () => {
             setTestCaseResults([...newTestCaseResults]);
             break;
           }
-  
+
           passedCount++;
         } else if (response.data.status === "error") {
           const errorDetails = response.data.error || "Unknown error occurred.";
@@ -282,23 +282,23 @@ const CodingProblemPlatform = () => {
             errorDetails,
             selectedLanguage
           );
-        
+
           setErrorMessage({
             error: "Code Execution Error",
             details: cleanedErrorDetails,
           });
-        
+
           finalOutput = cleanedErrorDetails;
           setOutput(finalOutput);
           setIsError(true);
-        
+
           // ✅ Update current test case (already added with "running" status)
           newTestCaseResults[i] = {
             ...newTestCaseResults[i],
             status: "error",
             actualOutput: cleanedErrorDetails,
           };
-        
+
           // ✅ Push remaining test cases as "not-run"
           // for (let j = i + 1; j < testCases.length; j++) {
           //   newTestCaseResults.push({
@@ -310,14 +310,14 @@ const CodingProblemPlatform = () => {
           //     executionTime: 0,
           //   });
           // }
-        
+
           // ✅ Now update the state once with all test cases
           setTestCaseResults([...newTestCaseResults]);
           return;
         }
-        
+
       }
-  
+
       // ✅ All test cases passed
       if (passedCount === totalTestCases) {
         setTestCasesPassedNumber(passedCount);
@@ -325,32 +325,32 @@ const CodingProblemPlatform = () => {
         setOutput(finalOutput);
         setIsExecuted(true);
         setErrorMessage(null);
-  
+
         accuracyPass = ((passedCount / totalTestCases) * 100).toFixed(2);
         avgTime = (totalExecutionTime / totalTestCases).toFixed(2);
-  
+
         setSubmissionStats((prevStats) => ({
           ...prevStats,
           submissions: prevStats.submissions + 1,
           accuracy: accuracyPass,
           runtime: avgTime,
         }));
-  
+
         isSuccessfullyRun = true;
       }
     } catch (error) {
       setIsError(true);
-  
+
       let finalErr = "Execution failed.";
       if (error.response && error.response.data) {
         const errorDetails = error.response.data.error || finalErr;
         const cleaned = cleanErrorDetails(errorDetails, selectedLanguage);
-  
+
         setErrorMessage({
           error: "Execution Error",
           details: cleaned,
         });
-  
+
         finalErr = cleaned;
       } else {
         setErrorMessage({
@@ -358,21 +358,21 @@ const CodingProblemPlatform = () => {
           details: error.message || finalErr,
         });
       }
-  
+
       finalOutput = finalErr;
       setOutput(finalOutput);
-  
-        // Update test case result with error
-        setTestCaseResults([
-          {
-            index: 0,
-            status: "error",
-            input: testCases[0]?.input || "",
-            expectedOutput: testCases[0]?.output || "",
-            actualOutput: finalOutput,
-            executionTime: 0,
-          },
-        ])
+
+      // Update test case result with error
+      setTestCaseResults([
+        {
+          index: 0,
+          status: "error",
+          input: testCases[0]?.input || "",
+          expectedOutput: testCases[0]?.output || "",
+          actualOutput: finalOutput,
+          executionTime: 0,
+        },
+      ])
     } finally {
       setIsLoading(false);
       setIsExecutionStart(false);
@@ -385,7 +385,7 @@ const CodingProblemPlatform = () => {
       );
     }
   };
-  
+
 
   const codeSubmission = async (output, passedCount, accuracyPass, avgTime, isSuccessfullyRun) => {
     try {
@@ -938,85 +938,84 @@ const CodingProblemPlatform = () => {
               <div className="space-y-3">
                 {testCaseResults.length > 0
                   ? testCaseResults.map((result, index) => (
-                      <div
-                        key={index}
-                        className="bg-white rounded-md p-3 shadow-sm border border-gray-200 transition-all duration-300 ease-in-out animate-fadeIn"
-                      >
-                        <div className="flex justify-between items-center mb-2">
-                          <div className="flex items-center">
-                            <div className="mr-2">{getStatusIcon(result.status)}</div>
-                            <h3 className="font-medium text-gray-700 text-sm">
-                              Test Case {result.index + 1}
-                              {result.status === "running" && (
-                                <span className="ml-2 text-xs text-indigo-600 animate-pulse">Running...</span>
-                              )}
-                              {result.status === "passed" && (
-                                <span className="ml-2 text-xs text-green-600">Passed</span>
-                              )}
-                              {result.status === "failed" && <span className="ml-2 text-xs text-red-600">Failed</span>}
-                              {result.status === "error" && <span className="ml-2 text-xs text-amber-600">Error</span>}
-                            </h3>
-                          </div>
-                          {result.executionTime > 0 && (
-                            <span className="text-xs text-gray-500">{result.executionTime} ms</span>
-                          )}
+                    <div
+                      key={index}
+                      className="bg-white rounded-md p-3 shadow-sm border border-gray-200 transition-all duration-300 ease-in-out animate-fadeIn"
+                    >
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center">
+                          <div className="mr-2">{getStatusIcon(result.status)}</div>
+                          <h3 className="font-medium text-gray-700 text-sm">
+                            Test Case {result.index + 1}
+                            {result.status === "running" && (
+                              <span className="ml-2 text-xs text-indigo-600 animate-pulse">Running...</span>
+                            )}
+                            {result.status === "passed" && (
+                              <span className="ml-2 text-xs text-green-600">Passed</span>
+                            )}
+                            {result.status === "failed" && <span className="ml-2 text-xs text-red-600">Failed</span>}
+                            {result.status === "error" && <span className="ml-2 text-xs text-amber-600">Error</span>}
+                          </h3>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div>
-                            <label className="block text-xs font-medium text-gray-500 mb-1">Input</label>
-                            <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
-                              {result.input}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="block text-xs font-medium text-gray-500 mb-1">Expected Output</label>
-                            <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
-                              {result.expectedOutput}
-                            </div>
-                          </div>
-                        </div>
-                        {(result.status === "failed" || result.status === "passed" || result.status === "error") && (
-                          <div className="mt-2">
-                            <label className="block text-xs font-medium text-gray-500 mb-1">
-                              {result.status === "error" ? "Error" : "Your Output"}
-                            </label>
-                            <div
-                              className={`p-2 rounded-md border overflow-auto font-mono text-xs h-16
-                                                        ${
-                                                          result.status === "passed"
-                                                            ? "bg-green-50 border-green-200 text-green-800"
-                                                            : result.status === "failed"
-                                                              ? "bg-red-50 border-red-200 text-red-800"
-                                                              : "bg-amber-50 border-amber-200 text-amber-800"
-                                                        }`}
-                            >
-                              {result.actualOutput}
-                            </div>
-                          </div>
+                        {result.executionTime > 0 && (
+                          <span className="text-xs text-gray-500">{result.executionTime} ms</span>
                         )}
                       </div>
-                    ))
-                  : testCases.slice(0, 2).map((testCase, index) => (
-                      <div key={index} className="bg-white rounded-md p-3 shadow-sm border border-gray-200">
-                        <div className="flex justify-between items-center mb-2">
-                          <h3 className="font-medium text-gray-700 text-sm">Test Case {index + 1}</h3>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                          <div>
-                            <label className="block text-xs font-medium text-gray-500 mb-1">Input</label>
-                            <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
-                              {testCase.input}
-                            </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-500 mb-1">Input</label>
+                          <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
+                            {result.input}
                           </div>
-                          <div>
-                            <label className="block text-xs font-medium text-gray-500 mb-1">Expected Output</label>
-                            <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
-                              {testCase.output}
-                            </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-500 mb-1">Expected Output</label>
+                          <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
+                            {result.expectedOutput}
                           </div>
                         </div>
                       </div>
-                    ))}
+                      {(result.status === "failed" || result.status === "passed" || result.status === "error") && (
+                        <div className="mt-2">
+                          <label className="block text-xs font-medium text-gray-500 mb-1">
+                            {result.status === "error" ? "Error" : "Your Output"}
+                          </label>
+                          <div
+                            className={`p-2 rounded-md border overflow-auto font-mono text-xs h-16
+                                                        ${result.status === "passed"
+                                ? "bg-green-50 border-green-200 text-green-800"
+                                : result.status === "failed"
+                                  ? "bg-red-50 border-red-200 text-red-800"
+                                  : "bg-amber-50 border-amber-200 text-amber-800"
+                              }`}
+                          >
+                            {result.actualOutput}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))
+                  : testCases.slice(0, 2).map((testCase, index) => (
+                    <div key={index} className="bg-white rounded-md p-3 shadow-sm border border-gray-200">
+                      <div className="flex justify-between items-center mb-2">
+                        <h3 className="font-medium text-gray-700 text-sm">Test Case {index + 1}</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-xs font-medium text-gray-500 mb-1">Input</label>
+                          <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
+                            {testCase.input}
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-medium text-gray-500 mb-1">Expected Output</label>
+                          <div className="bg-gray-50 p-2 rounded-md border border-gray-200 h-16 overflow-auto font-mono text-xs">
+                            {testCase.output}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
               </div>
             </div>
 
