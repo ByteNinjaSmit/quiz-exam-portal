@@ -439,37 +439,43 @@ const getTop2Contests = async (req, res, next) => {
         if (!req.user) {
             return res.status(401).json({ success: false, message: "Unauthorized" });
         }
-        const { classy, division, batch } = req.user;
-        const classyear = classy;
-        const contest = await CodeContest.find({
-            $or: [
-                // 1. Exact Match on all fields
-                { classyear, division, batch },
 
-                // 2. Allow "ALL" for classyear only if division & batch match exactly
+        const { classy, division, batch, _id } = req.user;
+        const classyear = classy;
+
+        // Fetch relevant contests
+        const contests = await CodeContest.find({
+            $or: [
+                { classyear, division, batch },
                 { classyear, division, batch: "ALL" },
                 { classyear, division: "ALL", batch },
-
-                // 3. Allow "ALL" for division & batch separately (but not both together)
                 { classyear, division: "ALL", batch: "ALL" },
-
-                // 4. Allow "ALL" for classyear only if division & batch match
                 { classyear: "ALL", division, batch },
-
-                // 5. Fully generic match (last resort)
                 { classyear: "ALL", division: "ALL", batch: "ALL" },
             ],
         })
             .select('name difficulty category startTime endTime classyear score createdAt')
-            .sort({ createdAt: -1 }) // Sort by createdAt in descending order
-            .limit(2); // Get only top 2
+            .sort({ createdAt: -1 })
+            .limit(2);
 
+        // Fetch user's ended contests
+        const ended = await EndContest.find({ user: _id });
 
-        return res.status(200).json({ contest });
+        // Create a Set of ended contest IDs for quick lookup
+        const endedContestIds = new Set(ended.map(e => e.problemId.toString()));
+
+        // Add `ended: true/false` flag to each contest
+        const contestWithStatus = contests.map(contest => ({
+            ...contest.toObject(),
+            ended: endedContestIds.has(contest._id.toString()),
+        }));
+
+        return res.status(200).json({ contest: contestWithStatus });
     } catch (error) {
         next(error);
     }
 };
+
 
 
 
@@ -875,7 +881,7 @@ const exportContestDetails = async (req, res, next) => {
                 testCasesPassed: userData[userId].testCasesPassed,
                 code: userData[userId].code,
                 output: userData[userId].output,
-                avgRuntime: userData[userId].avgRuntime,
+                avgRuntime: `${userData[userId].avgRuntime}ms`,
                 score: userData[userId].score,
                 userDetails: userData[userId].userDetails,
                 isCheat: userData[userId].isCheat,

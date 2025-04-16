@@ -64,6 +64,8 @@ const Dashboard = () => {
         try {
           const contestRes = await axios.get(`${API}/api/problem/get-latest-contest`, config);
           setContestData(contestRes.data.contest);
+          // console.log("Contest Data: ", contestRes.data);
+          
         } catch (err) {
           console.warn("Contest fetch failed:", err.message);
         }
@@ -361,12 +363,12 @@ const Dashboard = () => {
                         Contest is scheduled
                       </p>
                     )}
-                    {isExamEnded && (
+                    {isExamEnded || problem.ended && (
                       <p className="text-red-600 font-medium mt-2">
                         Contest is ended
                       </p>
                     )}
-                    {isExamOngoing && (
+                    {isExamOngoing && !problem.ended && (
                       <Link
                         to={`/user/coding-contest/${problem?._id}`}
                       >

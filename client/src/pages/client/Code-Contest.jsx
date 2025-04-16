@@ -240,7 +240,7 @@ const CodingContestPlatform = () => {
 
       if (response.status === 200) {
         setEndExam(true)
-        toast.warning(response.data.message)
+        // toast.warning(response.data.message)
         navigate("/user/dashboard")
       }
     } catch (error) {
@@ -253,7 +253,7 @@ const CodingContestPlatform = () => {
   useEffect(() => {
     getProblem();
     getSubmissions();
-    checkExamEndedByUser();
+    
   }, [API])
 
   // Handle code submission
@@ -676,6 +676,7 @@ const CodingContestPlatform = () => {
   useEffect(() => {
     if (user?._id && problem?._id) {
       GetIsCheated();
+      checkExamEndedByUser();
     }
   }, [user?._id, problem?._id]);
 
@@ -759,7 +760,7 @@ const CodingContestPlatform = () => {
 
   // Redirect when exam ends
   useEffect(() => {
-    if (isExamEnded) {
+    if (isExamEnded || endExam) {
       if (document.fullscreenElement) {
         document.exitFullscreen().catch((err) => {
           console.error("Error exiting fullscreen:", err);
@@ -770,7 +771,7 @@ const CodingContestPlatform = () => {
         navigate("/user/dashboard")
       }, 3000)
     }
-  }, [isExamEnded, navigate])
+  }, [isExamEnded,endExam, navigate])
 
   // Anti-Cheat: Detect Tab Switching
   useEffect(() => {
