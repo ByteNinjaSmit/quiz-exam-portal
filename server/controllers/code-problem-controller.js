@@ -477,6 +477,51 @@ const getTop2Contests = async (req, res, next) => {
 };
 
 
+// ------------------
+// GET ALL Contest Of User
+// -------------------
+
+const getContestsUser = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: "Unauthorized" });
+        }
+
+        const { classy, division, batch, _id } = req.user;
+        const classyear = classy;
+
+        // Fetch relevant contests
+        const contests = await CodeContest.find({
+            $or: [
+                { classyear, division, batch },
+                { classyear, division, batch: "ALL" },
+                { classyear, division: "ALL", batch },
+                { classyear, division: "ALL", batch: "ALL" },
+                { classyear: "ALL", division, batch },
+                { classyear: "ALL", division: "ALL", batch: "ALL" },
+            ],
+        })
+            .select('name difficulty category startTime endTime classyear score createdAt')
+            .sort({ createdAt: -1 });
+
+        // Fetch user's ended contests
+        const ended = await EndContest.find({ user: _id });
+
+        // Create a Set of ended contest IDs for quick lookup
+        const endedContestIds = new Set(ended.map(e => e.problemId.toString()));
+
+        // Add `ended: true/false` flag to each contest
+        const contestWithStatus = contests.map(contest => ({
+            ...contest.toObject(),
+            ended: endedContestIds.has(contest._id.toString()),
+        }));
+
+        return res.status(200).json({ contest: contestWithStatus });
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 
 const submitContestSubmission = async (req, res, next) => {
@@ -1049,5 +1094,6 @@ module.exports = {
     updateCodeContest,
     exportContestDetails,
     endContestByUser,
-    checkContestEnd
+    checkContestEnd,
+    getContestsUser
 };

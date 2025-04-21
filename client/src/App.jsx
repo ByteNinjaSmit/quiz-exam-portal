@@ -53,6 +53,7 @@ import EditCodingContestForm from "./pages/admin/Edit-Contest";
 import FAQ from "./pages/FAQ";
 import CheatMonitoringDashboard from "./pages/admin/Quiz-Cheat";
 import CheatMonitoringDashboardContest from "./pages/admin/Contest-Cheat";
+import ContestistPage from "./pages/client/All-Contest";
 
 
 
@@ -93,6 +94,7 @@ const App = () => {
             <Route exact path="/user" element={<UserLayout />} >
               <Route exact path="dashboard" element={<Dashboard />} />
               <Route exact path="exams" element={<ExamListPage />} />
+              <Route exact path="coding-contest-all" element={<ContestistPage />} />
               <Route exact path="global-leaderboard" element={<GlobalLeaderboardOverview />} />
               <Route exact path="quiz-leaderboard/:paperKey" element={<QuizLeaderboardOverview />} />
               <Route exact path="edit-profile" element={<UpdateProfile />} />

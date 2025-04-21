@@ -18,6 +18,7 @@ router.route("/get-contest/:id").get(authMiddleware, CodeProblemControllers.getC
 router.route("/get-all-problems").get(authMiddleware, CodeProblemControllers.getProblems);
 router.route("/get-all-contest").get(authMiddleware, CodeProblemControllers.getContests);
 router.route("/get-latest-contest").get(authMiddleware, CodeProblemControllers.getTop2Contests);
+router.route("/get-all-contest-user").get(authMiddleware,CodeProblemControllers.getContestsUser);
 
 // Submit the Submission
 router.route("/submit-problem").post(authMiddleware, CodeProblemControllers.submitSubmission);

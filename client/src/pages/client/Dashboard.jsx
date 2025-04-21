@@ -37,12 +37,12 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-  
+
       const config = {
         headers: { Authorization: authorizationToken },
         withCredentials: true,
       };
-  
+
       try {
         // 1. Fetch Exams
         try {
@@ -51,7 +51,7 @@ const Dashboard = () => {
         } catch (err) {
           console.warn("Exams fetch failed:", err.message);
         }
-  
+
         // 2. Fetch Problems
         try {
           const problemRes = await axios.get(`${API}/api/problem/get-all-problems`, config);
@@ -59,17 +59,17 @@ const Dashboard = () => {
         } catch (err) {
           console.warn("Problems fetch failed:", err.message);
         }
-  
+
         // 3. Fetch Contest
         try {
           const contestRes = await axios.get(`${API}/api/problem/get-latest-contest`, config);
           setContestData(contestRes.data.contest);
-          // console.log("Contest Data: ", contestRes.data);
-          
+          console.log("Contest Data: ", contestRes.data);
+
         } catch (err) {
           console.warn("Contest fetch failed:", err.message);
         }
-  
+
         // 4. Fetch Results
         try {
           const resultRes = await axios.get(`${API}/api/exam/get/results/${user._id}`, config);
@@ -77,7 +77,7 @@ const Dashboard = () => {
         } catch (err) {
           console.warn("Results fetch failed:", err.message);
         }
-  
+
         // 5. Fetch Leaderboard
         try {
           const leaderboardRes = await axios.get(`${API}/api/exam/get/leaderboard`);
@@ -85,17 +85,17 @@ const Dashboard = () => {
         } catch (err) {
           console.warn("Leaderboard fetch failed:", err.message);
         }
-  
+
       } catch (err) {
         console.error("Something unexpected failed:", err.message);
       } finally {
         setIsLoading(false);
       }
     };
-  
+
     fetchData();
   }, [API]);
-  
+
 
   const dummyData = {
     profile: {
@@ -341,9 +341,9 @@ const Dashboard = () => {
                 const examStartTime = new Date(problem.startTime);
                 const examEndTime = new Date(problem.endTime);
                 const isExamOngoing =
-                  currentTime >= examStartTime && currentTime <= examEndTime;
+                  (currentTime >= examStartTime && currentTime <= examEndTime) && !problem?.ended ;
                 const isExamScheduled = currentTime < examStartTime;
-                const isExamEnded = currentTime > examEndTime;
+                const isExamEnded = (currentTime > examEndTime) || (problem?.ended && !isExamScheduled );
 
                 return (
                   <div
@@ -363,12 +363,17 @@ const Dashboard = () => {
                         Contest is scheduled
                       </p>
                     )}
-                    {isExamEnded || problem.ended && (
+                    {/* {problem?.ended && (
+                      <p className="text-red-600 font-medium mt-2">
+                        Contest is ended
+                      </p>
+                    )} */}
+                    {isExamEnded  && (
                       <p className="text-red-600 font-medium mt-2">
                         Contest is ended
                       </p>
                     )}
-                    {isExamOngoing && !problem.ended && (
+                    {isExamOngoing && !problem?.ended && (
                       <Link
                         to={`/user/coding-contest/${problem?._id}`}
                       >
@@ -387,7 +392,7 @@ const Dashboard = () => {
               </div>
             )}
             {
-              contestData.length > 2 && (
+              contestData.length > 1 && (
                 <Link to={`/user/coding-contest-all`}>
                   <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg">
                     View All Contest
