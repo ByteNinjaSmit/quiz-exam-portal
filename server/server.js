@@ -71,6 +71,7 @@ const allowedOrigins = [
     'http://www.bytequiz.tech',
     'https://www.bytequiz.tech',
     'https://bytequiz-gamma.vercel.app/',
+    'https://bytequiz-no4g.onrender.com',
 ];
 
 // CORS Policy
