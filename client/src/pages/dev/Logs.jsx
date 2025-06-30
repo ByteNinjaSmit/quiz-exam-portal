@@ -14,54 +14,134 @@ const LiveLogsViewer = () => {
     const [dateRange, setDateRange] = useState({ start: "", end: "" });
     const [isLoading, setIsLoading] = useState(false);
     const logsContainerRef = useRef(null);
-    const { user, isLoggedIn, authorizationToken, API } = useAuth(); // Custom hook from AuthContext3
+    const { user, isLoggedIn, authorizationToken, API } = useAuth();
+    const socketRef = useRef();
 
-    // Socket Io Logic
-    const socketRef = useRef(); // Using useRef to store the socket instance
+    // Helper to extract log level from a log line
+    const extractLevel = (log) => {
+        if (/error/i.test(log)) return "error";
+        if (/warn/i.test(log)) return "warning";
+        if (/success/i.test(log)) return "success";
+        if (/info/i.test(log)) return "info";
+        return "info";
+    };
+
+    // Helper to extract timestamp from a log line (assumes ISO or similar at start)
+    const extractTimestamp = (log) => {
+        const match = log.match(/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z)/);
+        return match ? match[1] : null;
+    };
+
+    // Socket.io logic
     useEffect(() => {
-        // Only create the socket connection once
         if (!socketRef.current) {
             socketRef.current = io(API, {
-                reconnection: true, // Auto-reconnect enabled
-                reconnectionAttempts: 10, // Max attempts
-                reconnectionDelay: 2000, // Delay between attempts
-                reconnectionDelayMax: 10000, // Max delay in ms
+                reconnection: true,
+                reconnectionAttempts: 10,
+                reconnectionDelay: 2000,
+                reconnectionDelayMax: 10000,
                 transports: ['websocket', 'polling'],
                 withCredentials: true,
-              }); // Adjust the backend URL as needed
+            });
         }
-
-        // Listen for log updates
-        // Listen for log updates
-        socketRef.current.on('log-update', (logs) => {
-            // console.log("Raw logs received:", logs); // Log the raw logs as received from the socket
-        
-            // Ensure logs is a string before splitting
-            if (typeof logs !== "string") {
-                // console.error("Logs received are not a string:", logs);
-                return;
-            }
-        
-            // Split the incoming log string into individual log entries by newline
-            const newLogs = logs.split('\n').filter((log) => log.trim() !== ''); // Filter out empty lines
-            // console.log("Processed new logs:", newLogs); // Log the processed logs
-        
+        const socket = socketRef.current;
+        socket.on('log-update', (logsStr) => {
+            if (typeof logsStr !== "string" || isPaused) return;
+            const newLogs = logsStr.split('\n').filter((log) => log.trim() !== '');
             setLogs((prevLogs) => {
-                // Prepend the new logs to the existing logs array
-                const updatedLogs = [...newLogs, ...prevLogs].slice(0, 2000); // Prepend and limit to the latest 2000 logs
-                // console.log("Updated logs array:", updatedLogs); // Log the updated logs array
+                const updatedLogs = [...newLogs, ...prevLogs].slice(0, 2000);
                 return updatedLogs;
             });
         });
-
-
-        // Cleanup on component unmount
         return () => {
-            if (socketRef.current) {
-                socketRef.current.off('log-update');
-            }
+            if (socket) socket.off('log-update');
+        };
+    }, [API, isPaused]);
+
+    useEffect(() => {
+        const socket = socketRef.current;
+        if (!socket) return;
+
+        socket.on('log-action-result', (result) => {
+            alert(result.message); // Replace with toast if desired
+        });
+
+        socket.on('log-download', (logData) => {
+            const blob = new Blob([logData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'app.log';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        return () => {
+            socket.off('log-action-result');
+            socket.off('log-download');
         };
     }, []);
+
+    // Clear logs
+    const handleClear = () => setLogs([]);
+
+    // Filter logs by search, level, and date
+    const filteredLogs = logs.filter((log) => {
+        // Level filter
+        const level = extractLevel(log);
+        if (!selectedLevels.includes(level)) return false;
+        // Search filter
+        if (searchQuery && !log.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+        // Date filter
+        if (dateRange.start || dateRange.end) {
+            const ts = extractTimestamp(log);
+            if (!ts) return false;
+            const logDate = new Date(ts);
+            if (dateRange.start && logDate < new Date(dateRange.start)) return false;
+            if (dateRange.end && logDate > new Date(dateRange.end)) return false;
+        }
+        return true;
+    });
+
+    // Scroll to bottom when logs update and not paused
+    useEffect(() => {
+        if (!isPaused && logsContainerRef.current) {
+            logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
+        }
+    }, [filteredLogs, isPaused]);
+
+    // Analytics: Pie chart for log levels
+    const levelCounts = filteredLogs.reduce((acc, log) => {
+        const level = extractLevel(log);
+        acc[level] = (acc[level] || 0) + 1;
+        return acc;
+    }, {});
+    const chartData = {
+        labels: ["Info", "Warning", "Error", "Success"],
+        datasets: [{
+            data: [levelCounts.info || 0, levelCounts.warning || 0, levelCounts.error || 0, levelCounts.success || 0],
+            backgroundColor: ["#3B82F6", "#F59E0B", "#EF4444", "#10B981"]
+        }]
+    };
+    // Analytics: Line chart for logs over time (by hour)
+    const logsByHour = {};
+    filteredLogs.forEach((log) => {
+        const ts = extractTimestamp(log);
+        if (ts) {
+            const hour = ts.slice(0, 13); // YYYY-MM-DDTHH
+            logsByHour[hour] = (logsByHour[hour] || 0) + 1;
+        }
+    });
+    const lineLabels = Object.keys(logsByHour).sort();
+    const lineChartData = {
+        labels: lineLabels,
+        datasets: [{
+            label: "Logs Over Time",
+            data: lineLabels.map((h) => logsByHour[h]),
+            borderColor: "#F72585",
+            tension: 0.4
+        }]
+    };
 
     const dummyLogs = [
         { id: 1, level: "info", message: "Application started successfully", timestamp: new Date().toISOString() },
@@ -96,52 +176,34 @@ const LiveLogsViewer = () => {
         }
     };
 
-    const chartData = {
-        labels: ["Info", "Warning", "Error", "Success"],
-        datasets: [{
-            data: [10, 5, 3, 8],
-            backgroundColor: ["#3B82F6", "#F59E0B", "#EF4444", "#10B981"]
-        }]
-    };
-
-    const lineChartData = {
-        labels: ["1h ago", "45m ago", "30m ago", "15m ago", "Now"],
-        datasets: [{
-            label: "Logs Over Time",
-            data: [4, 6, 8, 5, 10],
-            borderColor: "#F72585",
-            tension: 0.4
-        }]
-    };
-
-
-    
-
     return (
         <div className="min-h-screen bg-gray-900 text-white p-4">
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-center mb-6">
                 <h1 className="text-[28px] font-semibold mb-4 md:mb-0">Live Logs Viewer</h1>
                 <div className="flex flex-wrap gap-2">
-                    <button className="bg-[#F72585] hover:bg-opacity-80 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
+                    <button
+                        onClick={() => socketRef.current && socketRef.current.emit('download-logs')}
+                        className="bg-[#F72585] hover:bg-opacity-80 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
                         <MdDownload /> Download Logs
                     </button>
                     <button
                         onClick={() => setIsPaused(!isPaused)}
-                        className="bg-[#3A0CA3] hover:bg-opacity-80 text-white p+x-4 py-2 rounded-lg flex items-center gap-2 transition-all"
+                        className="bg-[#3A0CA3] hover:bg-opacity-80 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all"
                     >
                         {isPaused ? <MdPlayArrow /> : <MdPause />}
                         {isPaused ? "Resume" : "Pause"}
                     </button>
-                    <button className="bg-[#FF4C4C] hover:bg-opacity-80 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
+                    <button
+                        onClick={() => socketRef.current && socketRef.current.emit('clear-logs')}
+                        className="bg-[#FF4C4C] hover:bg-opacity-80 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
                         <MdClear /> Clear
                     </button>
                     <Link to={`/developer/dev/dashboard`}>
-                    <button className="bg-[#F0F1F3] text-[#3A0CA3] px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
-                        <MdArrowBack /> Back
-                    </button>
+                        <button className="bg-[#F0F1F3] text-[#3A0CA3] px-4 py-2 rounded-lg flex items-center gap-2 transition-all">
+                            <MdArrowBack /> Back
+                        </button>
                     </Link>
-                    
                 </div>
             </div>
 
@@ -196,16 +258,16 @@ const LiveLogsViewer = () => {
                         <MdAutorenew className="animate-spin text-4xl" />
                     </div>
                 ) : (
-                    logs.map((log, index) => (
+                    filteredLogs.map((log, index) => (
                         <div key={index} className="flex items-start gap-2 mb-2 whitespace-pre font-mono text-sm">
-                            {/* {getLogIcon(log.level)}
-                            <span className={getLogTextColor(log.level)}>{log.timestamp}</span> */}
                             <span className="text-white">{log}</span>
                         </div>
                     ))
                 )}
                 <button
-                    onClick={scrollToBottom}
+                    onClick={() => {
+                        if (logsContainerRef.current) logsContainerRef.current.scrollTop = logsContainerRef.current.scrollHeight;
+                    }}
                     className="absolute bottom-4 right-4 bg-[#3A0CA3] hover:bg-opacity-80 p-2 rounded-full shadow-lg transition-all"
                 >
                     <MdExpandMore />
@@ -233,7 +295,7 @@ const LiveLogsViewer = () => {
                 <div className="flex justify-between items-center max-w-7xl mx-auto">
                     <div className="flex items-center gap-2">
                         <MdList />
-                        <span>Total Logs: {logs.length}</span>
+                        <span>Total Logs: {filteredLogs.length}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         {isPaused ? <MdPauseCircle className="text-yellow-500" /> : <MdPlayCircle className="text-green-500" />}

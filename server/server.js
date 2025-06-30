@@ -42,6 +42,7 @@ const {
     handleSocketConnection
 } = require('./controllers/exam-controller');
 const logController = require('./controllers/log-controller');
+const devDashboardController = require('./controllers/dev-dashboard-controller');
 
 
 // Server
@@ -205,7 +206,9 @@ app.use("/api/user", userRoute);
 handleSocketConnection(io, loadQuestionPaper, checkAndStartExam);
 
 // Log Broadcasting
-// logController(io);
+logController(io);
+
+devDashboardController(io);
 
 
 // For Handeling Code Queue
@@ -219,13 +222,59 @@ connectToDatabase()
             initWorker(Concurrency);
             console.log(`Server running on port ${PORT}`);
             logger.info('Server running on port 5000');
-            logController(io);
         });
     })
     .catch((error) => {
         console.error("Error connecting to MongoDB:", error);
         process.exit(1);
     });
+
+global.apiRequestCount = 0;
+global.apiErrorCount = 0;
+global.lastApiRequestCount = 0;
+global.lastApiErrorCount = 0;
+global.apiRequestsPerSecond = 0;
+global.apiErrorsPerSecond = 0;
+// Track API endpoint hits
+if (!global.apiEndpointHits) global.apiEndpointHits = {};
+// Track failed logins (last 50)
+if (!global.failedLogins) global.failedLogins = [];
+
+// Middleware to track endpoint hits
+app.use((req, res, next) => {
+  global.apiRequestCount++;
+  const endpoint = req.path;
+  global.apiEndpointHits[endpoint] = (global.apiEndpointHits[endpoint] || 0) + 1;
+  next();
+});
+
+// Middleware to track failed logins (after auth routes)
+app.use((req, res, next) => {
+  // Listen for failed login responses
+  res.on('finish', () => {
+    if (
+      req.path.includes('/login') &&
+      res.statusCode >= 400 &&
+      res.statusCode < 500
+    ) {
+      global.failedLogins.unshift({
+        endpoint: req.path,
+        ip: req.ip,
+        time: new Date().toISOString(),
+        status: res.statusCode
+      });
+      if (global.failedLogins.length > 50) global.failedLogins.length = 50;
+    }
+  });
+  next();
+});
+
+setInterval(() => {
+  global.apiRequestsPerSecond = global.apiRequestCount - global.lastApiRequestCount;
+  global.apiErrorsPerSecond = global.apiErrorCount - global.lastApiErrorCount;
+  global.lastApiRequestCount = global.apiRequestCount;
+  global.lastApiErrorCount = global.apiErrorCount;
+}, 1000); // every second
 
 
 

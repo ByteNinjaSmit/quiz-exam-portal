@@ -75,6 +75,26 @@ const logController = (io) => {
             console.log('Client disconnected.');
             clearInterval(intervalId); // Stop the periodic log fetching
         });
+
+        socket.on('clear-logs', () => {
+            fs.writeFile(logFilePath, '', (err) => {
+                if (err) {
+                    socket.emit('log-action-result', { action: 'clear-logs', success: false, message: 'Failed to clear logs.' });
+                } else {
+                    socket.emit('log-action-result', { action: 'clear-logs', success: true, message: 'Logs cleared.' });
+                }
+            });
+        });
+
+        socket.on('download-logs', () => {
+            fs.readFile(logFilePath, 'utf-8', (err, data) => {
+                if (err) {
+                    socket.emit('log-action-result', { action: 'download-logs', success: false, message: 'Failed to download logs.' });
+                } else {
+                    socket.emit('log-download', data);
+                }
+            });
+        });
     });
 };
 
